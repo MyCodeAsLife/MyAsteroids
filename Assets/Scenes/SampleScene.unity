@@ -240,7 +240,7 @@ GameObject:
   - component: {fileID: 247318150}
   - component: {fileID: 247318154}
   m_Layer: 0
-  m_Name: Ufo
+  m_Name: Asteroid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -499,11 +499,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 247318149}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0493e558851f65541b37efad475584e0, type: 3}
+  m_Script: {fileID: 11500000, guid: fc856b70c59601f4e93113a0d0add009, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _canvas: {fileID: 216831044}
-  _playerShip: {fileID: 1829056138}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0

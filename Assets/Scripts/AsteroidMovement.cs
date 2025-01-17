@@ -1,31 +1,34 @@
 using UnityEngine;
-
 namespace Asteroids
 {
     public class AsteroidMovement : Movement
     {
-        public AsteroidMovement(EnemyModel model, Vector2 displaySize) : base(model, displaySize) { }
+        private float _deltaTime;
 
-        public override void Move(Vector2 position)
+        public AsteroidMovement(Transformable model, Vector2 displaySize) : base(model, displaySize) { }
+
+        public override void Move(Vector2 position)     // направление? следующая позиция?
         {
-            //transform.position = Vector3.MoveTowards(transform.position, _player.position, _speed * Time.deltaTime);
+            Vector2 nextPosition = Model.Position + Direction * (MovementSpeed * _deltaTime);
+            nextPosition = Vector2.ClampMagnitude(nextPosition, MovementSpeed);
 
-            base.Move(position);
+            nextPosition = Model.Position + SpeedCorrectionRelativeScreenSize(nextPosition);
+            base.Move(nextPosition);
         }
 
         public override void Rotate(float deltaTime)
         {
-            //if (_model.Direction == 0)
-            //    throw new InvalidOperationException(nameof(_model.Direction));
-
-            //_model.Direction = _model.Direction > 0 ? 1 : -1;
-            //float delta = (_model.Direction * deltaTime * _model.DegreesPerSecond);
-            //_model.Rotate(delta);
+            //Debug.Log($"Angle: {Model.RotationAngle}| RotationSpeed: {RotationSpeed}| DirectionOfRotation: {DirectionOfRotation}");         //++++++++++++++++++++++
+            float angle = Model.RotationAngle + (RotationSpeed * _deltaTime * DirectionOfRotation);
+            Debug.Log(angle);                               //++++++++++++++++++++++++++++++++
+            base.Rotate(angle);
         }
 
         public override void Tick(float deltaTime)
         {
-            throw new System.NotImplementedException();
+            _deltaTime = deltaTime;
+            Move(Direction);               // Ненужная передача параметров
+            Rotate(deltaTime);
         }
     }
 }
