@@ -23,24 +23,6 @@ namespace Asteroids
             _inertiaSimulator.SlowDown(deltaTime);
         }
 
-        public override void Move(Vector2 position)
-        {
-            var nextPosition = Model.Position + SpeedCorrectionRelativeScreenSize(position);
-            nextPosition.x = Mathf.Repeat(nextPosition.x, Config.ScaleWindowSize);
-            nextPosition.y = Mathf.Repeat(nextPosition.y, Config.ScaleWindowSize);
-            base.Move(nextPosition);
-        }
-
-        public override void Rotate(float deltaTime)
-        {
-            if (Model.Direction == 0)
-                throw new InvalidOperationException(nameof(Model.Direction));
-
-            Model.Direction = Model.Direction > 0 ? 1 : -1;
-            float delta = (Model.Direction * deltaTime * Model.DegreesPerSecond) + Model.RotationAngle;
-            base.Rotate(delta);
-        }
-
         public void OnMovementStart()
         {
             Movement += _inertiaSimulator.Accelerate;
@@ -60,6 +42,24 @@ namespace Asteroids
         public void OnRotationCancel()
         {
             Rotation -= Rotate;
+        }
+
+        protected override void Move(Vector2 position)
+        {
+            var nextPosition = Model.Position + SpeedCorrectionRelativeScreenSize(position);
+            nextPosition.x = Mathf.Repeat(nextPosition.x, Config.ScaleWindowSize);
+            nextPosition.y = Mathf.Repeat(nextPosition.y, Config.ScaleWindowSize);
+            base.Move(nextPosition);
+        }
+
+        protected override void Rotate(float deltaTime)
+        {
+            if (Model.Direction == 0)
+                throw new InvalidOperationException(nameof(Model.Direction));
+
+            Model.Direction = Model.Direction > 0 ? 1 : -1;
+            float delta = (Model.Direction * deltaTime * Model.DegreesPerSecond) + Model.RotationAngle;
+            base.Rotate(delta);
         }
     }
 }

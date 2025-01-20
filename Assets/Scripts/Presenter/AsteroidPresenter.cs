@@ -30,6 +30,7 @@ public class AsteroidPresenter : Presenter
         //_enemyView = Instantiate(_enemyView, transform.parent);
         //_enemyView.gameObject.SetActive(true);
         _enemyView = transform;
+        SetOverlapLayer(LayerMask.NameToLayer("Player"));
     }
 
     private void Update()

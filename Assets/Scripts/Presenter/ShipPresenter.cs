@@ -7,9 +7,10 @@ namespace Asteroids
     {
         // ѕочти все переместить в Presenter и зависимые методы
         [SerializeField] private Canvas _canvas;
+        [SerializeField] private Transform _shipView;
+        [SerializeField] private ProjectilePresenter _prefabProjectile;
 
-        private Transform _shipView;
-        private Transformable _shipModel;
+        private ShipModel _shipModel;
         private ShipMovement _shipMovement;
         private RootController _userInput;
 
@@ -23,11 +24,12 @@ namespace Asteroids
             _offsetPosition = _displaySize / 2 * Config.ScaleWindowSize;
             var center = new Vector2(0.5f, 0.5f);
             var startPosition = center * Config.ScaleWindowSize;
-            _shipModel = new ShipModel(startPosition, 0f);
+            _shipModel = new ShipModel(startPosition, 0f, _prefabProjectile);
             _shipMovement = new ShipMovement(_shipModel, _displaySize);
-            _shipView = Resources.Load<Transform>("Prefabs/Ship");
-            _shipView = Instantiate(_shipView, transform.parent);
-            _shipView.gameObject.SetActive(true);
+            //_shipView = Resources.Load<Transform>("Prefabs/Ship");
+            //_shipView = Instantiate(_shipView, transform.parent);
+            //_shipView.gameObject.SetActive(true);
+            SetOverlapLayer(LayerMask.NameToLayer("Enemy"));
         }
 
         private void OnEnable()
@@ -36,10 +38,10 @@ namespace Asteroids
             _userInput.MovementCanceled += _shipMovement.OnMovementCancel;
             _userInput.RotationStarted += _shipMovement.OnRotationStart;
             _userInput.RotationCanceled += _shipMovement.OnRotationCancel;
-            _userInput.ShootingFromFirstGunStarted += OnShootingStart;
-            _userInput.ShootingFromFirstGunCanceled += OnShootingCancel;
-            _userInput.ShootingFromSecondGunStarted += OnShootingStart;
-            _userInput.ShootingFromSecondGunCanceled += OnShootingCancel;
+            _userInput.ShootingFromFirstGunStarted += _shipModel.FirstGun.OnShootingStart;
+            _userInput.ShootingFromFirstGunCanceled += _shipModel.FirstGun.OnShootingCancel;
+            _userInput.ShootingFromSecondGunStarted += _shipModel.SecondGun.OnShootingStart;
+            _userInput.ShootingFromSecondGunCanceled += _shipModel.SecondGun.OnShootingCancel;
         }
 
         private void OnDisable()
@@ -48,10 +50,10 @@ namespace Asteroids
             _userInput.MovementCanceled -= _shipMovement.OnMovementCancel;
             _userInput.RotationStarted -= _shipMovement.OnRotationStart;
             _userInput.RotationCanceled -= _shipMovement.OnRotationCancel;
-            _userInput.ShootingFromFirstGunStarted -= OnShootingStart;
-            _userInput.ShootingFromFirstGunCanceled -= OnShootingCancel;
-            _userInput.ShootingFromSecondGunStarted -= OnShootingStart;
-            _userInput.ShootingFromSecondGunCanceled -= OnShootingCancel;
+            _userInput.ShootingFromFirstGunStarted -= _shipModel.FirstGun.OnShootingStart;
+            _userInput.ShootingFromFirstGunCanceled -= _shipModel.FirstGun.OnShootingCancel;
+            _userInput.ShootingFromSecondGunStarted -= _shipModel.SecondGun.OnShootingStart;
+            _userInput.ShootingFromSecondGunCanceled -= _shipModel.SecondGun.OnShootingCancel;
         }
 
         private void Update()
@@ -60,21 +62,15 @@ namespace Asteroids
 
             MoveModel(deltaTime);
             MoveView(deltaTime);
+            _shipModel.FirstGun.Tick(deltaTime);
+            _shipModel.SecondGun.Tick(deltaTime);
+
+            CollisionCheck();
         }
 
         public Vector2 GetPosition()
         {
             return _shipModel.Position;
-        }
-
-        private void OnShootingCancel()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void OnShootingStart()
-        {
-            throw new NotImplementedException();
         }
 
         private void MoveModel(float deltaTime)

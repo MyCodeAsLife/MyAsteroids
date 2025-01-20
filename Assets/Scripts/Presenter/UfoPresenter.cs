@@ -8,7 +8,7 @@ namespace Asteroids
         [SerializeField] private Canvas _canvas;
         [SerializeField] private ShipPresenter _playerShip;
 
-        private Transform _enemyView;
+        [SerializeField] private Transform _enemyView;                  // Временно цепляем вручную
         private Transformable _enemyModel;
         private Movement _enemyMovement;
 
@@ -27,7 +27,7 @@ namespace Asteroids
             //_enemyView = Resources.Load<Transform>("Prefabs/Ship");                     // EnemyPresenter переделать под конкретный Presenter?
             //_enemyView = Instantiate(_enemyView, transform.parent);
             //_enemyView.gameObject.SetActive(true);
-            _enemyView = transform;
+            SetOverlapLayer(LayerMask.NameToLayer("Player"));
         }
 
         private void Update()

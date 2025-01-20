@@ -4,8 +4,8 @@ namespace Asteroids
 {
     internal class InertiaSimulator
     {
-        private readonly float _unitsPerSecond = 0.005f;
-        private readonly float _maxSpeed = 0.005f;
+        private readonly float _unitsPerSecond = 0.001f;
+        private readonly float _maxSpeed = 0.001f;
         private readonly float _secondToStop = 1f;
 
         public Vector2 Acceleration { get; private set; }

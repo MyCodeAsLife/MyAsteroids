@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6011469123499150403}
   - component: {fileID: 4634149594340443887}
   - component: {fileID: 617421637969999302}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Ship
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -219,7 +219,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3296262682646650772}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: ShootPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}

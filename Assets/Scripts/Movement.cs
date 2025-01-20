@@ -24,12 +24,12 @@ namespace Asteroids
 
         public abstract void Tick(float deltaTime);
 
-        public virtual void Move(Vector2 position)
+        protected virtual void Move(Vector2 position)
         {
             Model.Move(position);
         }
 
-        public virtual void Rotate(float delta)
+        protected virtual void Rotate(float delta)
         {
             Model.Rotate(delta);
         }
