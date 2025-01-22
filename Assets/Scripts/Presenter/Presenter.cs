@@ -1,15 +1,18 @@
+using Asteroids;
 using System;
 using UnityEngine;
 
 public class Presenter : MonoBehaviour
 {
-    public class MyBaseClass
-    {
-    }
+    [SerializeField] private Canvas _canvas;
+    // Этот блок переметить в Presenter?
+    private Transform _objectView;                  // Временно цепляем вручную
+    private Transformable _objectModel;
+    private Movement _objectMovement;
 
-    public class MyDerivedClass : MyBaseClass
-    {
-    }
+    private Vector2 _startPosition;
+    private Vector2 _displaySize;
+    private Vector2 _offsetPosition;
 
     public event Action<Presenter> Destroyed;
 
@@ -17,6 +20,18 @@ public class Presenter : MonoBehaviour
 
     private void Start()
     {
+        _displaySize = _canvas.renderingDisplaySize / _canvas.scaleFactor;
+        _offsetPosition = _displaySize / 2 * Config.ScaleWindowSize;
+        _objectMovement.SetDisplaySize(_displaySize);
+        _objectView = transform;
+
+        // Эта вся часть взята из AsteroidPresenter, адаптировать
+        _objectMovement.SetDisplaySize(_displaySize);
+        _objectMovement.SetMovementSpeed(Config.AsteroidMaxSpeed);
+        _objectMovement.SetRotationSpeed(200f);
+        _objectMovement.SetDirectionOfMovement(_objectModel.Forward);
+        _objectMovement.SetDirectionOfRotation(1);
+
         MyBaseClass myBase = new MyBaseClass();
         MyDerivedClass myDerived = new MyDerivedClass();
         object o = myDerived;
@@ -28,10 +43,19 @@ public class Presenter : MonoBehaviour
         Debug.Log("MyBaseClass b = myDerived: Type is " + b.GetType().Name);
     }
 
-    public void SetOverlapLayer(int layer)
+    private void Update()        // Переместить в Presenter?
     {
-        OverlapLayer = layer;
+        float deltaTime = Time.deltaTime;
+
+        MoveObjectModel(deltaTime);
+        MoveObjectView(deltaTime);
     }
+
+    public void SetModel(EnemyModel model) => _objectModel = model;
+    public void SetView(Transform view) => _objectView = view;
+    public void SetMovement(Movement movement) => _objectMovement = movement;
+    public void SetOverlapLayer(int layer) => OverlapLayer = layer;
+    public void SetStartPosition(Vector2 position) => _startPosition = position;
 
     public void CollisionCheck()
     {
@@ -41,5 +65,31 @@ public class Presenter : MonoBehaviour
             Debug.Log(hit.gameObject.name);
 
         Destroyed?.Invoke(this);
+    }
+
+    protected virtual void MoveObjectView(float deltaTime)        // Переместить в Presenter
+    {
+        var correctPosition = (_displaySize * _objectModel.Position) - _offsetPosition;
+        _objectView.localPosition = correctPosition;
+        _objectView.rotation = Quaternion.Euler(0f, 0f, _objectModel.RotationAngle);
+    }
+
+    private void MoveObjectModel(float deltaTime)        // Переместить в Presenter?
+    {
+        _objectMovement.Tick(deltaTime);
+    }
+}
+
+internal class MyDerivedClass : MyBaseClass
+{
+    public MyDerivedClass()
+    {
+    }
+}
+
+internal class MyBaseClass
+{
+    public MyBaseClass()
+    {
     }
 }

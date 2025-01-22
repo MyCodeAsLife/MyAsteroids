@@ -1,4 +1,5 @@
 using System;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace Asteroids
@@ -29,6 +30,7 @@ namespace Asteroids
         //private PresentersSpawner _laserSpawner;
         private ShipPresenter _ufoTarget;
         [SerializeField] private Canvas _canvas;
+        private System.Random _random;
 
         private void Awake()
         {
@@ -51,6 +53,7 @@ namespace Asteroids
             var laserPrefab = Resources.Load<ProjectilePresenter>("Prefabs/Laser");
             _laserPool = new ObjectPool<Presenter>(laserPrefab, Create, Enable, Disable);
             //_laserSpawner = new PresentersSpawner(laserPrefab, CreateObject, transform.parent);
+            _random = new System.Random();
         }
 
         public Presenter GetObject(string type)
@@ -170,8 +173,64 @@ namespace Asteroids
                 default:
                     throw new ArgumentException(nameof(obj));
             }
+        }
 
-            //Collected?.Invoke();
+        private Presenter InitObject(Presenter obj, string type)        // Для всех кроме лазера, перенести в Presenter?
+        {
+            Vector2 spawnPosition = GetRandomPosition();        // Все
+            Vector2 directionMovement = Vector2.zero;           // Астероиды и пули
+            float movementSpeed = 0f;                           // Все
+            float rotationSpeed = 0f;                           // Астероиды и ufo
+
+            if (type == UfoType)
+            {
+                movementSpeed = GetRandomMovementSpeed((int)(Config.UfoMinSpeed * 100), (int)(Config.UfoMaxSpeed * 100)) * 0.01f;
+                rotationSpeed = GetRandomRotationSpeed((int)(Config.UfoMinRotationSpeed * 100), (int)(Config.UfoMaxRotationSpeed * 100)) * 0.01f;
+            }
+            else if (type == AsteroidType || type == AsteroidPartType)
+            {
+                movementSpeed = GetRandomMovementSpeed((int)(Config.UfoMinSpeed * 100), (int)(Config.UfoMaxSpeed * 100)) * 0.01f;
+                rotationSpeed = GetRandomRotationSpeed((int)(Config.UfoMinRotationSpeed * 100), (int)(Config.UfoMaxRotationSpeed * 100)) * 0.01f;
+                directionMovement = GetRandomDirectionMovement(spawnPosition);
+            }
+            else if (type == BulletType)
+            {
+                movementSpeed = GetRandomMovementSpeed((int)(Config.UfoMinSpeed * 100), (int)(Config.UfoMaxSpeed * 100)) * 0.01f;
+                directionMovement = GetRandomDirectionMovement(spawnPosition);
+            }
+
+
+
+            return obj;
+        }
+
+        private Vector2 GetRandomPosition()
+        {
+            bool isVertical = _random.Next(2) == 1 ? true : false;
+            int extremePosition = _random.Next(2);
+            float position = (float)_random.NextDouble();
+            Vector2 newPosition = new Vector2();
+
+            newPosition.y = isVertical ? extremePosition : position;
+            newPosition.x = isVertical ? position : extremePosition;
+
+            return newPosition;
+        }
+
+        private Vector2 GetRandomDirectionMovement(Vector2 position)
+        {
+            throw new NotImplementedException();
+
+        }
+
+        private float GetRandomMovementSpeed(int min, int max)      // Привести расчет скорости всех объектов к одному виду, чтобы убрать отсюда коррекцию
+        {
+            return _random.Next(min, max + 1) * 0.01f;
+        }
+
+        private float GetRandomRotationSpeed(int min, int max)
+        {
+            return (float)_random.Next(min, max + 1);
         }
     }
 }

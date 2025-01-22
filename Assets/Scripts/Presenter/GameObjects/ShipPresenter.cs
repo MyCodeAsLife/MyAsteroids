@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace Asteroids
@@ -9,7 +8,7 @@ namespace Asteroids
         [SerializeField] private Canvas _canvas;
         [SerializeField] private Transform _shipView;
         [SerializeField] private ProjectilePresenter _prefabProjectile;
-
+        // Этот блок переметить в Presenter?
         private ShipModel _shipModel;
         private ShipMovement _shipMovement;
         private RootController _userInput;
@@ -25,7 +24,8 @@ namespace Asteroids
             var center = new Vector2(0.5f, 0.5f);
             var startPosition = center * Config.ScaleWindowSize;
             _shipModel = new ShipModel(startPosition, 0f, _prefabProjectile);
-            _shipMovement = new ShipMovement(_shipModel, _displaySize);
+            _shipMovement = new ShipMovement(_shipModel/*, _displaySize*/);
+            _shipMovement.SetDisplaySize(_displaySize);
             //_shipView = Resources.Load<Transform>("Prefabs/Ship");
             //_shipView = Instantiate(_shipView, transform.parent);
             //_shipView.gameObject.SetActive(true);
@@ -56,7 +56,7 @@ namespace Asteroids
             _userInput.ShootingFromSecondGunCanceled -= _shipModel.SecondGun.OnShootingCancel;
         }
 
-        private void Update()
+        private void Update()        // Переместить в Presenter?
         {
             float deltaTime = Time.deltaTime;
 
@@ -73,12 +73,12 @@ namespace Asteroids
             return _shipModel.Position;
         }
 
-        private void MoveModel(float deltaTime)
+        private void MoveModel(float deltaTime)        // Переместить в Presenter?
         {
             _shipMovement.Tick(deltaTime);
         }
 
-        private void MoveView(float deltaTime)
+        private void MoveView(float deltaTime)        // Переместить в Presenter
         {
             var correctPosition = (_displaySize * _shipModel.Position) - _offsetPosition;
             _shipView.localPosition = correctPosition;

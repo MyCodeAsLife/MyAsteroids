@@ -8,7 +8,7 @@ namespace Asteroids
         private InertiaSimulator _inertiaSimulator;
         private Vector2 _nextPosition;
 
-        public UfoMovement(Transformable model, Vector2 displaySize, ShipPresenter target) : base(model, displaySize)
+        public UfoMovement(Transformable model,/* Vector2 displaySize,*/ ShipPresenter target) : base(model/*, displaySize*/)
         {
             _target = target;
             _inertiaSimulator = new InertiaSimulator();

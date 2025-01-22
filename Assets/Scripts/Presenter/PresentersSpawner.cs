@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Asteroids
 {
-    public class PresentersSpawner
+    public class PresentersSpawner              // Не используется, удалить
     {
         private readonly Func<Presenter, Presenter> _createEnemy;
         private readonly Presenter _prefab;

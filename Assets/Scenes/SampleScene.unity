@@ -505,6 +505,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _canvas: {fileID: 216831044}
+  _objectView: {fileID: 0}
+  _canvas: {fileID: 216831044}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1388,6 +1390,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _canvas: {fileID: 216831044}
+  _objectView: {fileID: 0}
+  _canvas: {fileID: 216831044}
   _shipView: {fileID: 0}
   _prefabProjectile: {fileID: 0}
 --- !u!1001 &1990762595
@@ -1505,6 +1509,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _canvas: {fileID: 216831044}
+  _objectView: {fileID: 0}
+  _canvas: {fileID: 216831044}
   _shipView: {fileID: 1990762596}
   _prefabProjectile: {fileID: 0}
 --- !u!1001 &894388224379195671
@@ -1563,6 +1569,10 @@ PrefabInstance:
       propertyPath: _canvas
       value: 
       objectReference: {fileID: 216831044}
+    - target: {fileID: 5855965511775519828, guid: 9323e75dfea98c940991e12014b4e40d, type: 3}
+      propertyPath: _objectView
+      value: 
+      objectReference: {fileID: 833056707}
     - target: {fileID: 5855965511775519828, guid: 9323e75dfea98c940991e12014b4e40d, type: 3}
       propertyPath: _playerShip
       value: 

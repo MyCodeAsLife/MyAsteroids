@@ -10,7 +10,7 @@ namespace Asteroids
         public event Action<Vector2, float> Movement;
         public event Action<float> Rotation;
 
-        public ShipMovement(Transformable ship, Vector2 displaySize) : base(ship, displaySize)
+        public ShipMovement(Transformable ship/*, Vector2 displaySize*/) : base(ship/*, displaySize*/)
         {
             _inertiaSimulator = new InertiaSimulator();
         }

@@ -24,7 +24,8 @@ namespace Asteroids
             var center = new Vector2(0.5f, 0.5f);
             var startPosition = center * Config.ScaleWindowSize;
             _shipModel = new ShipModel(startPosition, 0f, _prefabProjectile);
-            _shipMovement = new ShipMovement(_shipModel, _displaySize);
+            _shipMovement = new ShipMovement(_shipModel/*, _displaySize*/);
+            _shipMovement.SetDisplaySize(_displaySize);
             //_shipView = Resources.Load<Transform>("Prefabs/Ship");
             //_shipView = Instantiate(_shipView, transform.parent);
             //_shipView.gameObject.SetActive(true);
