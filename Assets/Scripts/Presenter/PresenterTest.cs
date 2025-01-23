@@ -2,19 +2,22 @@ using Asteroids;
 using System;
 using UnityEngine;
 
-public class Presenter : MonoBehaviour
+public class PresenterTest : MonoBehaviour
 {
     [SerializeField] private Canvas _canvas;
-    // Этот блок переметить в Presenter?
-    private Transform _objectView;                  // Временно цепляем вручную
+
+    private Transform _objectView;
     private Transformable _objectModel;
-    private Movement _objectMovement;
+    private MovementTest _objectMovement;
 
     private Vector2 _startPosition;
+    private Vector2 _startRotation;
+
     private Vector2 _displaySize;
     private Vector2 _offsetPosition;
 
-    public event Action<Presenter> Destroyed;
+    public event Action<PresenterTest> Destroyed;
+    public event Action<float> Updated;
 
     public int OverlapLayer { get; private set; }
 
@@ -26,11 +29,11 @@ public class Presenter : MonoBehaviour
         _objectView = transform;
 
         // Эта вся часть взята из AsteroidPresenter, адаптировать
-        _objectMovement.SetDisplaySize(_displaySize);
-        _objectMovement.SetMovementSpeed(Config.AsteroidMaxSpeed);
-        _objectMovement.SetRotationSpeed(200f);
-        _objectMovement.SetDirectionOfMovement(_objectModel.Forward);
-        _objectMovement.SetDirectionOfRotation(1);
+        //_objectMovement.SetDisplaySize(_displaySize);
+        //_objectMovement.SetMovementSpeed(0.05f);
+        //_objectMovement.SetRotationSpeed(200f);
+        //_objectMovement.SetDirectionOfMovement(_objectModel.Forward);
+        //_objectMovement.SetDirectionOfRotation(1);
 
         //MyBaseClass myBase = new MyBaseClass();
         //MyDerivedClass myDerived = new MyDerivedClass();
@@ -43,19 +46,21 @@ public class Presenter : MonoBehaviour
         //Debug.Log("MyBaseClass b = myDerived: Type is " + b.GetType().Name);
     }
 
-    private void Update()        // Переместить в Presenter?
+    private void Update()
     {
         float deltaTime = Time.deltaTime;
 
         MoveObjectModel(deltaTime);
         MoveObjectView(deltaTime);
+        CollisionCheck();
     }
 
-    public void SetModel(EnemyModel model) => _objectModel = model;
+    public void SetModel(Transformable model) => _objectModel = model;
     public void SetView(Transform view) => _objectView = view;
-    public void SetMovement(Movement movement) => _objectMovement = movement;
+    public void SetMovement(MovementTest movement) => _objectMovement = movement;
     public void SetOverlapLayer(int layer) => OverlapLayer = layer;
     public void SetStartPosition(Vector2 position) => _startPosition = position;
+    public void SetStartRotation(Vector2 rotation) => _startRotation = rotation;
 
     public void CollisionCheck()
     {
@@ -67,16 +72,16 @@ public class Presenter : MonoBehaviour
         Destroyed?.Invoke(this);
     }
 
-    protected virtual void MoveObjectView(float deltaTime)        // Переместить в Presenter
+    private void MoveObjectModel(float deltaTime)
+    {
+        _objectMovement.Tick(deltaTime);
+    }
+
+    protected virtual void MoveObjectView(float deltaTime)
     {
         var correctPosition = (_displaySize * _objectModel.Position) - _offsetPosition;
         _objectView.localPosition = correctPosition;
         _objectView.rotation = Quaternion.Euler(0f, 0f, _objectModel.RotationAngle);
-    }
-
-    private void MoveObjectModel(float deltaTime)        // Переместить в Presenter?
-    {
-        _objectMovement.Tick(deltaTime);
     }
 }
 

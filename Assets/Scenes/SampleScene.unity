@@ -505,8 +505,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _canvas: {fileID: 216831044}
-  _objectView: {fileID: 0}
-  _canvas: {fileID: 216831044}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1390,7 +1388,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _canvas: {fileID: 216831044}
-  _objectView: {fileID: 0}
   _canvas: {fileID: 216831044}
   _shipView: {fileID: 0}
   _prefabProjectile: {fileID: 0}
@@ -1484,7 +1481,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 916163446506964529, guid: 31eea6fa30b0b9e45ae4b6a04bbbd600, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1990762598}
+      addedObject: {fileID: 1990762602}
   m_SourcePrefab: {fileID: 100100000, guid: 31eea6fa30b0b9e45ae4b6a04bbbd600, type: 3}
 --- !u!4 &1990762596 stripped
 Transform:
@@ -1496,7 +1493,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 916163446506964529, guid: 31eea6fa30b0b9e45ae4b6a04bbbd600, type: 3}
   m_PrefabInstance: {fileID: 1990762595}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1990762598
+--- !u!114 &1990762602
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1505,13 +1502,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1990762597}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63229b5e02a266b4cb239ba862eb0dfa, type: 3}
+  m_Script: {fileID: 11500000, guid: d94613ecb8762064198c1b1acb614f77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _canvas: {fileID: 216831044}
-  _objectView: {fileID: 0}
   _canvas: {fileID: 216831044}
-  _shipView: {fileID: 1990762596}
+  _shipView: {fileID: 0}
   _prefabProjectile: {fileID: 0}
 --- !u!1001 &894388224379195671
 PrefabInstance:
@@ -1524,6 +1520,10 @@ PrefabInstance:
     - target: {fileID: 3899736015091940128, guid: 9323e75dfea98c940991e12014b4e40d, type: 3}
       propertyPath: m_Name
       value: Ufo
+      objectReference: {fileID: 0}
+    - target: {fileID: 3899736015091940128, guid: 9323e75dfea98c940991e12014b4e40d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4177403231158026906, guid: 9323e75dfea98c940991e12014b4e40d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1576,7 +1576,7 @@ PrefabInstance:
     - target: {fileID: 5855965511775519828, guid: 9323e75dfea98c940991e12014b4e40d, type: 3}
       propertyPath: _playerShip
       value: 
-      objectReference: {fileID: 1990762598}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

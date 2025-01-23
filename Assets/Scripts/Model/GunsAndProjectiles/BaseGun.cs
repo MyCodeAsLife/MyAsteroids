@@ -11,7 +11,7 @@ namespace Asteroids
         private float _cooldown;
         private float _time = Config.DefaultGunCooldown;
 
-        public event Action<ProjectilePresenter> Shot;
+        //public event Action<ProjectilePresenter> Shot;
 
         public BaseGun(float cooldown, ProjectilePresenter prefab)
         {
