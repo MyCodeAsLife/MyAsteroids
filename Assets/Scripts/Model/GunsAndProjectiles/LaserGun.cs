@@ -2,6 +2,6 @@
 {
     internal class LaserGun : BaseGun
     {
-        public LaserGun(ProjectilePresenter prefab, float cooldown = Config.LaserCooldown) : base(cooldown, prefab) { }
+        public LaserGun(float cooldown = Config.LaserCooldown) : base(cooldown) { }
     }
 }

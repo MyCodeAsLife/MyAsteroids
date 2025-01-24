@@ -5,7 +5,7 @@ namespace Asteroids
 {
     internal abstract class BaseGun
     {
-        private ProjectilePresenter _prefab;
+        //private ProjectilePresenter _prefab;
         //private ProjectilePoolModel _projectiles = new();
         private bool _isShooting = false;
         private float _cooldown;
@@ -13,11 +13,10 @@ namespace Asteroids
 
         //public event Action<ProjectilePresenter> Shot;
 
-        public BaseGun(float cooldown, ProjectilePresenter prefab)
+        public BaseGun(float cooldown)
         {
             _cooldown = cooldown;
             _time = cooldown;
-            _prefab = prefab;
         }
 
         public void OnShootingStart()

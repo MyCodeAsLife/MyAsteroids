@@ -35,7 +35,7 @@ namespace Asteroids
 
         public void OnRotationStart(float direction)
         {
-            Model.Direction = direction > 0 ? 1 : -1;
+            Model.DirectionOfRotation = direction > 0 ? 1 : -1;
             Rotation += Rotate;
         }
 
@@ -54,11 +54,11 @@ namespace Asteroids
 
         protected override void Rotate(float deltaTime)
         {
-            if (Model.Direction == 0)
-                throw new InvalidOperationException(nameof(Model.Direction));
+            if (Model.DirectionOfRotation == 0)
+                throw new InvalidOperationException(nameof(Model.DirectionOfRotation));
 
-            Model.Direction = Model.Direction > 0 ? 1 : -1;
-            float delta = (Model.Direction * deltaTime * Model.DegreesPerSecond) + Model.RotationAngle;
+            Model.DirectionOfRotation = Model.DirectionOfRotation > 0 ? 1 : -1;
+            float delta = (Model.DirectionOfRotation * deltaTime * Model.DegreesPerSecond) + Model.RotationAngle;
             base.Rotate(delta);
         }
     }

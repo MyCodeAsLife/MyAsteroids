@@ -4,24 +4,15 @@ namespace Asteroids
 {
     public class ShipPresenterTest : PresenterTest
     {
-        [SerializeField] private ProjectilePresenter _prefabProjectile;
+        private const string LayerEnemy = "Enemy";
 
-        private ShipModel _shipModel;
-        private ShipMovementTest _shipMovement;
+        private ShipModelTest _shipModel = new();
+        private ShipMovementTest _shipMovement = new();
         private RootController _userInput;
 
         private void Awake()
         {
-            _userInput = new RootController();
-            var center = new Vector2(0.5f, 0.5f);
-            var startPosition = center * Config.ScaleWindowSize;
-            _shipModel = new ShipModel(startPosition, 0f, _prefabProjectile);
-            _shipMovement = new ShipMovementTest(/*_shipModel*/);
-            _shipMovement.SetModel(_shipModel);
-
-            SetModel(_shipModel);
-            SetMovement(_shipMovement);
-            SetOverlapLayer(LayerMask.NameToLayer("Enemy"));
+            StartInit();
         }
 
         private void OnEnable()
@@ -51,6 +42,27 @@ namespace Asteroids
         public Vector2 GetPosition()
         {
             return _shipModel.Position;
+        }
+
+        private void StartInit()
+        {
+            var center = new Vector2(0.5f, 0.5f);
+            var startPosition = center * Config.ScaleWindowSize;
+
+            var viewMovement = new ViewMovement(transform);
+            SetViewMovement(viewMovement);
+            _userInput = new RootController();
+            _shipMovement.SetModel(_shipModel);
+            _shipMovement._inertiaSimulator.SetModel(_shipModel);
+            SetModel(_shipModel);
+            SetModelMovement(_shipMovement);
+            SetOverlapLayer(LayerMask.NameToLayer(LayerEnemy));
+
+            _shipModel.Position = startPosition;
+            _shipModel.RotationAngle = 0f;
+            _shipModel.DegreesPerSecond = 180f;
+            _shipModel.MovementSpeed = 0.003f;
+            _shipModel.MaxMovementSpeed = 0.003f;
         }
     }
 }

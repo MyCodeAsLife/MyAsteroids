@@ -4,17 +4,29 @@ namespace Asteroids
 {
     public abstract class Transformable
     {
-        public readonly float DegreesPerSecond = 180;               // Получать в конструкторе
+        private float _directionOfRotation;
 
-        public float Direction { get; set; }
         public Vector2 Position { get; private set; }
-        public float RotationAngle { get; private set; }
         public Vector2 Forward => Quaternion.Euler(0, 0, RotationAngle) * Vector3.up;
+        public float DegreesPerSecond { get; private set; }
+        public float RotationAngle { get; private set; }
+        public float DirectionOfRotation
+        {
+            get
+            {
+                return _directionOfRotation;
+            }
+            set
+            {
+                _directionOfRotation = value > 0 ? 1 : -1;
+            }
+        }
 
         public Transformable(Vector2 position, float rotation)
         {
             Position = position;
             RotationAngle = rotation;
+            DegreesPerSecond = 180;         // Скорость вращения
         }
 
         public void Rotate(float delta)

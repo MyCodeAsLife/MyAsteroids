@@ -3,17 +3,12 @@ using UnityEngine;
 
 namespace Asteroids
 {
-    internal class ShipMovementTest : MovementTest
+    internal class ShipMovementTest : ModelMovementTest
     {
-        private InertiaSimulator _inertiaSimulator = new();
+        public readonly InertiaSimulatorTest _inertiaSimulator = new();
 
         public event Action<Vector2, float> Movement;
         public event Action<float> Rotation;
-
-        //public ShipMovementTest(Transformable ship) : base(ship)
-        //{
-        //    _inertiaSimulator = new InertiaSimulator();
-        //}
 
         public override void Tick(float deltaTime)
         {
@@ -35,7 +30,7 @@ namespace Asteroids
 
         public void OnRotationStart(float direction)
         {
-            Model.Direction = direction > 0 ? 1 : -1;
+            Model.DirectionOfRotation = direction;
             Rotation += Rotate;
         }
 
@@ -47,6 +42,7 @@ namespace Asteroids
         protected override void Move(Vector2 position)
         {
             var nextPosition = Model.Position + SpeedCorrectionRelativeScreenSize(position);
+            //Debug.Log(nextPosition);                                                                                        //++++++++++++++++++++++++++++++++++++++
             nextPosition.x = Mathf.Repeat(nextPosition.x, Config.ScaleWindowSize);
             nextPosition.y = Mathf.Repeat(nextPosition.y, Config.ScaleWindowSize);
             base.Move(nextPosition);
@@ -54,11 +50,10 @@ namespace Asteroids
 
         protected override void Rotate(float deltaTime)
         {
-            if (Model.Direction == 0)
-                throw new InvalidOperationException(nameof(Model.Direction));
+            if (Model.DirectionOfRotation == 0)
+                throw new InvalidOperationException(nameof(Model.DirectionOfRotation));
 
-            Model.Direction = Model.Direction > 0 ? 1 : -1;
-            float delta = (Model.Direction * deltaTime * Model.DegreesPerSecond) + Model.RotationAngle;
+            float delta = (Model.DirectionOfRotation * deltaTime * Model.DegreesPerSecond) + Model.RotationAngle;
             base.Rotate(delta);
         }
     }

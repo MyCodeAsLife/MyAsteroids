@@ -7,7 +7,7 @@ namespace Asteroids
         // ѕочти все переместить в Presenter и зависимые методы
         [SerializeField] private Canvas _canvas;
         [SerializeField] private Transform _shipView;
-        [SerializeField] private ProjectilePresenter _prefabProjectile;
+        //[SerializeField] private ProjectilePresenter _prefabProjectile;
 
         private ShipModel _shipModel;
         private ShipMovement _shipMovement;
@@ -23,7 +23,7 @@ namespace Asteroids
             _offsetPosition = _displaySize / 2 * Config.ScaleWindowSize;
             var center = new Vector2(0.5f, 0.5f);
             var startPosition = center * Config.ScaleWindowSize;
-            _shipModel = new ShipModel(startPosition, 0f, _prefabProjectile);
+            _shipModel = new ShipModel(startPosition, 0f);
             _shipMovement = new ShipMovement(_shipModel/*, _displaySize*/);
             _shipMovement.SetDisplaySize(_displaySize);
             //_shipView = Resources.Load<Transform>("Prefabs/Ship");
