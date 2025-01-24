@@ -19,8 +19,6 @@ namespace Asteroids
 
         public void Accelerate(Vector2 direction, float deltaTime)
         {
-            //Acceleration += direction * (_unitsPerSecond * deltaTime);
-            //Acceleration = Vector2.ClampMagnitude(Acceleration, _maxSpeed);
             Acceleration += direction * (_model.MovementSpeed * deltaTime);
             Acceleration = Vector2.ClampMagnitude(Acceleration, _model.MaxMovementSpeed);
         }

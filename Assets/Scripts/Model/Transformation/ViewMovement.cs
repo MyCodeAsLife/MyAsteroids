@@ -5,12 +5,8 @@ namespace Asteroids
     public class ViewMovement
     {
         private Transform _view;
-        //private float _xRatio;
-        //private float _yRatio;
+        private Vector2 _displaySize;
         private Vector2 _offsetPosition;
-        //private Vector2 _displaySize;
-
-        public Vector2 DisplaySize { get; private set; }
 
         public ViewMovement(Transform view)
         {
@@ -19,7 +15,7 @@ namespace Asteroids
 
         public void Move(Vector2 position)
         {
-            _view.localPosition = (DisplaySize * position) - _offsetPosition;
+            _view.localPosition = (_displaySize * position) - _offsetPosition;
         }
 
         public void Rotate(float rotationAngle)
@@ -27,25 +23,10 @@ namespace Asteroids
             _view.rotation = Quaternion.Euler(0f, 0f, rotationAngle);
         }
 
-        //public Vector2 SpeedCorrectionRelativeScreenSize(Vector2 position)
-        //{
-        //    position.x *= _xRatio;
-        //    position.y *= _yRatio;
-        //    return position;
-        //}
-
         public void SetDisplaySize(Vector2 size)
         {
-            DisplaySize = size;
-            _offsetPosition = DisplaySize / 2 * Config.ScaleWindowSize;
-            //CalculateDisplayRatio();
+            _displaySize = size;
+            _offsetPosition = _displaySize / 2 * Config.ScaleWindowSize;
         }
-
-        //private void CalculateDisplayRatio()
-        //{
-        //    float ratio = DisplaySize.x / DisplaySize.y;
-        //    _xRatio = ratio < 1 ? ratio : 1;
-        //    _yRatio = ratio > 1 ? ratio : 1;
-        //}
     }
 }

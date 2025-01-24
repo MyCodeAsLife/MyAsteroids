@@ -42,7 +42,6 @@ namespace Asteroids
         protected override void Move(Vector2 position)
         {
             var nextPosition = Model.Position + SpeedCorrectionRelativeScreenSize(position);
-            //Debug.Log(nextPosition);                                                                                        //++++++++++++++++++++++++++++++++++++++
             nextPosition.x = Mathf.Repeat(nextPosition.x, Config.ScaleWindowSize);
             nextPosition.y = Mathf.Repeat(nextPosition.y, Config.ScaleWindowSize);
             base.Move(nextPosition);
