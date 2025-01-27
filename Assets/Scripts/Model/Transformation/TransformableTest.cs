@@ -4,14 +4,14 @@ namespace Asteroids
 {
     public abstract class TransformableTest
     {
-        private float _directionOfRotation;
-        private float _degreesPerSecond;
-        private float _rotationAngle;
+        private float _directionOfRotation;             // Используется только в Ship и Asteroid
+        private float _degreesPerSecond;                // Используется только в Ship и Ufo
+        private float _rotationAngle;                   //Используется только в Ship и Asteroid,
         private float _movementSpeed;
         private float _maxMovementSpeed;
 
         public Vector2 Position { get; set; }
-        public Vector2 Direction { get; set; }          // Используется только в Asteroid
+        public Vector2 Direction { get; set; }          // Используется только в Asteroid, вынести в Asteroid?
         public Vector2 Forward => Quaternion.Euler(0, 0, _rotationAngle) * Vector3.up;
 
         public float MovementSpeed
@@ -25,7 +25,7 @@ namespace Asteroids
                 if (value > 0)
                     _movementSpeed = value;
             }
-        }                   // Перенесено из модели
+        }
 
         public float MaxMovementSpeed
         {

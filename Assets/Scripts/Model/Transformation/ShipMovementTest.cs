@@ -5,16 +5,21 @@ namespace Asteroids
 {
     internal class ShipMovementTest : ModelMovementTest
     {
-        public readonly InertiaSimulatorTest _inertiaSimulator = new();
+        public readonly InertiaSimulatorTest _inertiaSimulator;
 
         public event Action<Vector2, float> Movement;
         public event Action<float> Rotation;
+
+        public ShipMovementTest(TransformableTest model) : base(model)
+        {
+            _inertiaSimulator = new InertiaSimulatorTest(model);
+        }
 
         public override void Tick(float deltaTime)
         {
             Rotation?.Invoke(deltaTime);
             Movement?.Invoke(Model.Forward, deltaTime);
-            Move(_inertiaSimulator.Acceleration);
+            Move();
             _inertiaSimulator.SlowDown(deltaTime);
         }
 
@@ -39,20 +44,20 @@ namespace Asteroids
             Rotation -= Rotate;
         }
 
-        protected override void Move(Vector2 position)
+        private void Move()
         {
-            var nextPosition = Model.Position + SpeedCorrectionRelativeScreenSize(position);
+            var nextPosition = Model.Position + SpeedCorrectionRelativeScreenSize(_inertiaSimulator.Acceleration);
             nextPosition.x = Mathf.Repeat(nextPosition.x, Config.ScaleWindowSize);
             nextPosition.y = Mathf.Repeat(nextPosition.y, Config.ScaleWindowSize);
             base.Move(nextPosition);
         }
 
-        protected override void Rotate(float deltaTime)
+        private new void Rotate(float deltaTime)     // Такая же как и у asteroid, опустить в ModelMovement?
         {
             if (Model.DirectionOfRotation == 0)
                 throw new InvalidOperationException(nameof(Model.DirectionOfRotation));
 
-            float delta = (Model.DirectionOfRotation * deltaTime * Model.DegreesPerSecond) + Model.RotationAngle;
+            float delta = Model.RotationAngle + (Model.DegreesPerSecond * deltaTime * Model.DirectionOfRotation);
             base.Rotate(delta);
         }
     }

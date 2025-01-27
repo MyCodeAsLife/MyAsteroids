@@ -7,7 +7,7 @@ namespace Asteroids
         private const string LayerEnemy = "Enemy";
 
         private ShipModelTest _shipModel = new();
-        private ShipMovementTest _shipMovement = new();
+        private ShipMovementTest _shipMovement;
         private RootController _userInput;
 
         private void Awake()
@@ -52,8 +52,7 @@ namespace Asteroids
             var viewMovement = new ViewMovement(transform);
             SetViewMovement(viewMovement);
             _userInput = new RootController();
-            _shipMovement.SetModel(_shipModel);
-            _shipMovement._inertiaSimulator.SetModel(_shipModel);
+            _shipMovement = new ShipMovementTest(_shipModel);
             SetModel(_shipModel);
             SetModelMovement(_shipMovement);
             SetOverlapLayer(LayerMask.NameToLayer(LayerEnemy));
