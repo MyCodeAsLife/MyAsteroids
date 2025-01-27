@@ -4,32 +4,15 @@ namespace Asteroids
 {
     public class ShipPresenter : Presenter
     {
-        // Почти все переместить в Presenter и зависимые методы
-        [SerializeField] private Canvas _canvas;
-        [SerializeField] private Transform _shipView;
-        //[SerializeField] private ProjectilePresenter _prefabProjectile;
-        // Этот блок переметить в Presenter?
-        private ShipModel _shipModel;
+        private const string LayerEnemy = "Enemy";
+
+        private ShipModelTest _shipModel = new();
         private ShipMovement _shipMovement;
         private RootController _userInput;
 
-        private Vector2 _displaySize;
-        private Vector2 _offsetPosition;
-
         private void Awake()
         {
-            _userInput = new RootController();
-            _displaySize = _canvas.renderingDisplaySize / _canvas.scaleFactor;
-            _offsetPosition = _displaySize / 2 * Config.ScaleWindowSize;
-            var center = new Vector2(0.5f, 0.5f);
-            var startPosition = center * Config.ScaleWindowSize;
-            _shipModel = new ShipModel(startPosition, 0f);
-            _shipMovement = new ShipMovement(_shipModel/*, _displaySize*/);
-            _shipMovement.SetDisplaySize(_displaySize);
-            //_shipView = Resources.Load<Transform>("Prefabs/Ship");
-            //_shipView = Instantiate(_shipView, transform.parent);
-            //_shipView.gameObject.SetActive(true);
-            SetOverlapLayer(LayerMask.NameToLayer("Enemy"));
+            StartInit();
         }
 
         private void OnEnable()
@@ -56,33 +39,26 @@ namespace Asteroids
             _userInput.ShootingFromSecondGunCanceled -= _shipModel.SecondGun.OnShootingCancel;
         }
 
-        private void Update()        // Переместить в Presenter?
-        {
-            float deltaTime = Time.deltaTime;
-
-            MoveModel(deltaTime);
-            MoveView(deltaTime);
-            _shipModel.FirstGun.Tick(deltaTime);
-            _shipModel.SecondGun.Tick(deltaTime);
-
-            CollisionCheck();
-        }
-
         public Vector2 GetPosition()
         {
             return _shipModel.Position;
         }
 
-        private void MoveModel(float deltaTime)        // Переместить в Presenter?
+        private void StartInit()
         {
-            _shipMovement.Tick(deltaTime);
-        }
+            var center = new Vector2(0.5f, 0.5f);
+            var startPosition = center * Config.ScaleWindowSize;
 
-        private void MoveView(float deltaTime)        // Переместить в Presenter
-        {
-            var correctPosition = (_displaySize * _shipModel.Position) - _offsetPosition;
-            _shipView.localPosition = correctPosition;
-            _shipView.rotation = Quaternion.Euler(0f, 0f, _shipModel.RotationAngle);
+            _userInput = new RootController();
+            _shipMovement = new ShipMovement(_shipModel);
+            SetModel(_shipModel);
+            SetModelMovement(_shipMovement);
+            SetOverlapLayer(LayerMask.NameToLayer(LayerEnemy));
+
+            _shipModel.Position = startPosition;
+            _shipModel.DegreesPerSecond = 180f;
+            _shipModel.MovementSpeed = 0.001f;
+            _shipModel.MaxMovementSpeed = 0.001f;
         }
     }
 }

@@ -5,6 +5,8 @@ namespace Asteroids
 {
     internal abstract class BaseGun
     {
+        //private ObjectPool<Presenter> _projectilePool;                  // Вынести в оружие
+
         //private ProjectilePresenter _prefab;
         //private ProjectilePoolModel _projectiles = new();
         private bool _isShooting = false;
@@ -19,7 +21,7 @@ namespace Asteroids
             _time = cooldown;
         }
 
-        public void OnShootingStart()
+        public void OnShootingStart()       // Убрать, сделать через ивент
         {
             _isShooting = true;
         }

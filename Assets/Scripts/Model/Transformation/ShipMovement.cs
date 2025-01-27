@@ -3,23 +3,23 @@ using UnityEngine;
 
 namespace Asteroids
 {
-    internal class ShipMovement : Movement
+    internal class ShipMovement : ModelMovement
     {
-        private InertiaSimulator _inertiaSimulator;
+        public readonly InertiaSimulator _inertiaSimulator;
 
         public event Action<Vector2, float> Movement;
         public event Action<float> Rotation;
 
-        public ShipMovement(Transformable ship/*, Vector2 displaySize*/) : base(ship/*, displaySize*/)
+        public ShipMovement(Transformable model) : base(model)
         {
-            _inertiaSimulator = new InertiaSimulator();
+            _inertiaSimulator = new InertiaSimulator(model);
         }
 
         public override void Tick(float deltaTime)
         {
             Rotation?.Invoke(deltaTime);
             Movement?.Invoke(Model.Forward, deltaTime);
-            Move(_inertiaSimulator.Acceleration);
+            Move();
             _inertiaSimulator.SlowDown(deltaTime);
         }
 
@@ -35,7 +35,7 @@ namespace Asteroids
 
         public void OnRotationStart(float direction)
         {
-            Model.DirectionOfRotation = direction > 0 ? 1 : -1;
+            Model.DirectionOfRotation = direction;
             Rotation += Rotate;
         }
 
@@ -44,21 +44,20 @@ namespace Asteroids
             Rotation -= Rotate;
         }
 
-        protected override void Move(Vector2 position)
+        private void Move()
         {
-            var nextPosition = Model.Position + SpeedCorrectionRelativeScreenSize(position);
+            var nextPosition = Model.Position + SpeedCorrectionRelativeScreenSize(_inertiaSimulator.Acceleration);
             nextPosition.x = Mathf.Repeat(nextPosition.x, Config.ScaleWindowSize);
             nextPosition.y = Mathf.Repeat(nextPosition.y, Config.ScaleWindowSize);
             base.Move(nextPosition);
         }
 
-        protected override void Rotate(float deltaTime)
+        private new void Rotate(float deltaTime)     // Такая же как и у asteroid, опустить в ModelMovement?
         {
             if (Model.DirectionOfRotation == 0)
                 throw new InvalidOperationException(nameof(Model.DirectionOfRotation));
 
-            Model.DirectionOfRotation = Model.DirectionOfRotation > 0 ? 1 : -1;
-            float delta = (Model.DirectionOfRotation * deltaTime * Model.DegreesPerSecond) + Model.RotationAngle;
+            float delta = Model.RotationAngle + (Model.DegreesPerSecond * deltaTime * Model.DirectionOfRotation);
             base.Rotate(delta);
         }
     }

@@ -4,51 +4,29 @@ namespace Asteroids
 {
     public class UfoPresenter : Presenter
     {
-        // Почти все переместить в Presenter и зависимые методы
-        //[SerializeField] private Canvas _canvas;
-        [SerializeField] private ShipPresenter _playerShip;
-        //// Этот блок переметить в Presenter?
-        //[SerializeField] private Transform _objectView;                  // Временно цепляем вручную
-        //private Transformable _objectModel;
-        //private Movement _objectMovement;
+        private const string LayerEnemy = "Player";
 
-
-        //private Vector2 _displaySize;
-        //private Vector2 _offsetPosition;
+        [SerializeField] private ShipPresenter _playerShip;         // Получать из фабрики или спавнера?
 
         private void Awake()
         {
-            //_displaySize = _canvas.renderingDisplaySize / _canvas.scaleFactor;
-            //_offsetPosition = _displaySize / 2 * Config.ScaleWindowSize;
-            var center = new Vector2(0.1f, 0.1f);
-            var startPosition = center * Config.ScaleWindowSize;
-            var model = new UfoModel(startPosition, 0f);
-            this.SetModel(model);
-            this.SetMovement(new UfoMovement(model, /*_displaySize,*/ _playerShip));
-            //_enemyView = Resources.Load<Transform>("Prefabs/Ship");                     // EnemyPresenter переделать под конкретный Presenter?
-            //_enemyView = Instantiate(_enemyView, transform.parent);
-            //_enemyView.gameObject.SetActive(true);
-            SetOverlapLayer(LayerMask.NameToLayer("Player"));
+            StartInit();
         }
 
-        //private void Update()        // Переместить в Presenter?
-        //{
-        //    float deltaTime = Time.deltaTime;
+        private void StartInit()
+        {
+            var position = new Vector2(0.1f, 0.1f);
+            var startPosition = position * Config.ScaleWindowSize;
+            var objModel = new UfoModel();
 
-        //    MoveObjectModel(deltaTime);
-        //    MoveObjectView(deltaTime);
-        //}
+            SetModel(objModel);
+            SetModelMovement(new UfoMovement(objModel, _playerShip));
+            SetOverlapLayer(LayerMask.NameToLayer(LayerEnemy));
 
-        //private void MoveObjectModel(float deltaTime)        // Переместить в Presenter?
-        //{
-        //    _objectMovement.Tick(deltaTime);
-        //}
-
-        //private void MoveObjectView(float deltaTime)        // Переместить в Presenter
-        //{
-        //    var correctPosition = (_displaySize * _objectModel.Position) - _offsetPosition;
-        //    _objectView.localPosition = correctPosition;
-        //    _objectView.rotation = Quaternion.Euler(0f, 0f, _objectModel.RotationAngle);
-        //}
+            objModel.Position = startPosition;
+            objModel.DegreesPerSecond = 100f;
+            objModel.MovementSpeed = 0.003f;
+            objModel.MaxMovementSpeed = 0.003f;
+        }
     }
 }

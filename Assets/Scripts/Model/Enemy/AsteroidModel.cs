@@ -1,21 +1,12 @@
-using System;
-using UnityEngine;
-
 namespace Asteroids
 {
-    public class AsteroidModel : EnemyModel
+    public class AsteroidModel : EnemyModel     // ”празднить все модел кроме Enemy?
     {
         // —тартовое положение(за пределами экрана), движение и вращение задавать при получении объекта из пула
 
-        public AsteroidModel(Vector2 position, float rotation, int cost) : base(position, rotation, cost) { }
+        public AsteroidModel(int cost = Config.AsteroidCost) : base(cost) { }
 
         // ”ничтожение будет контролировать спавнер, провер€€ не вылетел ли астероид за границы экрана.
         // »ли зациклить астероид как и корабль игрока?
-        public event Action<EnemyModel> Destroyed;
-
-        public void Destroy()
-        {
-            Destroyed?.Invoke(this);
-        }
     }
 }

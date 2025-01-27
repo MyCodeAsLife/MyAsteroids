@@ -1,6 +1,6 @@
 ﻿namespace Asteroids
 {
-    internal class Bullet : Projectile
+    internal class Bullet : ProjectileModel
     {
     }
 }

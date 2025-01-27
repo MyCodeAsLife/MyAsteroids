@@ -2,14 +2,14 @@ using UnityEngine;
 
 namespace Asteroids
 {
-    public abstract class ModelMovementTest         // Убрать наследование и использовать как ViewMovement?
+    public abstract class ModelMovement         // Убрать наследование и использовать как ViewMovement?
     {
-        protected TransformableTest Model;              // Возвращать интерфейс через свойство?
+        protected Transformable Model;              // Возвращать интерфейс через свойство?
 
         private float _xRatio;          // Корректировка скорости относительно соотношения сторон экрана
         private float _yRatio;          // Корректировка скорости относительно соотношения сторон экрана
 
-        public ModelMovementTest(TransformableTest model)
+        public ModelMovement(Transformable model)
         {
             Model = model;
         }
@@ -30,7 +30,7 @@ namespace Asteroids
             _yRatio = ratio > 1 ? ratio : 1;
         }
 
-        public void SetModel(TransformableTest model) => Model = model;
+        public void SetModel(Transformable model) => Model = model;
         protected void Move(Vector2 position) => Model.Position = position;
         protected void Rotate(float delta) => Model.RotationAngle = delta;
     }

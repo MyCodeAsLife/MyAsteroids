@@ -1,6 +1,6 @@
 ﻿namespace Asteroids
 {
-    internal class ShipModelTest : TransformableTest
+    internal class ShipModelTest : Transformable
     {
         public BaseGun FirstGun { get; private set; }
         public BaseGun SecondGun { get; private set; }

@@ -4,32 +4,31 @@ namespace Asteroids
 {
     public class ProjectilePresenter : Presenter
     {
-        // ѕочти все переместить в Presenter и зависимые методы
-        [SerializeField] private Canvas _canvas;
-        [SerializeField] private Transform _shipView;
-        //[SerializeField] private ProjectilePresenter _prefabProjectile;
+        private const string LayerEnemy = "Enemy";
 
-        private ShipModel _shipModel;
-        private ShipMovement _shipMovement;
-
-        private Vector2 _displaySize;
-        private Vector2 _offsetPosition;
+        // —тартова€ позици€ и направление, получать от оружи€ при спавне
 
         private void Awake()
         {
-            _canvas = GetComponentInParent<Canvas>();
+            StartInit();
+        }
 
-            _displaySize = _canvas.renderingDisplaySize / _canvas.scaleFactor;
-            _offsetPosition = _displaySize / 2 * Config.ScaleWindowSize;
+        private void StartInit()
+        {
             var center = new Vector2(0.5f, 0.5f);
             var startPosition = center * Config.ScaleWindowSize;
-            _shipModel = new ShipModel(startPosition, 0f);
-            _shipMovement = new ShipMovement(_shipModel/*, _displaySize*/);
-            _shipMovement.SetDisplaySize(_displaySize);
-            //_shipView = Resources.Load<Transform>("Prefabs/Ship");
-            //_shipView = Instantiate(_shipView, transform.parent);
-            //_shipView.gameObject.SetActive(true);
-            SetOverlapLayer(LayerMask.NameToLayer("Enemy"));
+
+            var objModel = new ProjectileModel();
+            SetModel(objModel);
+            SetModelMovement(new ProjectileMovement(objModel));
+            SetOverlapLayer(LayerMask.NameToLayer(LayerEnemy));
+
+            objModel.Position = startPosition;
+            objModel.MovementSpeed = 0.001f;
+            objModel.MaxMovementSpeed = 0.001f;
+            objModel.Direction = new Vector2(-1, 1);
+            
+            // ¬з€ть угол поворота у коробл€
         }
     }
 }

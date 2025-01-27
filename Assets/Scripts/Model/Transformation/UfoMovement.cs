@@ -2,16 +2,16 @@ using UnityEngine;
 
 namespace Asteroids
 {
-    public class UfoMovement : Movement
+    public class UfoMovement : ModelMovement
     {
         private ShipPresenter _target;      // Передавать через интерфейс?
         private InertiaSimulator _inertiaSimulator;
         private Vector2 _nextPosition;
 
-        public UfoMovement(Transformable model,/* Vector2 displaySize,*/ ShipPresenter target) : base(model/*, displaySize*/)
+        public UfoMovement(Transformable model, ShipPresenter target) : base(model)
         {
             _target = target;
-            _inertiaSimulator = new InertiaSimulator();
+            _inertiaSimulator = new InertiaSimulator(model);
         }
 
         public override void Tick(float deltaTime)
@@ -22,18 +22,18 @@ namespace Asteroids
             Rotate(deltaTime);
         }
 
-        protected override void Move(Vector2 position)
+        private new void Move(Vector2 position)
         {
             var nextPosition = Model.Position + SpeedCorrectionRelativeScreenSize(position);
             base.Move(nextPosition);
         }
 
-        protected override void Rotate(float deltaTime)
+        private new void Rotate(float deltaTime)
         {
             var playerPosition = _target.GetPosition();
-            float angle = Mathf.Atan2(playerPosition.y - Model.Position.y, playerPosition.x - Model.Position.x) * Mathf.Rad2Deg - 90;
-            angle = Mathf.MoveTowardsAngle(Model.RotationAngle, angle, deltaTime * Model.DegreesPerSecond);
-            base.Rotate(angle);
+            float delta = Mathf.Atan2(playerPosition.y - Model.Position.y, playerPosition.x - Model.Position.x) * Mathf.Rad2Deg - 90;
+            delta = Mathf.MoveTowardsAngle(Model.RotationAngle, delta, deltaTime * Model.DegreesPerSecond);
+            base.Rotate(delta);
         }
     }
 }
