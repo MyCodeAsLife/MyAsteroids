@@ -1,6 +1,6 @@
 namespace Asteroids
 {
-    public abstract class EnemyModel : Transformable
+    public class EnemyModel : Transformable
     {
         public readonly int Cost;
 

@@ -1,27 +1,27 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Asteroids
 {
     internal abstract class BaseGun
     {
-        //private ObjectPool<Presenter> _projectilePool;                  // Вынести в оружие
+        protected readonly ShipPresenter Ship;
 
-        //private ProjectilePresenter _prefab;
-        //private ProjectilePoolModel _projectiles = new();
-        private bool _isShooting = false;
-        private float _cooldown;
-        private float _time = Config.DefaultGunCooldown;
+        protected PresentersFactory _factory;    // Передать через интерфейс?
+        protected bool _isShooting = false;
+        protected float _cooldown;
+        protected float _time = Config.DefaultGunCooldown;
 
-        //public event Action<ProjectilePresenter> Shot;
+        //public virtual event Action<Presenter> Shot;
 
-        public BaseGun(float cooldown)
+        public BaseGun(PresentersFactory factory, ShipPresenter ship, float cooldown)
         {
+            _factory = factory;
             _cooldown = cooldown;
             _time = cooldown;
+            Ship = ship;
         }
 
-        public void OnShootingStart()       // Убрать, сделать через ивент
+        public void OnShootingStart()      // Убрать, сделать через ивент
         {
             _isShooting = true;
         }
@@ -31,21 +31,9 @@ namespace Asteroids
             _isShooting = false;
         }
 
-        public void Tick(float deltatime)           // Если в ship сделать эвент для тиков, то _isShooting можно убрать
+        public virtual void Tick(float deltatime)           // Если в ship сделать эвент для тиков, то _isShooting можно убрать
         {
-            _time += deltatime;
-
-            if (_isShooting && Config.DefaultGunCooldown < _time)
-            {
-                Debug.Log("Shot");                                              //++++++++++++++++++++++++++
-
-                //Instant 
-                //ProjectilePresenter projectile =
-                //Shot?.Invoke(projectile);
-
-                //Shot?.Invoke(_projectiles.Get());
-                _time = 0f;
-            }
+            Debug.Log("Tick");
         }
     }
 }

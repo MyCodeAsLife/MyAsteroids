@@ -15,7 +15,7 @@ namespace Asteroids
         {
             var center = new Vector2(0.5f, 0.5f);
             var startPosition = center * Config.ScaleWindowSize;
-            var objModel = new AsteroidModel();
+            var objModel = new EnemyModel(Config.AsteroidCost);
 
             SetModel(objModel);
             SetModelMovement(new AsteroidMovement(objModel));

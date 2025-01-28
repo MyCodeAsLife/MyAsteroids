@@ -5,10 +5,10 @@
         public BaseGun FirstGun { get; private set; }
         public BaseGun SecondGun { get; private set; }
 
-        public ShipModel()
+        public ShipModel(PresentersFactory factory, ShipPresenter ship)
         {
-            FirstGun = new DefaultGun();   // Передать пулл с проджектайлами или создать его внутри?
-            SecondGun = new LaserGun();
+            FirstGun = new DefaultGun(factory, ship);
+            SecondGun = new LaserGun(factory, ship);
         }
     }
 }

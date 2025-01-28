@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace Asteroids
+﻿namespace Asteroids
 {
-    internal class ProjectileModel : Transformable      // Нужен ли ProjectileModel?
+    internal class ProjectileModel : Transformable      // Нужен ли ProjectileModel?  Удалить
     {
         //protected float LifeTime;     // Если положение будет контролить спавнер, то время жизни ненужно
         //protected float Time;

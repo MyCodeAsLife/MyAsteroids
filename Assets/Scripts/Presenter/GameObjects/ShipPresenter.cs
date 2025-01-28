@@ -6,7 +6,10 @@ namespace Asteroids
     {
         private const string LayerEnemy = "Enemy";
 
-        private ShipModelTest _shipModel = new();
+        [SerializeField] private PresentersFactory _factory;        // Через интерфейс?
+        [SerializeField] Transform _firePoint;
+
+        private ShipModel _shipModel;
         private ShipMovement _shipMovement;
         private RootController _userInput;
 
@@ -39,9 +42,21 @@ namespace Asteroids
             _userInput.ShootingFromSecondGunCanceled -= _shipModel.SecondGun.OnShootingCancel;
         }
 
+        private new void Update()
+        {
+            _shipModel.FirstGun.Tick(Time.deltaTime);
+            _shipModel.SecondGun.Tick(Time.deltaTime);
+            base.Update();
+        }
+
         public Vector2 GetPosition()
         {
             return _shipModel.Position;
+        }
+
+        public float GetAngleRotation()
+        {
+            return _shipModel.RotationAngle;
         }
 
         private void StartInit()
@@ -49,6 +64,7 @@ namespace Asteroids
             var center = new Vector2(0.5f, 0.5f);
             var startPosition = center * Config.ScaleWindowSize;
 
+            _shipModel = new ShipModel(_factory, this);
             _userInput = new RootController();
             _shipMovement = new ShipMovement(_shipModel);
             SetModel(_shipModel);

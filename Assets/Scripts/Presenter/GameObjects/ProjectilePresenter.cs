@@ -6,8 +6,6 @@ namespace Asteroids
     {
         private const string LayerEnemy = "Enemy";
 
-        // —тартова€ позици€ и направление, получать от оружи€ при спавне
-
         private void Awake()
         {
             StartInit();
@@ -23,10 +21,10 @@ namespace Asteroids
             SetModelMovement(new ProjectileMovement(objModel));
             SetOverlapLayer(LayerMask.NameToLayer(LayerEnemy));
 
-            objModel.Position = startPosition;
-            objModel.MovementSpeed = 0.001f;
-            objModel.MaxMovementSpeed = 0.001f;
-            objModel.Direction = new Vector2(-1, 1);
+            //objModel.Position = startPosition;
+            //objModel.MovementSpeed = 0.001f;
+            //objModel.MaxMovementSpeed = 0.001f;
+            //objModel.Direction = new Vector2(-1, 1);
             
             // ¬з€ть угол поворота у коробл€
         }

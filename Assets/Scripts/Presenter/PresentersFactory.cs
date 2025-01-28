@@ -81,7 +81,7 @@ namespace Asteroids
         {
             obj.Destroyed += OnDestroyed;
             obj.transform.rotation = Quaternion.identity;
-            obj.transform.position = Vector3.zero;
+            obj.transform.position = new Vector3(-1000f, -1000f, 0f);           // Magic
             obj.gameObject.SetActive(true);
         }
 
@@ -89,14 +89,16 @@ namespace Asteroids
         {
             obj.Destroyed -= OnDestroyed;
             obj.gameObject.SetActive(false);
+            obj.transform.parent = transform.parent;
         }
 
         private void OnDestroyed(Presenter obj)
         {
-            var type = obj.GetType().Name;
+            var typeName = obj.GetType().Name;
+            Debug.Log(typeName);                                                //++++++++++++++++++++++++++++++++++++++++
             obj.transform.SetParent(transform.parent);
 
-            switch (type)
+            switch (typeName)
             {
                 case UfoType:
                     _ufoPool.Return(obj);

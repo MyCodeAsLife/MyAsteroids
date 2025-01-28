@@ -11,8 +11,9 @@ namespace Asteroids
 
         public event Action<Presenter> Destroyed;
         public event Action<float> Updated;
+        private int _enemyLayer;
 
-        public int OverlapLayer { get; private set; }
+        public GameObjectType ObjectType { get; private set; }
 
         private void Start()
         {
@@ -34,7 +35,7 @@ namespace Asteroids
             //------------------------------------------------------------------------------------------
         }
 
-        private void Update()
+        protected void Update()
         {
             _objectMovement.Tick(Time.deltaTime);
             _viewMovement.Move(_objectModel.Position);
@@ -42,18 +43,26 @@ namespace Asteroids
             CollisionCheck();
         }
 
+        public void SetOverlapLayer(int layer) => _enemyLayer = layer;
         public void SetModel(Transformable model) => _objectModel = model;
         public void SetModelMovement(ModelMovement movement) => _objectMovement = movement;
-        public void SetOverlapLayer(int layer) => OverlapLayer = layer;
+        public void SetGameObjectType(GameObjectType objectType) => ObjectType = objectType;
+        public void SetPosition(Vector2 position) => _objectModel.Position = position;
+        public void SetRotationAngle(float angle) => _objectModel.RotationAngle = angle;
+        public void SetDirection(Vector2 direction) => _objectModel.Direction = direction;
+        public void SetMovementSpeed(float movementSpeed) => _objectModel.MovementSpeed = movementSpeed;
+        public void SetMaxMovementSpeed(float maxMovementSpeed) => _objectModel.MaxMovementSpeed = maxMovementSpeed;
+        public void SetDegreesPerSecond(float degreesPerSecond) => _objectModel.DegreesPerSecond = degreesPerSecond;
+        public void SetDirectionOfRotation(float directionOfRotation) => _objectModel.DirectionOfRotation = directionOfRotation;
 
         public void CollisionCheck()
         {
-            var hit = Physics2D.OverlapCircle(transform.position, 3f, 1 << OverlapLayer);               // Радиус передавать от дочернего объекта
+            var hit = Physics2D.OverlapCircle(transform.position, 3f, 1 << _enemyLayer);               // Радиус передавать от дочернего объекта
 
-            if (hit != null)
-                Debug.Log(hit.gameObject.name);
+            //if (hit != null)
+            //    Debug.Log(hit.gameObject.name);
 
-            Destroyed?.Invoke(this);
+            //Destroyed?.Invoke(this);
         }
     }
 }

@@ -17,7 +17,7 @@ namespace Asteroids
         {
             var position = new Vector2(0.1f, 0.1f);
             var startPosition = position * Config.ScaleWindowSize;
-            var objModel = new UfoModel();
+            var objModel = new EnemyModel(Config.UfoCost);
 
             SetModel(objModel);
             SetModelMovement(new UfoMovement(objModel, _playerShip));

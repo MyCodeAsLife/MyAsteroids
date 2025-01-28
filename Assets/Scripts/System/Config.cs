@@ -16,7 +16,7 @@ public static class Config
     public const float AsteroidMaxRotationSpeed = 500f;
     public const float AsteroidMinRotationSpeed = 10f;
     public const float LaserCooldown = 3f;
-    public const float DefaultGunCooldown = 0.5f;
+    public const float DefaultGunCooldown = 0.3f;
     public const float ScaleWindowSize = 1.02f;
     public const float BulletSpeed = 0.01f;
 
