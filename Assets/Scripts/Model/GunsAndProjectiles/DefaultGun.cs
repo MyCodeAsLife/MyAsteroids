@@ -12,7 +12,7 @@ namespace Asteroids
 
             if (_isShooting && Config.DefaultGunCooldown < _time)
             {
-                Presenter bullet = _factory.GetObject("BulletPresenter");
+                Presenter bullet = _factory.GetObject(GameObjectType.Bullet);
                 OnShot(bullet);
                 _time = 0f;
             }

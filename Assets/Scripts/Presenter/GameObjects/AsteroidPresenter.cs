@@ -4,8 +4,6 @@ namespace Asteroids
 {
     public class AsteroidPresenter : Presenter
     {
-        private const string LayerEnemy = "Player";
-
         private void Awake()
         {
             StartInit();
@@ -19,7 +17,7 @@ namespace Asteroids
 
             SetModel(objModel);
             SetModelMovement(new AsteroidMovement(objModel));
-            SetOverlapLayer(LayerMask.NameToLayer(LayerEnemy));
+            SetOverlapLayer(LayerMask.NameToLayer(Config.PlayerLayer));
 
             objModel.Position = startPosition;
             objModel.DegreesPerSecond = 280f;

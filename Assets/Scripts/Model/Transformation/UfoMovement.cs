@@ -8,9 +8,8 @@ namespace Asteroids
         private InertiaSimulator _inertiaSimulator;
         private Vector2 _nextPosition;
 
-        public UfoMovement(Transformable model, ShipPresenter target) : base(model)
+        public UfoMovement(Transformable model) : base(model)
         {
-            _target = target;
             _inertiaSimulator = new InertiaSimulator(model);
         }
 
@@ -21,6 +20,8 @@ namespace Asteroids
             Move(_inertiaSimulator.Acceleration);
             Rotate(deltaTime);
         }
+
+        public void SetTarget(ShipPresenter target) => _target = target;
 
         private new void Move(Vector2 position)
         {

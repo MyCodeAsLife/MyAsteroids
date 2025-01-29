@@ -6,29 +6,31 @@ namespace Asteroids
     public class ObjectPool<T>
     {
         private readonly T _environments;
+        private readonly GameObjectType _objectType;
 
-        private readonly Func<T, T> _createObject;
+        private readonly Func<GameObjectType, T, T> _createObject;
         private readonly Action<T> _disableObject;
         private readonly Action<T> _enableObject;
 
         private Queue<T> _pool = new();
         private List<T> _active = new();
 
-        public ObjectPool(T environments, Func<T, T> createObject, Action<T> enableObject, Action<T> disableObject)
+        public ObjectPool(GameObjectType objectType, T environments, Func<GameObjectType, T, T> createObject, Action<T> enableObject, Action<T> disableObject)
         {
+            _objectType = objectType;
             _environments = environments;
             _createObject = createObject;
             _enableObject = enableObject;
             _disableObject = disableObject;
 
-            Return(_createObject(_environments));
+            Return(_createObject(_objectType, _environments));
         }
 
         public int ActiveResourcesCount => _active.Count;
 
         public T Get()
         {
-            T obj = _pool.Count > 0 ? _pool.Dequeue() : _createObject(_environments);
+            T obj = _pool.Count > 0 ? _pool.Dequeue() : _createObject(_objectType, _environments);
             _enableObject(obj);
             _active.Add(obj);
             return obj;

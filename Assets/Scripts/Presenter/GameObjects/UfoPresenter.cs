@@ -4,24 +4,27 @@ namespace Asteroids
 {
     public class UfoPresenter : Presenter
     {
-        private const string LayerEnemy = "Player";
-
-        [SerializeField] private ShipPresenter _playerShip;         // ѕолучать из фабрики или спавнера?
+        [SerializeField] private ShipPresenter _playerShip;         // ѕосле тетсировани€ удалить
 
         private void Awake()
         {
             StartInit();
         }
 
-        private void StartInit()
+        public void SetAtackTarget(ShipPresenter playerShip) => ((UfoMovement)ModelMovement).SetTarget(playerShip);
+
+        private void StartInit()        // ѕосле тестировани€, удалить все кроме создани€ классов
         {
             var position = new Vector2(0.1f, 0.1f);
             var startPosition = position * Config.ScaleWindowSize;
             var objModel = new EnemyModel(Config.UfoCost);
 
             SetModel(objModel);
-            SetModelMovement(new UfoMovement(objModel, _playerShip));
-            SetOverlapLayer(LayerMask.NameToLayer(LayerEnemy));
+            var modelMovement = new UfoMovement(objModel);
+            //modelMovement.SetTarget(_playerShip);
+            SetModelMovement(modelMovement);
+            SetAtackTarget(_playerShip);
+            SetOverlapLayer(LayerMask.NameToLayer(Config.PlayerLayer));
 
             objModel.Position = startPosition;
             objModel.DegreesPerSecond = 100f;

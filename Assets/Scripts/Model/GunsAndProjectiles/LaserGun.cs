@@ -4,7 +4,7 @@ namespace Asteroids
 {
     internal class LaserGun : BaseGun
     {
-        public LaserGun(PresentersFactory factory, ShipPresenter ship, float cooldown = Config.LaserCooldown) : base(factory, ship, cooldown) { }
+        public LaserGun(PresentersFactory factory, ShipPresenter ship, float cooldown = Config.LaserGunCooldown) : base(factory, ship, cooldown) { }
 
         private void OnShot(Presenter projectile)
         {

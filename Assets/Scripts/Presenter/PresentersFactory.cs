@@ -5,58 +5,47 @@ namespace Asteroids
 {
     public class PresentersFactory : MonoBehaviour
     {
-        private const string UfoType = "UfoPresenter";                          // Вынести в Config ?
-        private const string AsteroidType = "AsteroidPresenter";
-        private const string AsteroidPartType = "AsteroidPartPresenter";
-        private const string BulletType = "BulletPresenter";
-        private const string LaserType = "LaserPresenter";
-
-        [SerializeField] private ShipPresenter _ufoTarget;
-
         private ObjectPool<Presenter> _ufoPool;
         private ObjectPool<Presenter> _asteroidPool;
         private ObjectPool<Presenter> _asteroidPartPool;
         private ObjectPool<Presenter> _bulletPool;
         private ObjectPool<Presenter> _laserPool;
 
-        private System.Random _random;
-
         private void Awake()
         {
             var ufoPrefab = Resources.Load<UfoPresenter>("Prefabs/Ufo");
-            _ufoPool = new ObjectPool<Presenter>(ufoPrefab, Create, Enable, Disable);
+            _ufoPool = new ObjectPool<Presenter>(GameObjectType.Ufo, ufoPrefab, Create, Enable, Disable);
 
             var asteroidPrefab = Resources.Load<AsteroidPresenter>("Prefabs/Asteroid");
-            _asteroidPool = new ObjectPool<Presenter>(asteroidPrefab, Create, Enable, Disable);
+            _asteroidPool = new ObjectPool<Presenter>(GameObjectType.Asteroid, asteroidPrefab, Create, Enable, Disable);
 
-            //var asteroidPartSpawner = Resources.Load<AsteroidPartPresenter>("Prefabs/AsteroidPart");
-            //_asteroidPartPool = new ObjectPool<Presenter>(asteroidPartSpawner, Create, Enable, Disable);
+            //var asteroidPartPrefab = Resources.Load<AsteroidPartPresenter>("Prefabs/AsteroidPart");
+            //_asteroidPartPool = new ObjectPool<Presenter>(GameObjectType.AsteroidPart, asteroidPartPrefab, Create, Enable, Disable);
 
             var bulletPrefab = Resources.Load<ProjectilePresenter>("Prefabs/Bullet");
-            _bulletPool = new ObjectPool<Presenter>(bulletPrefab, Create, Enable, Disable);
+            _bulletPool = new ObjectPool<Presenter>(GameObjectType.Bullet, bulletPrefab, Create, Enable, Disable);
 
             var laserPrefab = Resources.Load<ProjectilePresenter>("Prefabs/Laser");
-            _laserPool = new ObjectPool<Presenter>(laserPrefab, Create, Enable, Disable);
-            _random = new System.Random();
+            _laserPool = new ObjectPool<Presenter>(GameObjectType.Laser, laserPrefab, Create, Enable, Disable);
         }
 
-        public Presenter GetObject(string type)
+        public Presenter GetObject(GameObjectType type)
         {
             switch (type)
             {
-                case UfoType:
+                case GameObjectType.Ufo:
                     return _ufoPool.Get();
 
-                case AsteroidType:
+                case GameObjectType.Asteroid:
                     return _asteroidPool.Get();
 
-                case AsteroidPartType:
+                case GameObjectType.AsteroidPart:
                     return _asteroidPartPool.Get();
 
-                case BulletType:
+                case GameObjectType.Bullet:
                     return _bulletPool.Get(); ;
 
-                case LaserType:
+                case GameObjectType.Laser:
                     return _laserPool.Get();
 
                 default:
@@ -64,15 +53,11 @@ namespace Asteroids
             }
         }
 
-        public void SetTargetToUfo(ShipPresenter ship)
-        {
-            _ufoTarget = ship;
-        }
-
-        private Presenter Create(Presenter prefab)
+        private Presenter Create(GameObjectType objectType, Presenter prefab)
         {
             var obj = Instantiate<Presenter>(prefab);
             obj.transform.SetParent(transform.parent);
+            obj.SetGameObjectType(objectType);
 
             return obj;
         }
@@ -94,75 +79,33 @@ namespace Asteroids
 
         private void OnDestroyed(Presenter obj)
         {
-            var typeName = obj.GetType().Name;
-            Debug.Log(typeName);                                                //++++++++++++++++++++++++++++++++++++++++
             obj.transform.SetParent(transform.parent);
 
-            switch (typeName)
+            switch (obj.ObjectType)
             {
-                case UfoType:
+                case GameObjectType.Ufo:
                     _ufoPool.Return(obj);
                     break;
 
-                case AsteroidType:
+                case GameObjectType.Asteroid:
                     _asteroidPool.Return(obj);
                     break;
 
-                case AsteroidPartType:
+                case GameObjectType.AsteroidPart:
                     _asteroidPartPool.Return(obj);
                     break;
 
-                case BulletType:
+                case GameObjectType.Bullet:
                     _bulletPool.Return(obj);
                     break;
 
-                case LaserType:
+                case GameObjectType.Laser:
                     _laserPool.Return(obj);
                     break;
 
                 default:
                     throw new ArgumentException(nameof(obj));
             }
-        }
-
-        private Presenter InitEnemy(Presenter obj, string type)        // Для всех кроме снарядов, вынести в спавнер врагов?
-        {
-            Vector2 spawnPosition = GetRandomPosition();        // Астероиды и ufo
-            Vector2 directionMovement = Vector2.zero;           // Астероиды
-            float movementSpeed = 0f;                           // Все
-            float rotationSpeed = 0f;                           // Астероиды и ufo
-
-            if (type == UfoType)
-            {
-                movementSpeed = UnityEngine.Random.Range(Config.UfoMinSpeed * 100, Config.UfoMaxSpeed);
-                rotationSpeed = UnityEngine.Random.Range(Config.UfoMinRotationSpeed, Config.UfoMaxRotationSpeed);
-            }
-            else if (type == AsteroidType || type == AsteroidPartType)
-            {
-                movementSpeed = UnityEngine.Random.Range(Config.AsteroidMinSpeed, Config.AsteroidMaxSpeed);
-                rotationSpeed = UnityEngine.Random.Range(Config.AsteroidMinRotationSpeed, Config.AsteroidMaxRotationSpeed);
-                directionMovement = GetRandomDirectionMovement(spawnPosition);
-            }
-
-            return obj;
-        }
-
-        private Vector2 GetRandomPosition()        // Для всех кроме снарядов, вынести в спавнер врагов?         
-        {
-            bool isVertical = _random.Next(2) == 1 ? true : false;
-            int extremePosition = _random.Next(2);
-            float position = (float)_random.NextDouble();
-            Vector2 newPosition = new Vector2();
-
-            newPosition.y = isVertical ? extremePosition : position;
-            newPosition.x = isVertical ? position : extremePosition;
-
-            return newPosition;
-        }
-
-        private Vector2 GetRandomDirectionMovement(Vector2 position)        // Для всех кроме снарядов, вынести в спавнер врагов?
-        {
-            throw new NotImplementedException();
         }
     }
 }

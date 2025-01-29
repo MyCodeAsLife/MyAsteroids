@@ -11,14 +11,14 @@ namespace Asteroids
         protected float _cooldown;
         protected float _time = Config.DefaultGunCooldown;
 
-        //public virtual event Action<Presenter> Shot;
+        //public virtual event Action<Presenter> Shot;          // Переделать стельбу на ивент
 
-        public BaseGun(PresentersFactory factory, ShipPresenter ship, float cooldown)
+        public BaseGun(PresentersFactory factory, ShipPresenter ship, float cooldown)       // Переделать (вынести фабрику и шип?)
         {
-            _factory = factory;
+            _factory = factory;                 // Вынести в DefaultGun
             _cooldown = cooldown;
             _time = cooldown;
-            Ship = ship;
+            Ship = ship;                        // Тоже вынести?
         }
 
         public void OnShootingStart()      // Убрать, сделать через ивент
@@ -31,7 +31,7 @@ namespace Asteroids
             _isShooting = false;
         }
 
-        public virtual void Tick(float deltatime)           // Если в ship сделать эвент для тиков, то _isShooting можно убрать
+        public virtual void Tick(float deltatime)       // Переделать в абстрактный?
         {
             Debug.Log("Tick");
         }
