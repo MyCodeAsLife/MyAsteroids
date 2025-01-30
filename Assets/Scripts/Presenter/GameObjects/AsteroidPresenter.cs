@@ -17,7 +17,7 @@ namespace Asteroids
 
             SetModel(objModel);
             SetModelMovement(new AsteroidMovement(objModel));
-            SetOverlapLayer(LayerMask.NameToLayer(Config.PlayerLayer));
+            SetOverlapLayer(LayerMask.NameToLayer(Config.PlayerLayerName));
 
             objModel.Position = startPosition;
             objModel.DegreesPerSecond = 280f;

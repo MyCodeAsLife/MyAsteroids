@@ -734,7 +734,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _factory: {fileID: 347795370}
-  _firePoint: {fileID: 1436055972}
+  _laser: {fileID: 1601215738}
 --- !u!212 &1168145425
 SpriteRenderer:
   m_ObjectHideFlags: 0

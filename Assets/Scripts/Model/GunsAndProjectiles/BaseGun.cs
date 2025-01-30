@@ -1,39 +1,27 @@
-﻿using UnityEngine;
+﻿using System;
 
 namespace Asteroids
 {
     internal abstract class BaseGun
     {
         protected readonly ShipPresenter Ship;
+        protected readonly float FireRate;
 
-        protected PresentersFactory _factory;    // Передать через интерфейс?
-        protected bool _isShooting = false;
-        protected float _cooldown;
-        protected float _time = Config.DefaultGunCooldown;
+        protected bool IsPressShooting = false;
+        protected float Timer;
 
-        //public virtual event Action<Presenter> Shot;          // Переделать стельбу на ивент
+        public abstract event Action Shot;
 
-        public BaseGun(PresentersFactory factory, ShipPresenter ship, float cooldown)       // Переделать (вынести фабрику и шип?)
+        public BaseGun(ShipPresenter ship, float cooldown)
         {
-            _factory = factory;                 // Вынести в DefaultGun
-            _cooldown = cooldown;
-            _time = cooldown;
-            Ship = ship;                        // Тоже вынести?
+            Ship = ship;
+            FireRate = cooldown;
+            Timer = cooldown;
         }
 
-        public void OnShootingStart()      // Убрать, сделать через ивент
-        {
-            _isShooting = true;
-        }
-
-        public void OnShootingCancel()
-        {
-            _isShooting = false;
-        }
-
-        public virtual void Tick(float deltatime)       // Переделать в абстрактный?
-        {
-            Debug.Log("Tick");
-        }
+        public void OnShootingStart() => IsPressShooting = true;
+        public void OnShootingCancel() => IsPressShooting = false;
+        public abstract void Tick(float deltatime);
+        protected abstract void Shooting();
     }
 }

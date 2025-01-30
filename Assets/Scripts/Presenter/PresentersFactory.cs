@@ -5,6 +5,8 @@ namespace Asteroids
 {
     public class PresentersFactory : MonoBehaviour
     {
+        private readonly Vector2 DefaultPosition = new Vector2(-1000f, -1000f);
+
         private ObjectPool<Presenter> _ufoPool;
         private ObjectPool<Presenter> _asteroidPool;
         private ObjectPool<Presenter> _asteroidPartPool;
@@ -66,7 +68,7 @@ namespace Asteroids
         {
             obj.Destroyed += OnDestroyed;
             obj.transform.rotation = Quaternion.identity;
-            obj.transform.position = new Vector3(-1000f, -1000f, 0f);           // Magic
+            obj.transform.position = DefaultPosition;
             obj.gameObject.SetActive(true);
         }
 

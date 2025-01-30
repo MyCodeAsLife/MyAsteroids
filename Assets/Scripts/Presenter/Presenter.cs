@@ -51,7 +51,7 @@ namespace Asteroids
 
             if (hit != null)
             {
-                Debug.Log(hit.gameObject.name);
+                //Debug.Log(hit.gameObject.name);
 
                 Destroyed?.Invoke(this);
             }

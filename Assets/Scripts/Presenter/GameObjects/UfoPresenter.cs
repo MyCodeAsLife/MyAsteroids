@@ -24,7 +24,7 @@ namespace Asteroids
             //modelMovement.SetTarget(_playerShip);
             SetModelMovement(modelMovement);
             SetAtackTarget(_playerShip);
-            SetOverlapLayer(LayerMask.NameToLayer(Config.PlayerLayer));
+            SetOverlapLayer(LayerMask.NameToLayer(Config.PlayerLayerName));
 
             objModel.Position = startPosition;
             objModel.DegreesPerSecond = 100f;

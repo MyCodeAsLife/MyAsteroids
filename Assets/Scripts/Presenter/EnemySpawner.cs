@@ -16,18 +16,23 @@ namespace Asteroids
             _random = new System.Random();
         }
 
-        public void SetTargetToUfo(ShipPresenter ship)
+        private void Update()
+        {
+
+        }
+
+        public void SetTargetToUfo(ShipPresenter ship)      // Нужно?
         {
             _playerShip = ship;
         }
 
-        private Presenter InitEnemy(Presenter obj)        // Для всех кроме снарядов
+        private Presenter InitEnemy(Presenter obj)
         {
             Vector2 spawnPosition = GetRandomPosition();        // Астероиды и ufo. Но! не для частей остероидов
-            Vector2 directionMovement = Vector2.zero;           // Астероиды
+            Vector2 directionMovement = Vector2.zero;           // Астероиды и части астероидов
             float movementSpeed = 0f;                           // Все
-            float rotationSpeed = 0f;                           // Астероиды и ufo
-            float rotationDirection = 0f;                       // Астероиды
+            float rotationSpeed = 0f;                           // Все
+            float rotationDirection = 0f;                       // Астероидыи части астероидов
 
             if (obj.ObjectType == GameObjectType.Ufo)       // Присваивать сразу объекту а не переменным
             {
@@ -42,7 +47,7 @@ namespace Asteroids
                 directionMovement = GetRandomDirectionMovement(spawnPosition);
                 rotationDirection = UnityEngine.Random.Range(-1f, 1f);
 
-                if(obj.ObjectType == GameObjectType.AsteroidPart)
+                if (obj.ObjectType == GameObjectType.AsteroidPart)
                     spawnPosition = GetRandomPosition();        // Позицию для чайстей остероида, получать от самого астероида. Или сам астероид будет устанавливать им стартовую позицию?
             }
 

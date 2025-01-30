@@ -17,7 +17,7 @@ namespace Asteroids
             var objModel = new ProjectileModel();
             SetModel(objModel);
             SetModelMovement(new ProjectileMovement(objModel));
-            SetOverlapLayer(LayerMask.NameToLayer(Config.EnemyLayer));
+            SetOverlapLayer(LayerMask.NameToLayer(Config.EnemyLayerName));
         }
     }
 }
