@@ -21,8 +21,8 @@ namespace Asteroids
             var asteroidPrefab = Resources.Load<AsteroidPresenter>("Prefabs/Asteroid");
             _asteroidPool = new ObjectPool<Presenter>(GameObjectType.Asteroid, asteroidPrefab, Create, Enable, Disable);
 
-            //var asteroidPartPrefab = Resources.Load<AsteroidPartPresenter>("Prefabs/AsteroidPart");
-            //_asteroidPartPool = new ObjectPool<Presenter>(GameObjectType.AsteroidPart, asteroidPartPrefab, Create, Enable, Disable);
+            var asteroidPartPrefab = Resources.Load<AsteroidPresenter>("Prefabs/AsteroidPart");
+            _asteroidPartPool = new ObjectPool<Presenter>(GameObjectType.AsteroidPart, asteroidPartPrefab, Create, Enable, Disable);
 
             var bulletPrefab = Resources.Load<ProjectilePresenter>("Prefabs/Bullet");
             _bulletPool = new ObjectPool<Presenter>(GameObjectType.Bullet, bulletPrefab, Create, Enable, Disable);

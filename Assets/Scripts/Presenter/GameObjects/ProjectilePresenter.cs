@@ -12,7 +12,7 @@ namespace Asteroids
         private void StartInit()
         {
             var center = new Vector2(0.5f, 0.5f);
-            var startPosition = center * Config.ScaleWindowSize;
+            var startPosition = center * Config.PlayerExistenceLimit;
 
             var objModel = new ProjectileModel();
             SetModel(objModel);

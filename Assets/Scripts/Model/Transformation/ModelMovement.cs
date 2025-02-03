@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Asteroids
 {
-    public abstract class ModelMovement         // Убрать наследование и использовать как ViewMovement?
+    public abstract class ModelMovement
     {
         protected Transformable Model;              // Возвращать интерфейс через свойство?
 

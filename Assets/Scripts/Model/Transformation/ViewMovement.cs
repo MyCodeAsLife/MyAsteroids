@@ -4,14 +4,19 @@ namespace Asteroids
 {
     public class ViewMovement
     {
+        private const float Half = 0.5f;
+
         private Transform _view;
         private Vector2 _displaySize;
         private Vector2 _offsetPosition;
+        private float _scaleWindowSize;
 
         public ViewMovement(Transform view)
         {
             _view = view;
         }
+
+        public void SetScaleWindowSize(float scale) => _scaleWindowSize = scale;
 
         public void Move(Vector2 position)
         {
@@ -26,7 +31,7 @@ namespace Asteroids
         public void SetDisplaySize(Vector2 size)
         {
             _displaySize = size;
-            _offsetPosition = _displaySize / 2 * Config.ScaleWindowSize;
+            _offsetPosition = _displaySize * Half * _scaleWindowSize;
         }
     }
 }

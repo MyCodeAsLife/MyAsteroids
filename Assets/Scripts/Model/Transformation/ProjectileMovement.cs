@@ -13,7 +13,7 @@ namespace Asteroids
 
         private void Move(float deltaTime)          // Такаяже как у Asteroid
         {
-            Vector2 nextPosition = Model.Direction + Model.Direction * (Model.MovementSpeed * deltaTime);
+            Vector2 nextPosition = Model.DirectionMovement + Model.DirectionMovement * (Model.MovementSpeed * deltaTime);
             nextPosition = Vector2.ClampMagnitude(nextPosition, Model.MovementSpeed);
 
             nextPosition = Model.Position + SpeedCorrectionRelativeScreenSize(nextPosition);

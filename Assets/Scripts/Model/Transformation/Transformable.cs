@@ -11,7 +11,7 @@ namespace Asteroids
         private float _maxMovementSpeed;
 
         public Vector2 Position { get; set; }
-        public Vector2 Direction { get; set; }          // Используется только в Asteroid, вынести в Asteroid?
+        public Vector2 DirectionMovement { get; set; }          // Используется только в Asteroid, вынести в Asteroid?
         public Vector2 Forward => Quaternion.Euler(0, 0, _rotationAngle) * Vector3.up;
 
         public float MovementSpeed

@@ -27,12 +27,12 @@ namespace Asteroids
             Shot?.Invoke();
             Timer = 0f;
             Presenter projectile = _factory.GetObject(GameObjectType.Bullet);
-            projectile.transform.localScale = new Vector3(Config.BulletScale, Config.BulletScale);
+            projectile.transform.localScale = new Vector3(Config.BulletSize, Config.BulletSize);
             projectile.SetRotationAngle(Ship.GetAngleRotation());
             projectile.SetPosition(Ship.GetPosition());
             projectile.SetMovementSpeed(Config.BulletSpeed);
             Vector2 Forward = Quaternion.Euler(0, 0, Ship.GetAngleRotation()) * Vector3.up;
-            projectile.SetDirection(Forward);
+            projectile.SetDirectionMovement(Forward);
         }
     }
 }

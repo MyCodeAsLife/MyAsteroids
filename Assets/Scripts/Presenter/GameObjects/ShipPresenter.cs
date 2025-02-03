@@ -5,7 +5,6 @@ namespace Asteroids
     public class ShipPresenter : Presenter
     {
         [SerializeField] private PresentersFactory _factory;        // Через интерфейс?
-        //[SerializeField] Transform _firePoint;
         [SerializeField] LaserPresenter _laser;
 
         private ShipModel _shipModel;
@@ -54,7 +53,7 @@ namespace Asteroids
         private void StartInit()
         {
             var center = new Vector2(0.5f, 0.5f);
-            var startPosition = center * Config.ScaleWindowSize;
+            var startPosition = center * Config.PlayerExistenceLimit;
 
             _shipModel = new ShipModel(_factory, this, _laser);
             _userInput = new RootController();

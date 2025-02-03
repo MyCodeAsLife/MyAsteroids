@@ -23,13 +23,23 @@ namespace Asteroids
         public const float LaserGunShotDuration = 0.5f;
         public const int MaxNumberOfLaserCharges = 2;
 
-        public const float BulletScale = 20f;
-        public const float UfoScale = 8f;                       // Реализовать
-        public const float AsteroidScale = 8f;                  // Реализовать
-        public const float AsteroidPartScale = 8f;              // Реализовать
+        public const float UfoSpawnInterval = 2f;               // Реализовать
+        public const float AsteroidSpawnInterval = 2f;
+        public const float AsteroidPartSpawnInterval = 2f;      // Реализовать
 
-        public const float ScaleWindowSize = 1.02f;
-        public const float BoundaryExistenceObjects = 1.04f;
+        public const float BulletSize = 20f;
+        public const float UfoMinSize = 6f;                       // Реализовать
+        public const float UfoMaxSize = 10f;                       // Реализовать
+        public const float AsteroidMinSize = 6f;
+        public const float AsteroidMaxSize = 9f;
+        public const float AsteroidPartMinSize = 8f;              // Реализовать
+        public const float AsteroidPartMaxSize = 12f;              // Реализовать
+
+        public const int AsteroidPartMinNumberOfFragments = 2;  // Реализовать
+        public const int AsteroidPartMaxNumberOfFragments = 4;  // Реализовать
+
+        public const float PlayerExistenceLimit = 1.04f;
+        public const float BoundaryExistenceObjects = 1.1f;
 
         public const int UfoCost = 10;
         public const int AsteroidCost = 5;
