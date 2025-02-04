@@ -11,6 +11,7 @@ namespace Asteroids
         private int _enemyLayer;
 
         public event Action<Presenter> Destroyed;
+        public event Action<Presenter> Deactivated;
 
         public ModelMovement ModelMovement { get; private set; }
         public GameObjectType ObjectType { get; private set; }          // Позиция форматирования?
@@ -19,12 +20,7 @@ namespace Asteroids
         {
             _collider = GetComponent<CapsuleCollider2D>();
             _viewMovement = new ViewMovement(transform);
-
-            if (ObjectType == GameObjectType.Ufo || ObjectType == GameObjectType.Asteroid || ObjectType == GameObjectType.AsteroidPart)
-                _viewMovement.SetScaleWindowSize(Config.BoundaryExistenceObjects);
-            else
-                _viewMovement.SetScaleWindowSize(Config.PlayerExistenceLimit);
-
+            _viewMovement.SetScaleWindowSize(Config.ScaleWindowSize);
             var _canvas = GetComponentInParent<Canvas>();
             var _displaySize = _canvas.renderingDisplaySize / _canvas.scaleFactor;
             ModelMovement.SetScreenAspectRatio(_displaySize);
@@ -37,7 +33,7 @@ namespace Asteroids
             _viewMovement.Move(_objectModel.Position);
             _viewMovement.Rotate(_objectModel.RotationAngle);
             CollisionCheck();
-            PositioCheck();
+            PositionCheck();          // Проверка на выход за границы игровой области
         }
 
         public void SetOverlapLayer(int layer) => _enemyLayer = layer;
@@ -51,29 +47,32 @@ namespace Asteroids
         public void SetDegreesPerSecond(float degreesPerSecond) => _objectModel.DegreesPerSecond = degreesPerSecond;
         public void SetDirectionOfRotation(float directionOfRotation) => _objectModel.DirectionOfRotation = directionOfRotation;
         public void SetGameObjectType(GameObjectType objectType) => ObjectType = objectType;
-
-        public virtual void CollisionCheck()
-        {
-            var hit = Physics2D.OverlapCapsule(transform.position, _collider.size, _collider.direction, _objectModel.RotationAngle, 1 << _enemyLayer);
-
-            if (hit != null)
-            {
-                hit.GetComponent<IDamageable>().TakeDamage();
-                Destroyed?.Invoke(this);
-            }
-        }
+        public Vector2 GetPosition() => _objectModel.Position;
 
         public void TakeDamage()
         {
             Destroyed?.Invoke(this);
+            Deactivated?.Invoke(this);
         }
 
-        private void PositioCheck()
+        private void CollisionCheck()
         {
-            if (_objectModel.Position.x > Config.BoundaryExistenceObjects ||
-               _objectModel.Position.y > Config.BoundaryExistenceObjects ||
-               _objectModel.Position.x < 0 || _objectModel.Position.y < 0)
-                Destroyed?.Invoke(this);
+            var hit = Physics2D.OverlapCapsule(transform.position, _collider.size, _collider.direction, _objectModel.RotationAngle, 1 << _enemyLayer);
+
+            if (hit != null && hit.TryGetComponent<IDamageable>(out IDamageable obj))       // Лазер пока что не уничтожает объекты
+            {
+                obj.TakeDamage();
+                Deactivated?.Invoke(this);
+            }
+        }
+
+        private void PositionCheck()                                // Не используется игроком и НЛО, вынести
+        {
+            if (_objectModel.Position.x > Config.MaxBoundaryExistenceObjects ||
+               _objectModel.Position.y > Config.MaxBoundaryExistenceObjects ||
+               _objectModel.Position.x < Config.MinBoundaryExistenceObjects ||
+               _objectModel.Position.y < Config.MinBoundaryExistenceObjects)
+                Deactivated?.Invoke(this);
         }
     }
 }

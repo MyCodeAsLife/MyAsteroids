@@ -47,8 +47,8 @@ namespace Asteroids
         private void Move()
         {
             var nextPosition = Model.Position + SpeedCorrectionRelativeScreenSize(_inertiaSimulator.Acceleration);
-            nextPosition.x = Mathf.Repeat(nextPosition.x, Config.PlayerExistenceLimit);
-            nextPosition.y = Mathf.Repeat(nextPosition.y, Config.PlayerExistenceLimit);
+            nextPosition.x = Mathf.Repeat(nextPosition.x, Config.ScaleWindowSize);
+            nextPosition.y = Mathf.Repeat(nextPosition.y, Config.ScaleWindowSize);
             base.Move(nextPosition);
         }
 

@@ -28,7 +28,7 @@ namespace Asteroids
             _view.rotation = Quaternion.Euler(0f, 0f, rotationAngle);
         }
 
-        public void SetDisplaySize(Vector2 size)
+        public void SetDisplaySize(Vector2 size)            // Вынести в spawner рассчет смещения?
         {
             _displaySize = size;
             _offsetPosition = _displaySize * Half * _scaleWindowSize;

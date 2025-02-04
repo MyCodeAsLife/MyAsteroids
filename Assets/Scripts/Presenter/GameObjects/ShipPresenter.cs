@@ -4,7 +4,7 @@ namespace Asteroids
 {
     public class ShipPresenter : Presenter
     {
-        [SerializeField] private PresentersFactory _factory;        // Через интерфейс?
+        //[SerializeField] private PresentersFactory _factory;        // Через интерфейс?
         [SerializeField] LaserPresenter _laser;
 
         private ShipModel _shipModel;
@@ -47,25 +47,25 @@ namespace Asteroids
             base.Update();
         }
 
-        public Vector2 GetPosition() => _shipModel.Position;
+        public void SetPresentersFactory(PresentersFactory factory) => ((DefaultGun)_shipModel.FirstGun).SetFactory(factory);       // Чтобы не прокидывать фабрику, оружее тоже вынести в префаб?
         public float GetAngleRotation() => _shipModel.RotationAngle;
 
         private void StartInit()
         {
-            var center = new Vector2(0.5f, 0.5f);
-            var startPosition = center * Config.PlayerExistenceLimit;
+            //var center = new Vector2(0.5f, 0.5f);
+            //var startPosition = center * Config.PlayerExistenceLimit;
 
-            _shipModel = new ShipModel(_factory, this, _laser);
+            _shipModel = new ShipModel(this, _laser);
             _userInput = new RootController();
             _shipMovement = new ShipMovement(_shipModel);
             SetModel(_shipModel);
             SetModelMovement(_shipMovement);
             SetOverlapLayer(LayerMask.NameToLayer(Config.EnemyLayerName));
 
-            _shipModel.Position = startPosition;
-            _shipModel.DegreesPerSecond = Config.PlayerRotationSpeed;
-            _shipModel.MovementSpeed = Config.PlayerShipMovementSpeed;
-            _shipModel.MaxMovementSpeed = Config.PlayerShipMaxMovementSpeed;
+            //_shipModel.Position = startPosition;
+            //_shipModel.DegreesPerSecond = Config.PlayerRotationSpeed;
+            //_shipModel.MovementSpeed = Config.PlayerShipMovementSpeed;
+            //_shipModel.MaxMovementSpeed = Config.PlayerShipMaxMovementSpeed;
         }
     }
 }

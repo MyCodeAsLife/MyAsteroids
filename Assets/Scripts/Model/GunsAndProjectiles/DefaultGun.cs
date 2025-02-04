@@ -5,14 +5,11 @@ namespace Asteroids
 {
     internal class DefaultGun : BaseGun
     {
-        private readonly PresentersFactory _factory;    // Передать через интерфейс?
+        private PresentersFactory _factory;    // Передать через интерфейс?
 
         public override event Action Shot;
 
-        public DefaultGun(PresentersFactory factory, ShipPresenter ship, float cooldown = Config.CooldownDefaultGun) : base(ship, cooldown)
-        {
-            _factory = factory;
-        }
+        public DefaultGun(ShipPresenter ship, float cooldown = Config.CooldownDefaultGun) : base(ship, cooldown) { }
 
         public override void Tick(float deltatime)
         {
@@ -21,6 +18,8 @@ namespace Asteroids
             if (IsPressShooting && Config.CooldownDefaultGun < Timer)
                 Shooting();
         }
+
+        public void SetFactory(PresentersFactory factory) => _factory = factory;
 
         protected override void Shooting()
         {

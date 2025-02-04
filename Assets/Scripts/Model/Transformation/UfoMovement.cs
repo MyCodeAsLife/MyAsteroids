@@ -6,7 +6,6 @@ namespace Asteroids
     {
         private ShipPresenter _target;      // Передавать через интерфейс?
         private InertiaSimulator _inertiaSimulator;
-        private Vector2 _nextPosition;
 
         public UfoMovement(Transformable model) : base(model)
         {
@@ -17,15 +16,15 @@ namespace Asteroids
         {
             _inertiaSimulator.Accelerate(Model.Forward, deltaTime);
             _inertiaSimulator.SlowDown(deltaTime);
-            Move(_inertiaSimulator.Acceleration);
+            Move();
             Rotate(deltaTime);
         }
 
         public void SetTarget(ShipPresenter target) => _target = target;
 
-        private new void Move(Vector2 position)
+        private void Move()
         {
-            var nextPosition = Model.Position + SpeedCorrectionRelativeScreenSize(position);
+            var nextPosition = Model.Position + SpeedCorrectionRelativeScreenSize(_inertiaSimulator.Acceleration);
             base.Move(nextPosition);
         }
 

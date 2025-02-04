@@ -66,7 +66,7 @@ namespace Asteroids
 
         private void Enable(Presenter obj)
         {
-            obj.Destroyed += OnDestroyed;
+            obj.Deactivated += OnDeactivated;
             obj.transform.rotation = Quaternion.identity;
             obj.transform.position = DefaultPosition;
             obj.gameObject.SetActive(true);
@@ -74,12 +74,12 @@ namespace Asteroids
 
         private void Disable(Presenter obj)
         {
-            obj.Destroyed -= OnDestroyed;
+            obj.Deactivated -= OnDeactivated;
             obj.gameObject.SetActive(false);
             obj.transform.parent = transform.parent;
         }
 
-        private void OnDestroyed(Presenter obj)
+        private void OnDeactivated(Presenter obj)
         {
             obj.transform.SetParent(transform.parent);
 
