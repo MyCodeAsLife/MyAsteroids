@@ -14,7 +14,7 @@ namespace Asteroids
         private bool _isActiveLaserBeam = false;
         private bool _isReloading = false;
 
-        public override event Action Shot;
+        public event Action<bool> Shot;
         public event Action<float> Reloading;
 
         public LaserGun(ShipPresenter ship, LaserPresenter laser, float cooldown = Config.CooldownLaserGun, float laserGunChargingTime = Config.LaserGunChargingTime,
@@ -56,7 +56,7 @@ namespace Asteroids
         {
             _isActiveLaserBeam = !_isActiveLaserBeam;
             _laserBeam.transform.parent.gameObject.SetActive(_isActiveLaserBeam);
-            Shot?.Invoke();
+            Shot?.Invoke(_isActiveLaserBeam);
         }
 
         private void OnReloading(float deltaTime)
