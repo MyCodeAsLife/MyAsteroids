@@ -10,7 +10,7 @@ namespace Asteroids
         protected bool IsPressShooting = false;
         protected float Timer;
 
-        //public abstract event Action<bool> Shot;
+        public abstract event Action Shot;
 
         public BaseGun(ShipPresenter ship, float cooldown)
         {

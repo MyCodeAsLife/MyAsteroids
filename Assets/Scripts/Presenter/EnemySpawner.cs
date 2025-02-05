@@ -2,15 +2,14 @@ using UnityEngine;
 
 namespace Asteroids
 {
-    public class ObjectSpawner : MonoBehaviour
+    public class EnemySpawner : MonoBehaviour
     {
         private const float Half = 0.5f;
         private const float Offset = 0.05f;
 
-        public ShipPresenter PlayerShip { get; private set; }
+        private ShipPresenter _playerShip;
 
         private PresentersFactory _factory;
-        private InformationPanel _informationPanel;
         private System.Random _random;
 
         private float _timer;
@@ -19,14 +18,13 @@ namespace Asteroids
         private void Start()
         {
             _factory = GetComponent<PresentersFactory>();
-            _informationPanel = GetComponent<InformationPanel>();
             _random = new System.Random();
             _spawnInterval = Random.Range(1f, Config.AsteroidSpawnInterval);
 
             // Все что ниже, для тестирования
             var prefab = Resources.Load<ShipPresenter>("Prefabs/Player");
             var playerShip = Instantiate<ShipPresenter>(prefab);
-            PlayerShip = playerShip;
+            _playerShip = playerShip;
             playerShip.transform.SetParent(transform.parent);
             var center = new Vector2(0.5f, 0.5f);
             var startPosition = center * Config.ScaleWindowSize;
@@ -36,7 +34,6 @@ namespace Asteroids
             playerShip.SetDegreesPerSecond(Config.PlayerRotationSpeed);
             playerShip.SetMovementSpeed(Config.PlayerShipMovementSpeed);
             playerShip.SetMaxMovementSpeed(Config.PlayerShipMaxMovementSpeed);
-            playerShip.SubscribeOnPositionChanged(_informationPanel.OnPlayerPositionChanged);
         }
 
         private void Update()
@@ -48,16 +45,14 @@ namespace Asteroids
                 _timer = 0;
                 _spawnInterval = Random.Range(1f, Config.AsteroidSpawnInterval);
 
-                Interactive obj = (Interactive)_factory.GetObject(GameObjectType.Asteroid);
-                obj.Deactivated += OnDeactivated;                   // Если подписывать 1 раз, то этот пункт ненужен
-                obj.Destroyed += OnAsteroidDestroyed;               // Подписывать 1 раз?
-                obj.Destroyed += Explode;                           // Подписывать 1 раз?
-                obj.Destroyed += _informationPanel.OnObjectDestroy; // Подписывать 1 раз?
-                InitInteractiveObject(obj);
+                var obj = _factory.GetObject(GameObjectType.Asteroid);
+                obj.Deactivated += OnAsteroidDeactivated;
+                obj.Destroyed += OnAsteroidDestoyed;
+                InitEnemy(obj);
             }
         }
 
-        private Interactive InitInteractiveObject(Interactive obj)      // стартовый инициализатор
+        private Presenter InitEnemy(Presenter obj)      // стартовый инициализатор
         {
             bool isVertical = _random.NextDouble() > Half ? true : false;       // Край стартовой позиции по вертикали или горизонтали?
             Vector2 spawnPosition = GetRandomStartPosition(isVertical);         // Астероиды и ufo. Но! не для частей остероидов, части астероидов будут это использовать для создания направления движения
@@ -69,7 +64,7 @@ namespace Asteroids
             {
                 movementSpeed = Random.Range(Config.UfoMinSpeed, Config.UfoMaxSpeed);                 // Дублируется?
                 obj.SetDegreesPerSecond(Random.Range(Config.UfoMinRotationSpeed, Config.UfoMaxRotationSpeed));                 // Дублируется?
-                ((UfoPresenter)obj).SetAtackTarget(PlayerShip);
+                ((UfoPresenter)obj).SetAtackTarget(_playerShip);
                 objectSize = Random.Range(Config.UfoMinSize, Config.UfoMaxSize);
             }
             else if (obj.ObjectType == GameObjectType.Asteroid || obj.ObjectType == GameObjectType.AsteroidPart)
@@ -131,21 +126,16 @@ namespace Asteroids
             return directionMovement;
         }
 
-        private void OnDeactivated(Presenter obj)
+        private void OnAsteroidDeactivated(Presenter obj)
         {
-            obj.Deactivated -= OnDeactivated;
-
-            if (obj.TryGetComponent<Interactive>(out Interactive interactiveObject))
+            if (obj.ObjectType == GameObjectType.Asteroid)          // Если будет подписыватся ТОЛЬКО астероид, то проверка никчему
             {
-                interactiveObject.Destroyed -= Explode;
-                interactiveObject.Destroyed -= _informationPanel.OnObjectDestroy;
-
-                if (obj.ObjectType == GameObjectType.Asteroid)
-                    interactiveObject.Destroyed -= OnAsteroidDestroyed;
+                obj.Deactivated -= OnAsteroidDeactivated;
+                obj.Destroyed -= OnAsteroidDestoyed;
             }
         }
 
-        private void OnAsteroidDestroyed(Interactive obj)      // Подписать на убийство игроком а не просто уничтожение     // стартовый инициализатор
+        private void OnAsteroidDestoyed(Presenter obj)      // Подписать на убийство игроком а не просто уничтожение     // стартовый инициализатор
         {
             if (obj.ObjectType == GameObjectType.Asteroid)          // Если будет подписыватся ТОЛЬКО астероид, то проверка никчему
             {
@@ -153,20 +143,11 @@ namespace Asteroids
 
                 for (int i = 0; i < numberOfFragmets; i++)
                 {
-                    Interactive part = (Interactive)_factory.GetObject(GameObjectType.AsteroidPart);
-                    InitInteractiveObject(part);
+                    var part = _factory.GetObject(GameObjectType.AsteroidPart);
+                    InitEnemy(part);
                     part.SetPosition(obj.GetPosition());
-                    part.Deactivated += OnDeactivated;
-                    part.Destroyed += Explode;
-                    part.Destroyed += _informationPanel.OnObjectDestroy; // Подписывать 1 раз?
                 }
             }
-        }
-
-        private void Explode(Interactive obj)
-        {
-            var explosion = (ExplosionPresenter)_factory.GetObject(GameObjectType.Explosion);
-            explosion.Explode(obj.transform);
         }
     }
 }

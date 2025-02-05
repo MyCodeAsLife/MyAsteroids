@@ -1,6 +1,15 @@
 namespace Asteroids
 {
-    public class EnemyModel : Transformable     // Ћишний класс?
+    public class EnemyModel : Transformable
     {
+        public readonly int Cost;
+
+        // ѕри своем уничтожении, свою стоимость прибавл€ть к обсчему счету.
+        // Ќаверно это будет делать спавнер врагов
+
+        public EnemyModel(int cost)
+        {
+            Cost = cost;
+        }
     }
 }

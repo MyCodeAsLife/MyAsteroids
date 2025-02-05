@@ -26,9 +26,9 @@ namespace Asteroids
         {
             var hit = Physics2D.OverlapCapsule(transform.position, _laserColliderSize, _collider.direction, _ship.GetAngleRotation(), 1 << _enemyLayer);
 
-            if (hit != null && hit.TryGetComponent<IDamageable>(out IDamageable obj))       // Лазер пока что не уничтожает объекты
+            if (hit != null)
             {
-                obj.TakeDamage();
+                //Debug.Log("Check");                                                                         //++++++++++++++++++++++++++++
             }
         }
 

@@ -31,7 +31,7 @@ namespace Asteroids
         }
 
         public void SetModel(Transformable model) => Model = model;
-        protected void Move(Vector2 position) => Model.Position.Value = position;
+        protected void Move(Vector2 position) => Model.Position = position;
         protected void Rotate(float delta) => Model.RotationAngle = delta;
     }
 }

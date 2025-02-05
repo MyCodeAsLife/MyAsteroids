@@ -2,8 +2,9 @@ using UnityEngine;
 
 namespace Asteroids
 {
-    public class ShipPresenter : Interactive
+    public class ShipPresenter : Presenter
     {
+        //[SerializeField] private PresentersFactory _factory;        // Через интерфейс?
         [SerializeField] LaserPresenter _laser;
 
         private ShipModel _shipModel;
@@ -51,21 +52,20 @@ namespace Asteroids
 
         private void StartInit()
         {
+            //var center = new Vector2(0.5f, 0.5f);
+            //var startPosition = center * Config.PlayerExistenceLimit;
+
             _shipModel = new ShipModel(this, _laser);
             _userInput = new RootController();
             _shipMovement = new ShipMovement(_shipModel);
             SetModel(_shipModel);
             SetModelMovement(_shipMovement);
             SetOverlapLayer(LayerMask.NameToLayer(Config.EnemyLayerName));
-            ((LaserGun)_shipModel.SecondGun).Shot += OnLaserShoot;
-        }
 
-        private void OnLaserShoot(bool isActivate)
-        {
-            if (isActivate)
-                SetDegreesPerSecond(Config.PlayerRotationSpeed / 3);
-            else
-                SetDegreesPerSecond(Config.PlayerRotationSpeed);
+            //_shipModel.Position = startPosition;
+            //_shipModel.DegreesPerSecond = Config.PlayerRotationSpeed;
+            //_shipModel.MovementSpeed = Config.PlayerShipMovementSpeed;
+            //_shipModel.MaxMovementSpeed = Config.PlayerShipMaxMovementSpeed;
         }
     }
 }

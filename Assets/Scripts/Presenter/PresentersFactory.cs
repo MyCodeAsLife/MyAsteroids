@@ -11,7 +11,7 @@ namespace Asteroids
         private ObjectPool<Presenter> _asteroidPool;
         private ObjectPool<Presenter> _asteroidPartPool;
         private ObjectPool<Presenter> _bulletPool;
-        private ObjectPool<Presenter> _explosionPool;
+        private ObjectPool<Presenter> _laserPool;
 
         private void Awake()
         {
@@ -27,8 +27,8 @@ namespace Asteroids
             var bulletPrefab = Resources.Load<ProjectilePresenter>("Prefabs/Bullet");
             _bulletPool = new ObjectPool<Presenter>(GameObjectType.Bullet, bulletPrefab, Create, Enable, Disable);
 
-            var explosionPrefab = Resources.Load<Presenter>("Prefabs/Explosion");
-            _explosionPool = new ObjectPool<Presenter>(GameObjectType.Explosion, explosionPrefab, Create, Enable, Disable);
+            var laserPrefab = Resources.Load<ProjectilePresenter>("Prefabs/Laser");
+            _laserPool = new ObjectPool<Presenter>(GameObjectType.Laser, laserPrefab, Create, Enable, Disable);
         }
 
         public Presenter GetObject(GameObjectType type)
@@ -47,8 +47,8 @@ namespace Asteroids
                 case GameObjectType.Bullet:
                     return _bulletPool.Get(); ;
 
-                case GameObjectType.Explosion:
-                    return _explosionPool.Get();
+                case GameObjectType.Laser:
+                    return _laserPool.Get();
 
                 default:
                     throw new ArgumentException(nameof(type));
@@ -101,8 +101,8 @@ namespace Asteroids
                     _bulletPool.Return(obj);
                     break;
 
-                case GameObjectType.Explosion:
-                    _explosionPool.Return(obj);
+                case GameObjectType.Laser:
+                    _laserPool.Return(obj);
                     break;
 
                 default:

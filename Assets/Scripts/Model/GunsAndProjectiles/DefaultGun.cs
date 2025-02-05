@@ -7,6 +7,8 @@ namespace Asteroids
     {
         private PresentersFactory _factory;    // Передать через интерфейс?
 
+        public override event Action Shot;
+
         public DefaultGun(ShipPresenter ship, float cooldown = Config.CooldownDefaultGun) : base(ship, cooldown) { }
 
         public override void Tick(float deltatime)
@@ -21,8 +23,9 @@ namespace Asteroids
 
         protected override void Shooting()
         {
+            Shot?.Invoke();
             Timer = 0f;
-            Interactive projectile = (Interactive)_factory.GetObject(GameObjectType.Bullet);
+            Presenter projectile = _factory.GetObject(GameObjectType.Bullet);
             projectile.transform.localScale = new Vector3(Config.BulletSize, Config.BulletSize);
             projectile.SetRotationAngle(Ship.GetAngleRotation());
             projectile.SetPosition(Ship.GetPosition());
