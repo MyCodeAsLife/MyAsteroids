@@ -4,9 +4,9 @@ namespace Asteroids
     {
         PlayerShip,
         Bullet,
-        Laser,
         Ufo,
         Asteroid,
         AsteroidPart,
+        Explosion,
     }
 }

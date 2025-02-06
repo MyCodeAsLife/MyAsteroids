@@ -24,14 +24,14 @@ namespace Asteroids
 
         private void Move()
         {
-            var nextPosition = Model.Position + SpeedCorrectionRelativeScreenSize(_inertiaSimulator.Acceleration);
+            var nextPosition = Model.Position.Value + SpeedCorrectionRelativeScreenSize(_inertiaSimulator.Acceleration);
             base.Move(nextPosition);
         }
 
         private new void Rotate(float deltaTime)
         {
             var playerPosition = _target.GetPosition();
-            float delta = Mathf.Atan2(playerPosition.y - Model.Position.y, playerPosition.x - Model.Position.x) * Mathf.Rad2Deg - 90;
+            float delta = Mathf.Atan2(playerPosition.y - Model.Position.Value.y, playerPosition.x - Model.Position.Value.x) * Mathf.Rad2Deg - 90;
             delta = Mathf.MoveTowardsAngle(Model.RotationAngle, delta, deltaTime * Model.DegreesPerSecond);
             base.Rotate(delta);
         }

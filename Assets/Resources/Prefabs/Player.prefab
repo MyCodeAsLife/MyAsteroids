@@ -307,7 +307,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d94613ecb8762064198c1b1acb614f77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _factory: {fileID: 0}
   _laser: {fileID: 4799089922242291212}
 --- !u!1 &8353411581574716687
 GameObject:

@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Asteroids
 {
-    public class ProjectilePresenter : Presenter
+    public class ProjectilePresenter : Interactive
     {
         private void Awake()
         {

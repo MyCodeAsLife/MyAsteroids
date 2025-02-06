@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 7f827940b277ba14c89a2b7178ee05bb
+guid: 121e7283068ee54489d3305d8d460e14
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2676159555221356526
-    second: ufo_0
+      213: -7403762023634899468
+    second: asteroid part_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ufo_0
+      name: asteroid part_0
       rect:
         serializedVersion: 2
-        x: 3
-        y: 3
-        width: 640
-        height: 640
+        x: 29
+        y: 10
+        width: 345
+        height: 370
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -114,8 +114,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: eef7c33cfe0a32520800000000000000
-      internalID: 2676159555221356526
+      spriteID: 4fde6b39aad804990800000000000000
+      internalID: -7403762023634899468
       vertices: []
       indices: 
       edges: []
@@ -130,7 +130,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      asteroid part_0: -7403762023634899468
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
