@@ -7,7 +7,7 @@ namespace Asteroids
         private CapsuleCollider2D _collider;
         private ShipPresenter _ship;
         private Vector2 _laserColliderSize;
-        private int _enemyLayer;                    // Получить от оружия?
+        private int _enemyLayer;
 
         private void Start()
         {
@@ -26,7 +26,7 @@ namespace Asteroids
         {
             var hit = Physics2D.OverlapCapsule(transform.position, _laserColliderSize, _collider.direction, _ship.GetAngleRotation(), 1 << _enemyLayer);
 
-            if (hit != null && hit.TryGetComponent<IDamageable>(out IDamageable obj))       // Лазер пока что не уничтожает объекты
+            if (hit != null && hit.TryGetComponent<IDamageable>(out IDamageable obj))
             {
                 obj.TakeDamage();
             }

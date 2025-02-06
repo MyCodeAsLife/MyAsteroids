@@ -4,32 +4,35 @@ namespace Asteroids
 {
     internal class LaserGun : BaseGun
     {
+        public readonly SingleReactiveProperty<float> ChargingTimer = new();
+        public readonly SingleReactiveProperty<int> NumberOfLaserCharges = new();
+
         private readonly LaserPresenter _laserBeam;
         private readonly float _shotDuration;
         private readonly float _chargingTime;
         private readonly int _maxNumberOfLaserCharges;
 
-        private int _numberOfLaserCharges;                  // Если сделать реактивным свойством, то удобно будет значения выводить на экран, а также запускать и останавливать подписку на перезарядку
-        private float _chargingTimer;
         private bool _isActiveLaserBeam = false;
         private bool _isReloading = false;
 
         public event Action<bool> Shot;
         public event Action<float> Reloading;
 
-        public LaserGun(ShipPresenter ship, LaserPresenter laser, float cooldown = Config.CooldownLaserGun, float laserGunChargingTime = Config.LaserGunChargingTime,
+        public LaserGun(ShipPresenter ship, LaserPresenter laser, float cooldown = Config.CooldownLaserGun, float laserBeamChargingTime = Config.LaserGunChargingTime,
                         float shotDuration = Config.LaserGunShotDuration, int maxNumberOfLaserCharges = Config.MaxNumberOfLaserCharges) : base(ship, cooldown)
         {
             _laserBeam = laser;
             _shotDuration = shotDuration;
-            _numberOfLaserCharges = maxNumberOfLaserCharges;
+            NumberOfLaserCharges.Value = maxNumberOfLaserCharges;
+            ChargingTimer.Value = laserBeamChargingTime;
             _maxNumberOfLaserCharges = maxNumberOfLaserCharges;
-            _chargingTime = laserGunChargingTime;
+            _chargingTime = laserBeamChargingTime;                       // Под вопросом
+            Reloading += OnReloading;
         }
 
         public override void Tick(float deltaTime)
         {
-            if (IsPressShooting && _isActiveLaserBeam == false && _numberOfLaserCharges > 0 && FireRate < Timer)
+            if (IsPressShooting && _isActiveLaserBeam == false && NumberOfLaserCharges.Value > 0 && FireRate < Timer)
             {
                 Shooting();
 
@@ -39,7 +42,7 @@ namespace Asteroids
                     Reloading += OnReloading;
                 }
 
-                _numberOfLaserCharges--;
+                NumberOfLaserCharges.Value--;
                 Timer = 0;
             }
             else if (_isActiveLaserBeam)
@@ -61,20 +64,18 @@ namespace Asteroids
 
         private void OnReloading(float deltaTime)
         {
-            // Выводить на экран перезарядку?
-            // Выводить на экран кол-во зарядов лазера
+            ChargingTimer.Value -= deltaTime;
 
-            _chargingTimer += deltaTime;
-
-            if (_numberOfLaserCharges < _maxNumberOfLaserCharges && _chargingTime < _chargingTimer)
+            if (NumberOfLaserCharges.Value < _maxNumberOfLaserCharges && ChargingTimer.Value < 0)
             {
-                _numberOfLaserCharges++;
-                _chargingTimer = 0;
+                NumberOfLaserCharges.Value++;
+                ChargingTimer.Value = _chargingTime;
             }
-            else if (_numberOfLaserCharges >= _maxNumberOfLaserCharges)
+            else if (NumberOfLaserCharges.Value >= _maxNumberOfLaserCharges)
             {
                 Reloading -= OnReloading;
                 _isReloading = false;
+                ChargingTimer.Value = _chargingTime;
             }
         }
     }

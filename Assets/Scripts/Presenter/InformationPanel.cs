@@ -11,8 +11,6 @@ namespace Asteroids
         [SerializeField] TextMeshProUGUI _playerScoreUI;
         [SerializeField] TextMeshProUGUI _playerPositionUI;
 
-        //private int _laserCharges;                // Через реактивное
-        //private float _laserCooldown;             // Через реактивное
         private int _playerScore = 0;
 
         private void Start()
@@ -46,6 +44,16 @@ namespace Asteroids
         public void OnPlayerPositionChanged(Vector2 position)
         {
             _playerPositionUI.text = "Координаты коробля (X : " + string.Format("{0:0.000}", position.x) + " | Y : " + string.Format("{0:0.000}", position.y) + ")";
+        }
+
+        internal void OnSecondGunCharge(float cooldown)
+        {
+            _laserCooldownUI.text = "Перезарядка лазера: " + string.Format("{0:0.0}", cooldown);
+        }
+
+        internal void OnSecondGunNumberChargesChange(int amount)
+        {
+            _laserChargesUI.text = "Выстрелов лазером: " + amount;
         }
     }
 }

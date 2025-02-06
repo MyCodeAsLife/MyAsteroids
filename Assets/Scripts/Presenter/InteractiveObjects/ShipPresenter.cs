@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Asteroids
@@ -48,6 +49,8 @@ namespace Asteroids
 
         public void SetPresentersFactory(PresentersFactory factory) => ((DefaultGun)_shipModel.FirstGun).SetFactory(factory);       // Чтобы не прокидывать фабрику, оружее тоже вынести в префаб?
         public float GetAngleRotation() => _shipModel.RotationAngle;
+        public void SubscribeOnSecondGunCharge(Action<float> func) => ((LaserGun)_shipModel.SecondGun).ChargingTimer.Changed += func;
+        public void SubscribeOnSecondGunNumberChargesChange(Action<int> func) => ((LaserGun)_shipModel.SecondGun).NumberOfLaserCharges.Changed += func;
 
         private void StartInit()
         {

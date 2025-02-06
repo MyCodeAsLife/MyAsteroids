@@ -2,7 +2,7 @@ namespace Asteroids
 {
     internal static class Config
     {
-        public const string PlayerLayerName = "Player";     // Чтото
+        public const string PlayerLayerName = "Player";
         public const string EnemyLayerName = "Enemy";
 
         public const float PlayerShipMovementSpeed = 0.003f;

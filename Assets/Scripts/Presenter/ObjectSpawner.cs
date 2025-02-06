@@ -23,7 +23,7 @@ namespace Asteroids
             _random = new System.Random();
             _spawnInterval = Random.Range(1f, Config.AsteroidSpawnInterval);
 
-            // Все что ниже, для тестирования
+            // Все что ниже, для тестирования или вынести в отдельный инициализатор
             var prefab = Resources.Load<ShipPresenter>("Prefabs/Player");
             var playerShip = Instantiate<ShipPresenter>(prefab);
             PlayerShip = playerShip;
@@ -37,6 +37,8 @@ namespace Asteroids
             playerShip.SetMovementSpeed(Config.PlayerShipMovementSpeed);
             playerShip.SetMaxMovementSpeed(Config.PlayerShipMaxMovementSpeed);
             playerShip.SubscribeOnPositionChanged(_informationPanel.OnPlayerPositionChanged);
+            playerShip.SubscribeOnSecondGunCharge(_informationPanel.OnSecondGunCharge);
+            playerShip.SubscribeOnSecondGunNumberChargesChange(_informationPanel.OnSecondGunNumberChargesChange);
         }
 
         private void Update()

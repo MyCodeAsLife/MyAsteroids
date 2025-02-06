@@ -12,7 +12,6 @@ namespace Asteroids
 
         public override event Action<Presenter> Deactivated;
         public event Action<Interactive> Destroyed;
-        //public event Action<Transform> Exploded;
 
         public ModelMovement ModelMovement { get; private set; }
 
@@ -33,7 +32,7 @@ namespace Asteroids
             _viewMovement.Move(_objectModel.Position.Value);
             _viewMovement.Rotate(_objectModel.RotationAngle);
             CollisionCheck();
-            PositionCheck();          // Проверка на выход за границы игровой области
+            PositionCheck();
         }
 
         public void SetOverlapLayer(int layer) => _enemyLayer = layer;
@@ -59,7 +58,7 @@ namespace Asteroids
         {
             var hit = Physics2D.OverlapCapsule(transform.position, _collider.size, _collider.direction, _objectModel.RotationAngle, 1 << _enemyLayer);
 
-            if (hit != null)       // Лазер пока что не уничтожает объекты
+            if (hit != null)
             {
                 if (hit.TryGetComponent<IDamageable>(out IDamageable obj))
                     obj.TakeDamage();
@@ -68,7 +67,7 @@ namespace Asteroids
             }
         }
 
-        private void PositionCheck()                                // Не используется игроком и НЛО, вынести
+        private void PositionCheck()
         {
             var position = _objectModel.Position.Value;
 
