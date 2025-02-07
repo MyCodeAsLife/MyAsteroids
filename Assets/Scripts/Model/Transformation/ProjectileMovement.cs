@@ -4,12 +4,15 @@ namespace Asteroids
 {
     public class ProjectileMovement : ModelMovement
     {
-        public ProjectileMovement(Transformable model) : base(model) { }
-
-        public override void Tick(float deltaTime)
+        public ProjectileMovement(Transformable model) : base(model)
         {
-            Move(deltaTime);
+            Updated += Move;
         }
+
+        //public override void Tick(float deltaTime)
+        //{
+        //    Move(deltaTime);
+        //}
 
         private void Move(float deltaTime)          // Такаяже как у Asteroid
         {

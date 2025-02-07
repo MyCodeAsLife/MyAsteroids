@@ -62,6 +62,15 @@ public partial class @UserInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PauseMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""be8d3c92-967c-4ce3-9413-0e3d8b6475d3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -152,6 +161,17 @@ public partial class @UserInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c4cf1aff-a8ae-4a6d-b992-a891e936b0a2"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""PauseMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -176,6 +196,7 @@ public partial class @UserInputActions: IInputActionCollection2, IDisposable
         m_Controls_Rotate = m_Controls.FindAction("Rotate", throwIfNotFound: true);
         m_Controls_ShootFromFirstGun = m_Controls.FindAction("ShootFromFirstGun", throwIfNotFound: true);
         m_Controls_ShootFromSecondGun = m_Controls.FindAction("ShootFromSecondGun", throwIfNotFound: true);
+        m_Controls_PauseMenu = m_Controls.FindAction("PauseMenu", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -241,6 +262,7 @@ public partial class @UserInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Controls_Rotate;
     private readonly InputAction m_Controls_ShootFromFirstGun;
     private readonly InputAction m_Controls_ShootFromSecondGun;
+    private readonly InputAction m_Controls_PauseMenu;
     public struct ControlsActions
     {
         private @UserInputActions m_Wrapper;
@@ -249,6 +271,7 @@ public partial class @UserInputActions: IInputActionCollection2, IDisposable
         public InputAction @Rotate => m_Wrapper.m_Controls_Rotate;
         public InputAction @ShootFromFirstGun => m_Wrapper.m_Controls_ShootFromFirstGun;
         public InputAction @ShootFromSecondGun => m_Wrapper.m_Controls_ShootFromSecondGun;
+        public InputAction @PauseMenu => m_Wrapper.m_Controls_PauseMenu;
         public InputActionMap Get() { return m_Wrapper.m_Controls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -270,6 +293,9 @@ public partial class @UserInputActions: IInputActionCollection2, IDisposable
             @ShootFromSecondGun.started += instance.OnShootFromSecondGun;
             @ShootFromSecondGun.performed += instance.OnShootFromSecondGun;
             @ShootFromSecondGun.canceled += instance.OnShootFromSecondGun;
+            @PauseMenu.started += instance.OnPauseMenu;
+            @PauseMenu.performed += instance.OnPauseMenu;
+            @PauseMenu.canceled += instance.OnPauseMenu;
         }
 
         private void UnregisterCallbacks(IControlsActions instance)
@@ -286,6 +312,9 @@ public partial class @UserInputActions: IInputActionCollection2, IDisposable
             @ShootFromSecondGun.started -= instance.OnShootFromSecondGun;
             @ShootFromSecondGun.performed -= instance.OnShootFromSecondGun;
             @ShootFromSecondGun.canceled -= instance.OnShootFromSecondGun;
+            @PauseMenu.started -= instance.OnPauseMenu;
+            @PauseMenu.performed -= instance.OnPauseMenu;
+            @PauseMenu.canceled -= instance.OnPauseMenu;
         }
 
         public void RemoveCallbacks(IControlsActions instance)
@@ -318,5 +347,6 @@ public partial class @UserInputActions: IInputActionCollection2, IDisposable
         void OnRotate(InputAction.CallbackContext context);
         void OnShootFromFirstGun(InputAction.CallbackContext context);
         void OnShootFromSecondGun(InputAction.CallbackContext context);
+        void OnPauseMenu(InputAction.CallbackContext context);
     }
 }

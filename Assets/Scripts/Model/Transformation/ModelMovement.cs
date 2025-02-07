@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Asteroids
@@ -8,13 +9,21 @@ namespace Asteroids
 
         private float _xRatio;          // Корректировка скорости относительно соотношения сторон экрана
         private float _yRatio;          // Корректировка скорости относительно соотношения сторон экрана
+        //private bool _isPaused = false;
+
+        public event Action<float> Updated;
 
         public ModelMovement(Transformable model)
         {
             Model = model;
         }
 
-        public abstract void Tick(float deltaTime);
+        public virtual void Tick(float deltaTime)
+        {
+            //Debug.Log(_isPaused);                         //++++++++++++++++++++++++++++
+            //if (_isPaused == false)
+            Updated?.Invoke(deltaTime);
+        }
 
         public Vector2 SpeedCorrectionRelativeScreenSize(Vector2 position)
         {
@@ -30,6 +39,7 @@ namespace Asteroids
             _yRatio = ratio > 1 ? ratio : 1;
         }
 
+        //public void OnPauseMenuPressed() => _isPaused = !_isPaused;
         public void SetModel(Transformable model) => Model = model;
         protected void Move(Vector2 position) => Model.Position.Value = position;
         protected void Rotate(float delta) => Model.RotationAngle = delta;

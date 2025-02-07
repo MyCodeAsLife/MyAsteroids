@@ -4,8 +4,9 @@ namespace Asteroids
 {
     public class UfoPresenter : Interactive
     {
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             StartInit();
         }
 

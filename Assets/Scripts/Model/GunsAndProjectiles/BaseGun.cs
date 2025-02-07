@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Asteroids
+﻿namespace Asteroids
 {
     internal abstract class BaseGun
     {
@@ -9,8 +7,6 @@ namespace Asteroids
 
         protected bool IsPressShooting = false;
         protected float Timer;
-
-        //public abstract event Action<bool> Shot;
 
         public BaseGun(ShipPresenter ship, float cooldown)
         {

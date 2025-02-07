@@ -4,8 +4,9 @@ namespace Asteroids
 {
     public class ProjectilePresenter : Interactive
     {
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             StartInit();
         }
 

@@ -4,9 +4,11 @@ using UnityEngine.InputSystem;
 
 namespace Asteroids
 {
-    public class RootController
+    public class RootController : MonoBehaviour
     {
-        private readonly UserInputActions _inputActions;
+        private UserInputActions _inputActions;
+
+        public bool IsPaused { get; private set; }              // Положение форматирования
 
         public event Action MovementStarted;
         public event Action MovementCanceled;
@@ -16,8 +18,9 @@ namespace Asteroids
         public event Action ShootingFromFirstGunCanceled;
         public event Action ShootingFromSecondGunStarted;
         public event Action ShootingFromSecondGunCanceled;
+        public event Action PauseMenuPressed;
 
-        public RootController()
+        private void OnEnable()
         {
             _inputActions = new UserInputActions();
             _inputActions.Enable();
@@ -30,9 +33,11 @@ namespace Asteroids
             _inputActions.Controls.ShootFromFirstGun.canceled += OnShootingFromFirstGunCancel;
             _inputActions.Controls.ShootFromSecondGun.started += OnShootingFromSecondGunStart;
             _inputActions.Controls.ShootFromSecondGun.canceled += OnShootingFromSecondGunCancel;
+            _inputActions.Controls.PauseMenu.started += OnPauseMenuPress;
+            PauseMenuPressed += OnPausePress;
         }
 
-        ~RootController()
+        private void OnDisable()
         {
             _inputActions.Disable();
 
@@ -44,6 +49,7 @@ namespace Asteroids
             _inputActions.Controls.ShootFromFirstGun.canceled -= OnShootingFromFirstGunCancel;
             _inputActions.Controls.ShootFromSecondGun.started -= OnShootingFromSecondGunStart;
             _inputActions.Controls.ShootFromSecondGun.canceled -= OnShootingFromSecondGunCancel;
+            _inputActions.Controls.PauseMenu.started -= OnPauseMenuPress;
         }
 
         private void OnMovementStart(InputAction.CallbackContext context) => MovementStarted?.Invoke();
@@ -54,17 +60,7 @@ namespace Asteroids
         private void OnShootingFromFirstGunCancel(InputAction.CallbackContext context) => ShootingFromSecondGunCanceled?.Invoke();
         private void OnShootingFromSecondGunStart(InputAction.CallbackContext context) => ShootingFromFirstGunStarted?.Invoke();
         private void OnShootingFromSecondGunCancel(InputAction.CallbackContext context) => ShootingFromFirstGunCanceled?.Invoke();
-        //public void SubscribeOnStartMovement(Action func) => StartMovement += func;
-        //public void UnSubscribeOnStartMovement(Action func) => StartMovement -= func;
-        //public void SubscribeOnCancelMovement(Action func) => CancelMovement += func;
-        //public void UnSubscribeOnCancelMovement(Action func) => CancelMovement -= func;
-        //public void SubscribeOnStartRotation(Action<float> func) => StartRotation += func;
-        //public void UnSubscribeOnStartRotation(Action<float> func) => StartRotation -= func;
-        //public void SubscribeOnCancelRotation(Action func) => CancelRotation += func;
-        //public void UnSubscribeOnCancelRotation(Action func) => CancelRotation -= func;
-        //public void SubscribeOnFiredFirstGun(Action func) => FiredFirstGun += func;
-        //public void UnSubscribeOnFiredFirstGun(Action func) => FiredFirstGun -= func;
-        //public void SubscribeOnFiredSecondGun(Action func) => FiredSecondGun += func;
-        //public void UnSubscribeOnFiredSecondGun(Action func) => FiredSecondGun -= func;
+        private void OnPauseMenuPress(InputAction.CallbackContext context) => PauseMenuPressed?.Invoke();
+        private void OnPausePress() => IsPaused = !IsPaused;
     }
 }

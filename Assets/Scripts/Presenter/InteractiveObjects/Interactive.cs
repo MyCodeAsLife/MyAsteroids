@@ -24,15 +24,8 @@ namespace Asteroids
             var _displaySize = _canvas.renderingDisplaySize / _canvas.scaleFactor;
             ModelMovement.SetScreenAspectRatio(_displaySize);
             _viewMovement.SetDisplaySize(_displaySize);
-        }
 
-        protected void Update()
-        {
-            ModelMovement.Tick(Time.deltaTime);
-            _viewMovement.Move(_objectModel.Position.Value);
-            _viewMovement.Rotate(_objectModel.RotationAngle);
-            CollisionCheck();
-            PositionCheck();
+            Updated += OnUpdate;
         }
 
         public void SetOverlapLayer(int layer) => _enemyLayer = layer;
@@ -52,6 +45,14 @@ namespace Asteroids
         {
             Destroyed?.Invoke(this);
             Deactivated?.Invoke(this);
+        }
+
+        public override void OnPauseSwith()
+        {
+            if (IsPaused)
+                Updated -= OnUpdate;
+            else
+                Updated += OnUpdate;
         }
 
         private void CollisionCheck()
@@ -76,6 +77,15 @@ namespace Asteroids
                position.x < Config.MinBoundaryExistenceObjects ||
                position.y < Config.MinBoundaryExistenceObjects)
                 Deactivated?.Invoke(this);
+        }
+
+        private void OnUpdate(float deltaTime)
+        {
+            ModelMovement.Tick(Time.deltaTime);
+            _viewMovement.Move(_objectModel.Position.Value);
+            _viewMovement.Rotate(_objectModel.RotationAngle);
+            CollisionCheck();
+            PositionCheck();
         }
     }
 }

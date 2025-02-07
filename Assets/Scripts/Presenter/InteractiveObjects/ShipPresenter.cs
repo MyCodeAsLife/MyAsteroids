@@ -9,42 +9,59 @@ namespace Asteroids
 
         private ShipModel _shipModel;
         private ShipMovement _shipMovement;
-        private RootController _userInput;
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             StartInit();
         }
 
-        private void OnEnable()
+        protected override void OnEnable()
         {
-            _userInput.MovementStarted += _shipMovement.OnMovementStart;
-            _userInput.MovementCanceled += _shipMovement.OnMovementCancel;
-            _userInput.RotationStarted += _shipMovement.OnRotationStart;
-            _userInput.RotationCanceled += _shipMovement.OnRotationCancel;
-            _userInput.ShootingFromFirstGunStarted += _shipModel.FirstGun.OnShootingStart;
-            _userInput.ShootingFromFirstGunCanceled += _shipModel.FirstGun.OnShootingCancel;
-            _userInput.ShootingFromSecondGunStarted += _shipModel.SecondGun.OnShootingStart;
-            _userInput.ShootingFromSecondGunCanceled += _shipModel.SecondGun.OnShootingCancel;
+            base.OnEnable();
+            UserInput.MovementStarted += _shipMovement.OnMovementStart;
+            UserInput.MovementCanceled += _shipMovement.OnMovementCancel;
+            UserInput.RotationStarted += _shipMovement.OnRotationStart;
+            UserInput.RotationCanceled += _shipMovement.OnRotationCancel;
+            UserInput.ShootingFromFirstGunStarted += _shipModel.FirstGun.OnShootingStart;
+            UserInput.ShootingFromFirstGunCanceled += _shipModel.FirstGun.OnShootingCancel;
+            UserInput.ShootingFromSecondGunStarted += _shipModel.SecondGun.OnShootingStart;
+            UserInput.ShootingFromSecondGunCanceled += _shipModel.SecondGun.OnShootingCancel;
+
+            Updated += _shipModel.FirstGun.Tick;
+            Updated += _shipModel.SecondGun.Tick;
         }
 
-        private void OnDisable()
+        protected override void OnDisable()
         {
-            _userInput.MovementStarted -= _shipMovement.OnMovementStart;
-            _userInput.MovementCanceled -= _shipMovement.OnMovementCancel;
-            _userInput.RotationStarted -= _shipMovement.OnRotationStart;
-            _userInput.RotationCanceled -= _shipMovement.OnRotationCancel;
-            _userInput.ShootingFromFirstGunStarted -= _shipModel.FirstGun.OnShootingStart;
-            _userInput.ShootingFromFirstGunCanceled -= _shipModel.FirstGun.OnShootingCancel;
-            _userInput.ShootingFromSecondGunStarted -= _shipModel.SecondGun.OnShootingStart;
-            _userInput.ShootingFromSecondGunCanceled -= _shipModel.SecondGun.OnShootingCancel;
+            base.OnDisable();
+            UserInput.MovementStarted -= _shipMovement.OnMovementStart;
+            UserInput.MovementCanceled -= _shipMovement.OnMovementCancel;
+            UserInput.RotationStarted -= _shipMovement.OnRotationStart;
+            UserInput.RotationCanceled -= _shipMovement.OnRotationCancel;
+            UserInput.ShootingFromFirstGunStarted -= _shipModel.FirstGun.OnShootingStart;
+            UserInput.ShootingFromFirstGunCanceled -= _shipModel.FirstGun.OnShootingCancel;
+            UserInput.ShootingFromSecondGunStarted -= _shipModel.SecondGun.OnShootingStart;
+            UserInput.ShootingFromSecondGunCanceled -= _shipModel.SecondGun.OnShootingCancel;
+
+            Updated -= _shipModel.FirstGun.Tick;
+            Updated -= _shipModel.SecondGun.Tick;
         }
 
-        private new void Update()
+        public override void OnPauseSwith()
         {
-            _shipModel.FirstGun.Tick(Time.deltaTime);
-            _shipModel.SecondGun.Tick(Time.deltaTime);
-            base.Update();
+            base.OnPauseSwith();
+
+            if (IsPaused)
+            {
+                Updated -= _shipModel.FirstGun.Tick;
+                Updated -= _shipModel.SecondGun.Tick;
+            }
+            else
+            {
+                Updated += _shipModel.FirstGun.Tick;
+                Updated += _shipModel.SecondGun.Tick;
+            }
         }
 
         public void SetPresentersFactory(PresentersFactory factory) => ((DefaultGun)_shipModel.FirstGun).SetFactory(factory);       // Чтобы не прокидывать фабрику, оружее тоже вынести в префаб?
@@ -55,7 +72,6 @@ namespace Asteroids
         private void StartInit()
         {
             _shipModel = new ShipModel(this, _laser);
-            _userInput = new RootController();
             _shipMovement = new ShipMovement(_shipModel);
             SetModel(_shipModel);
             SetModelMovement(_shipMovement);

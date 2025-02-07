@@ -13,14 +13,7 @@ namespace Asteroids
         public ShipMovement(Transformable model) : base(model)
         {
             _inertiaSimulator = new InertiaSimulator(model);
-        }
-
-        public override void Tick(float deltaTime)
-        {
-            Rotation?.Invoke(deltaTime);
-            Movement?.Invoke(Model.Forward, deltaTime);
-            Move();
-            _inertiaSimulator.SlowDown(deltaTime);
+            Updated += OnUpdated;
         }
 
         public void OnMovementStart()
@@ -59,6 +52,14 @@ namespace Asteroids
 
             float delta = Model.RotationAngle + (Model.DegreesPerSecond * deltaTime * Model.DirectionOfRotation);
             base.Rotate(delta);
+        }
+
+        private void OnUpdated(float deltaTime)
+        {
+            Rotation?.Invoke(deltaTime);
+            Movement?.Invoke(Model.Forward, deltaTime);
+            Move();
+            _inertiaSimulator.SlowDown(deltaTime);
         }
     }
 }

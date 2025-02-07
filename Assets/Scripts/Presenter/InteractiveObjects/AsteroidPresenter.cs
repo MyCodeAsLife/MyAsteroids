@@ -4,8 +4,9 @@ namespace Asteroids
 {
     public class AsteroidPresenter : Interactive
     {
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             StartInit();
         }
 
@@ -15,6 +16,12 @@ namespace Asteroids
             SetModel(objModel);
             SetModelMovement(new AsteroidMovement(objModel));
             SetOverlapLayer(LayerMask.NameToLayer(Config.PlayerLayerName));
+
+            //SetDirectionMovement(new Vector2(1f, 1f));
+            //SetMovementSpeed(0.003f);
+            //SetMaxMovementSpeed(0.003f);
+            //SetDirectionOfRotation(1);
+            //SetDegreesPerSecond(Config.AsteroidMaxRotationSpeed);
         }
     }
 }
