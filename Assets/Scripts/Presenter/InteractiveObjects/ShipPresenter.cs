@@ -5,7 +5,10 @@ namespace Asteroids
 {
     public class ShipPresenter : Interactive
     {
-        [SerializeField] LaserPresenter _laser;
+        [SerializeField] private LaserPresenter _laser;
+        private AudioSource _audioSorce;           // Вынести в отдельную Audio систему
+        private AudioClip _explosion;           // Вынести в отдельную Audio систему
+        private AudioClip _blast;           // Вынести в отдельную Audio систему
 
         private ShipModel _shipModel;
         private ShipMovement _shipMovement;
@@ -14,6 +17,10 @@ namespace Asteroids
         {
             base.Awake();
             StartInit();
+
+            _audioSorce = GetComponent<AudioSource>();           // Вынести в отдельную Audio систему
+            _explosion = Resources.Load<AudioClip>("Audio/Explode");           // Вынести в отдельную Audio систему
+            _blast = Resources.Load<AudioClip>("Audio/Blast");           // Вынести в отдельную Audio систему
         }
 
         protected override void OnEnable()
@@ -30,6 +37,7 @@ namespace Asteroids
 
             Updated += _shipModel.FirstGun.Tick;
             Updated += _shipModel.SecondGun.Tick;
+            _shipModel.FirstGun.Shot += PlaySoundBlastShot;
         }
 
         protected override void OnDisable()
@@ -46,13 +54,14 @@ namespace Asteroids
 
             Updated -= _shipModel.FirstGun.Tick;
             Updated -= _shipModel.SecondGun.Tick;
+            _shipModel.FirstGun.Shot += PlaySoundBlastShot;
         }
 
-        public override void OnPauseSwith()
+        protected override void OnPauseMenuPresed(bool isPaused)
         {
-            base.OnPauseSwith();
+            base.OnPauseMenuPresed(isPaused);
 
-            if (IsPaused)
+            if (isPaused)
             {
                 Updated -= _shipModel.FirstGun.Tick;
                 Updated -= _shipModel.SecondGun.Tick;
@@ -82,9 +91,19 @@ namespace Asteroids
         private void OnLaserShoot(bool isActivate)
         {
             if (isActivate)
-                SetDegreesPerSecond(Config.PlayerRotationSpeed / 3);
+                SetDegreesPerSecond(Config.PlayerRotationSpeed / 3);                // Magic
             else
                 SetDegreesPerSecond(Config.PlayerRotationSpeed);
+        }
+
+        private void PlaySoundBlastShot()           // Вынести в отдельную Audio систему
+        {
+            _audioSorce.PlayOneShot(_blast);
+        }
+
+        private void PlaySoundLaserBeamShoting(bool isActiveLaserBeam)           // Вынести в отдельную Audio систему
+        {
+            // Добавить непрерывный звук лазера, который будет тартовать на true и прерыватся на false
         }
     }
 }

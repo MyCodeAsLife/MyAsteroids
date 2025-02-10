@@ -1,39 +1,38 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Asteroids
 {
     public class PauseMenu : MonoBehaviour
     {
-        private RootController _rootController;
-        private SingleReactiveProperty<bool> _isPause = new();
-
-        public bool IsPause
-        {
-            get
-            {
-                return _isPause.Value;
-            }
-
-            private set
-            {
-                _isPause.Value = value;
-            }
-        }
-
-        private void Awake()
-        {
-            _rootController = FindFirstObjectByType<RootController>();
-
-        }
+        [SerializeField] private Transform _pauseMenu;
 
         private void OnEnable()
         {
-            _rootController.PauseMenuPressed += OnPauseMenuPress;
+            GameState.IsPaused.Changed += OnPauseMenuPress;
+            OnPauseMenuPress(GameState.IsPaused.Value);
         }
 
-        private void OnPauseMenuPress()
+        private void OnDisable()
         {
-            _isPause.Value = !_isPause.Value;
+            GameState.IsPaused.Changed -= OnPauseMenuPress;
+        }
+
+        private void OnPauseMenuPress(bool value)
+        {
+            _pauseMenu.gameObject.SetActive(GameState.IsPaused.Value);
+        }
+
+        public void RestartGame()
+        {
+            GameState.IsPaused.Value = false;
+            SceneManager.LoadScene("Game");
+        }
+
+        public void ExitToMainMenu()
+        {
+            GameState.IsPaused.Value = false;
+            SceneManager.LoadScene("Menu");
         }
     }
 }

@@ -9,7 +9,6 @@ namespace Asteroids
 
         private float _xRatio;          // Корректировка скорости относительно соотношения сторон экрана
         private float _yRatio;          // Корректировка скорости относительно соотношения сторон экрана
-        //private bool _isPaused = false;
 
         public event Action<float> Updated;
 
@@ -20,8 +19,6 @@ namespace Asteroids
 
         public virtual void Tick(float deltaTime)
         {
-            //Debug.Log(_isPaused);                         //++++++++++++++++++++++++++++
-            //if (_isPaused == false)
             Updated?.Invoke(deltaTime);
         }
 
@@ -39,7 +36,6 @@ namespace Asteroids
             _yRatio = ratio > 1 ? ratio : 1;
         }
 
-        //public void OnPauseMenuPressed() => _isPaused = !_isPaused;
         public void SetModel(Transformable model) => Model = model;
         protected void Move(Vector2 position) => Model.Position.Value = position;
         protected void Rotate(float delta) => Model.RotationAngle = delta;

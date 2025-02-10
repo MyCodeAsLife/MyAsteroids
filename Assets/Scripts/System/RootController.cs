@@ -8,8 +8,6 @@ namespace Asteroids
     {
         private UserInputActions _inputActions;
 
-        public bool IsPaused { get; private set; }              // Положение форматирования
-
         public event Action MovementStarted;
         public event Action MovementCanceled;
         public event Action<float> RotationStarted;
@@ -18,7 +16,6 @@ namespace Asteroids
         public event Action ShootingFromFirstGunCanceled;
         public event Action ShootingFromSecondGunStarted;
         public event Action ShootingFromSecondGunCanceled;
-        public event Action PauseMenuPressed;
 
         private void OnEnable()
         {
@@ -34,7 +31,6 @@ namespace Asteroids
             _inputActions.Controls.ShootFromSecondGun.started += OnShootingFromSecondGunStart;
             _inputActions.Controls.ShootFromSecondGun.canceled += OnShootingFromSecondGunCancel;
             _inputActions.Controls.PauseMenu.started += OnPauseMenuPress;
-            PauseMenuPressed += OnPausePress;
         }
 
         private void OnDisable()
@@ -60,7 +56,6 @@ namespace Asteroids
         private void OnShootingFromFirstGunCancel(InputAction.CallbackContext context) => ShootingFromSecondGunCanceled?.Invoke();
         private void OnShootingFromSecondGunStart(InputAction.CallbackContext context) => ShootingFromFirstGunStarted?.Invoke();
         private void OnShootingFromSecondGunCancel(InputAction.CallbackContext context) => ShootingFromFirstGunCanceled?.Invoke();
-        private void OnPauseMenuPress(InputAction.CallbackContext context) => PauseMenuPressed?.Invoke();
-        private void OnPausePress() => IsPaused = !IsPaused;
+        private void OnPauseMenuPress(InputAction.CallbackContext context) => GameState.IsPaused.Value = !GameState.IsPaused.Value;
     }
 }

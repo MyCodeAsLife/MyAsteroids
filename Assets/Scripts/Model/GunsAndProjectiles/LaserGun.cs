@@ -15,7 +15,7 @@ namespace Asteroids
         private bool _isActiveLaserBeam = false;
         private bool _isReloading = false;
 
-        public event Action<bool> Shot;
+        public new event Action<bool> Shot;
         public event Action<float> Reloading;
 
         public LaserGun(ShipPresenter ship, LaserPresenter laser, float cooldown = Config.CooldownLaserGun, float laserBeamChargingTime = Config.LaserGunChargingTime,

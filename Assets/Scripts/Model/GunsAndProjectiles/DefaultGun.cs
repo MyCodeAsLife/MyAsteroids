@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace Asteroids
@@ -21,6 +20,7 @@ namespace Asteroids
 
         protected override void Shooting()
         {
+            base.Shooting();
             Timer = 0f;
             Interactive projectile = (Interactive)_factory.GetObject(GameObjectType.Bullet);
             projectile.transform.localScale = new Vector3(Config.BulletSize, Config.BulletSize);

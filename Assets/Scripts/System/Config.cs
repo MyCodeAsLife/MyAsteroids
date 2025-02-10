@@ -27,6 +27,7 @@ namespace Asteroids
         public const float AsteroidSpawnInterval = 2f;
         public const float AsteroidPartSpawnInterval = 2f;      // Реализовать
 
+        public const float PlayerShipSize = 8f;
         public const float BulletSize = 20f;
         public const float UfoMinSize = 6f;
         public const float UfoMaxSize = 10f;

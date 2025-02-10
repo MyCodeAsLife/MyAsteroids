@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Asteroids
@@ -16,12 +17,25 @@ namespace Asteroids
         private float _timer;
         private float _spawnInterval;
 
+        private event Action Updated;
+
+        private void OnEnable()
+        {
+            GameState.IsPaused.Changed += OnPausePress;
+            OnPausePress(GameState.IsPaused.Value);
+        }
+
+        private void OnDisable()
+        {
+            GameState.IsPaused.Changed -= OnPausePress;
+        }
+
         private void Start()
         {
             _factory = GetComponent<PresentersFactory>();
             _informationPanel = GetComponent<InformationPanel>();
             _random = new System.Random();
-            _spawnInterval = Random.Range(1f, Config.AsteroidSpawnInterval);
+            _spawnInterval = UnityEngine.Random.Range(1f, Config.AsteroidSpawnInterval);
 
             // Все что ниже, для тестирования или вынести в отдельный инициализатор
             var prefab = Resources.Load<ShipPresenter>("Prefabs/Player");
@@ -39,16 +53,30 @@ namespace Asteroids
             playerShip.SubscribeOnPositionChanged(_informationPanel.OnPlayerPositionChanged);
             playerShip.SubscribeOnSecondGunCharge(_informationPanel.OnSecondGunCharge);
             playerShip.SubscribeOnSecondGunNumberChargesChange(_informationPanel.OnSecondGunNumberChargesChange);
+            playerShip.transform.localScale = new Vector3(Config.PlayerShipSize, Config.PlayerShipSize, 1f);
         }
 
         private void Update()
+        {
+            Updated?.Invoke();
+        }
+
+        private void OnPausePress(bool isPaused)
+        {
+            if (isPaused)
+                Updated -= SpawnObjects;
+            else
+                Updated += SpawnObjects;
+        }
+
+        private void SpawnObjects()
         {
             _timer += Time.deltaTime;
 
             if (_timer > _spawnInterval)
             {
                 _timer = 0;
-                _spawnInterval = Random.Range(1f, Config.AsteroidSpawnInterval);
+                _spawnInterval = UnityEngine.Random.Range(1f, Config.AsteroidSpawnInterval);
 
                 Interactive obj = (Interactive)_factory.GetObject(GameObjectType.Asteroid);
                 obj.Deactivated += OnDeactivated;                   // Если подписывать 1 раз, то этот пункт ненужен
@@ -69,22 +97,22 @@ namespace Asteroids
 
             if (obj.ObjectType == GameObjectType.Ufo)
             {
-                movementSpeed = Random.Range(Config.UfoMinSpeed, Config.UfoMaxSpeed);                 // Дублируется?
-                obj.SetDegreesPerSecond(Random.Range(Config.UfoMinRotationSpeed, Config.UfoMaxRotationSpeed));                 // Дублируется?
+                movementSpeed = UnityEngine.Random.Range(Config.UfoMinSpeed, Config.UfoMaxSpeed);                 // Дублируется?
+                obj.SetDegreesPerSecond(UnityEngine.Random.Range(Config.UfoMinRotationSpeed, Config.UfoMaxRotationSpeed));                 // Дублируется?
                 ((UfoPresenter)obj).SetAtackTarget(PlayerShip);
-                objectSize = Random.Range(Config.UfoMinSize, Config.UfoMaxSize);
+                objectSize = UnityEngine.Random.Range(Config.UfoMinSize, Config.UfoMaxSize);
             }
             else if (obj.ObjectType == GameObjectType.Asteroid || obj.ObjectType == GameObjectType.AsteroidPart)
             {
-                movementSpeed = Random.Range(Config.AsteroidMinSpeed, Config.AsteroidMaxSpeed);                 // Дублируется?
-                obj.SetDegreesPerSecond(Random.Range(Config.AsteroidMinRotationSpeed, Config.AsteroidMaxRotationSpeed));                 // Дублируется?
+                movementSpeed = UnityEngine.Random.Range(Config.AsteroidMinSpeed, Config.AsteroidMaxSpeed);                 // Дублируется?
+                obj.SetDegreesPerSecond(UnityEngine.Random.Range(Config.AsteroidMinRotationSpeed, Config.AsteroidMaxRotationSpeed));                 // Дублируется?
                 obj.SetDirectionMovement(GetRandomStartDirectionMovement(isVertical, spawnPosition));
-                obj.SetDirectionOfRotation(Random.Range(-1f, 1f));
+                obj.SetDirectionOfRotation(UnityEngine.Random.Range(-1f, 1f));
 
                 if (obj.ObjectType == GameObjectType.AsteroidPart)
-                    objectSize = Random.Range(Config.AsteroidPartMinSize, Config.AsteroidPartMaxSize);
+                    objectSize = UnityEngine.Random.Range(Config.AsteroidPartMinSize, Config.AsteroidPartMaxSize);
                 else
-                    objectSize = Random.Range(Config.AsteroidMinSize, Config.AsteroidMaxSize);
+                    objectSize = UnityEngine.Random.Range(Config.AsteroidMinSize, Config.AsteroidMaxSize);
             }
 
             obj.SetPosition(spawnPosition);
@@ -151,7 +179,7 @@ namespace Asteroids
         {
             if (obj.ObjectType == GameObjectType.Asteroid)          // Если будет подписыватся ТОЛЬКО астероид, то проверка никчему
             {
-                int numberOfFragmets = Random.Range(Config.AsteroidPartMinNumberOfFragments, Config.AsteroidPartMaxNumberOfFragments + 1);
+                int numberOfFragmets = UnityEngine.Random.Range(Config.AsteroidPartMinNumberOfFragments, Config.AsteroidPartMaxNumberOfFragments + 1);
 
                 for (int i = 0; i < numberOfFragmets; i++)
                 {

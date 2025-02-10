@@ -20,7 +20,8 @@ namespace Asteroids
             _collider = GetComponent<CapsuleCollider2D>();
             _viewMovement = new ViewMovement(transform);
             _viewMovement.SetScaleWindowSize(Config.ScaleWindowSize);
-            var _canvas = GetComponentInParent<Canvas>();
+            //var _canvas = GetComponentInParent<Canvas>();
+            var _canvas = FindFirstObjectByType<Canvas>();
             var _displaySize = _canvas.renderingDisplaySize / _canvas.scaleFactor;
             ModelMovement.SetScreenAspectRatio(_displaySize);
             _viewMovement.SetDisplaySize(_displaySize);
@@ -45,14 +46,6 @@ namespace Asteroids
         {
             Destroyed?.Invoke(this);
             Deactivated?.Invoke(this);
-        }
-
-        public override void OnPauseSwith()
-        {
-            if (IsPaused)
-                Updated -= OnUpdate;
-            else
-                Updated += OnUpdate;
         }
 
         private void CollisionCheck()
@@ -86,6 +79,14 @@ namespace Asteroids
             _viewMovement.Rotate(_objectModel.RotationAngle);
             CollisionCheck();
             PositionCheck();
+        }
+
+        protected override void OnPauseMenuPresed(bool isPaused)
+        {
+            if (isPaused)
+                Updated -= OnUpdate;
+            else
+                Updated += OnUpdate;
         }
     }
 }

@@ -15,11 +15,6 @@ namespace Asteroids
             StartCoroutine(PlayEffect());
         }
 
-        public override void OnPauseSwith()
-        {
-            //throw new NotImplementedException();
-        }
-
         private IEnumerator PlayEffect()
         {
             const float Duration = 0.6f;
