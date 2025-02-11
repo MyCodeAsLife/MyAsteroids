@@ -10,6 +10,7 @@ namespace Asteroids
 
         public ShipPresenter PlayerShip { get; private set; }
 
+        private RootAudioSystem _audioSystem;
         private PresentersFactory _factory;
         private InformationPanel _informationPanel;
         private System.Random _random;
@@ -32,6 +33,7 @@ namespace Asteroids
 
         private void Start()
         {
+            _audioSystem = FindFirstObjectByType<RootAudioSystem>();
             _factory = GetComponent<PresentersFactory>();
             _informationPanel = GetComponent<InformationPanel>();
             _random = new System.Random();
@@ -195,6 +197,7 @@ namespace Asteroids
 
         private void Explode(Interactive obj)
         {
+            _audioSystem.PlaySoundExplosion();
             var explosion = (ExplosionPresenter)_factory.GetObject(GameObjectType.Explosion);
             explosion.Explode(obj.transform);
         }

@@ -46,5 +46,10 @@ namespace Asteroids
         public const int UfoCost = 10;
         public const int AsteroidCost = 5;
         public const int AsteroidParthCost = 1;
+
+        //For Audio (вынести в перечисление?)
+        public const string MainMenuMusic = "Audio/MainMenuBackground";
+        public const string GameMusic = "Audio/ActionBackground";
+        public const string PauseMenuMusic = "Audio/PauseMenuBackground";
     }
 }

@@ -6,21 +6,15 @@ namespace Asteroids
     public class ShipPresenter : Interactive
     {
         [SerializeField] private LaserPresenter _laser;
-        private AudioSource _audioSorce;           // Вынести в отдельную Audio систему
-        private AudioClip _explosion;           // Вынести в отдельную Audio систему
-        private AudioClip _blast;           // Вынести в отдельную Audio систему
 
         private ShipModel _shipModel;
         private ShipMovement _shipMovement;
+        private RootAudioSystem _audioSystem;
 
         protected override void Awake()
         {
             base.Awake();
             StartInit();
-
-            _audioSorce = GetComponent<AudioSource>();           // Вынести в отдельную Audio систему
-            _explosion = Resources.Load<AudioClip>("Audio/Explode");           // Вынести в отдельную Audio систему
-            _blast = Resources.Load<AudioClip>("Audio/Blast");           // Вынести в отдельную Audio систему
         }
 
         protected override void OnEnable()
@@ -37,7 +31,8 @@ namespace Asteroids
 
             Updated += _shipModel.FirstGun.Tick;
             Updated += _shipModel.SecondGun.Tick;
-            _shipModel.FirstGun.Shot += PlaySoundBlastShot;
+            _shipModel.FirstGun.Shot += _audioSystem.PlaySoundBlastShot;
+            ((LaserGun)_shipModel.SecondGun).Shot += _audioSystem.PlaySoundLaserBeamShoting;
         }
 
         protected override void OnDisable()
@@ -54,7 +49,8 @@ namespace Asteroids
 
             Updated -= _shipModel.FirstGun.Tick;
             Updated -= _shipModel.SecondGun.Tick;
-            _shipModel.FirstGun.Shot += PlaySoundBlastShot;
+            _shipModel.FirstGun.Shot -= _audioSystem.PlaySoundBlastShot;
+            ((LaserGun)_shipModel.SecondGun).Shot -= _audioSystem.PlaySoundLaserBeamShoting;
         }
 
         protected override void OnPauseMenuPresed(bool isPaused)
@@ -86,6 +82,7 @@ namespace Asteroids
             SetModelMovement(_shipMovement);
             SetOverlapLayer(LayerMask.NameToLayer(Config.EnemyLayerName));
             ((LaserGun)_shipModel.SecondGun).Shot += OnLaserShoot;
+            _audioSystem = FindFirstObjectByType<RootAudioSystem>();
         }
 
         private void OnLaserShoot(bool isActivate)
@@ -94,16 +91,6 @@ namespace Asteroids
                 SetDegreesPerSecond(Config.PlayerRotationSpeed / 3);                // Magic
             else
                 SetDegreesPerSecond(Config.PlayerRotationSpeed);
-        }
-
-        private void PlaySoundBlastShot()           // Вынести в отдельную Audio систему
-        {
-            _audioSorce.PlayOneShot(_blast);
-        }
-
-        private void PlaySoundLaserBeamShoting(bool isActiveLaserBeam)           // Вынести в отдельную Audio систему
-        {
-            // Добавить непрерывный звук лазера, который будет тартовать на true и прерыватся на false
         }
     }
 }

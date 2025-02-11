@@ -8,6 +8,7 @@ namespace Asteroids
         private Transformable _objectModel;
         private ViewMovement _viewMovement;
         private CapsuleCollider2D _collider;
+        private Vector2 _newColliderSize;
         private int _enemyLayer;
 
         public override event Action<Presenter> Deactivated;
@@ -20,11 +21,11 @@ namespace Asteroids
             _collider = GetComponent<CapsuleCollider2D>();
             _viewMovement = new ViewMovement(transform);
             _viewMovement.SetScaleWindowSize(Config.ScaleWindowSize);
-            //var _canvas = GetComponentInParent<Canvas>();
             var _canvas = FindFirstObjectByType<Canvas>();
             var _displaySize = _canvas.renderingDisplaySize / _canvas.scaleFactor;
             ModelMovement.SetScreenAspectRatio(_displaySize);
             _viewMovement.SetDisplaySize(_displaySize);
+            _newColliderSize = new Vector2(_collider.size.x * transform.localScale.x, _collider.size.y * transform.localScale.y);
 
             Updated += OnUpdate;
         }
@@ -50,7 +51,7 @@ namespace Asteroids
 
         private void CollisionCheck()
         {
-            var hit = Physics2D.OverlapCapsule(transform.position, _collider.size, _collider.direction, _objectModel.RotationAngle, 1 << _enemyLayer);
+            var hit = Physics2D.OverlapCapsule(transform.position, _newColliderSize, _collider.direction, _objectModel.RotationAngle, 1 << _enemyLayer);
 
             if (hit != null)
             {
