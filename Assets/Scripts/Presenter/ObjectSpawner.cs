@@ -22,20 +22,20 @@ namespace Asteroids
 
         private void OnEnable()
         {
-            GameState.IsPaused.Changed += OnPausePress;
-            OnPausePress(GameState.IsPaused.Value);
+            GameState.SwitchPause += OnPausePress;
+            OnPausePress(GameState.IsPaused);
         }
 
         private void OnDisable()
         {
-            GameState.IsPaused.Changed -= OnPausePress;
+            GameState.SwitchPause -= OnPausePress;
         }
 
         private void Start()
         {
             _audioSystem = FindFirstObjectByType<RootAudioSystem>();
+            _informationPanel = FindFirstObjectByType<InformationPanel>();
             _factory = GetComponent<PresentersFactory>();
-            _informationPanel = GetComponent<InformationPanel>();
             _random = new System.Random();
             _spawnInterval = UnityEngine.Random.Range(1f, Config.AsteroidSpawnInterval);
 

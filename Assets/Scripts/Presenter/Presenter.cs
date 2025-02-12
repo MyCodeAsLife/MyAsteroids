@@ -19,12 +19,12 @@ namespace Asteroids
 
         protected virtual void OnEnable()
         {
-            GameState.IsPaused.Changed += OnPauseMenuPresed;
+            GameState.SwitchPause += OnPauseMenuPresed;
         }
 
         protected virtual void OnDisable()
         {
-            GameState.IsPaused.Changed -= OnPauseMenuPresed;
+            GameState.SwitchPause -= OnPauseMenuPresed;
         }
 
         private void Update()

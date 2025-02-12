@@ -1,20 +1,18 @@
 using UnityEngine;
 using UnityEngine.Audio;
-using UnityEngine.EventSystems;
 
 namespace Asteroids
 {
     public class RootAudioSystem : MonoBehaviour
     {
-        private EventSystem _eventSystem;
         private AudioMixer _mixerGroup;
         private AudioSource _audioBackground;
         private AudioSource _audioExplosion;
         private AudioSource _audioFirstGun;
         private AudioSource _audioSecondGun;
         private AudioSource _audioUI;
-        private AudioClip _buttonHighlight;                  // Загрузить    Используется и в главном меню
-        private AudioClip _buttonClick;                      // Загрузить    Используется и в главном меню
+        //private AudioClip _buttonHighlight;                  // Загрузить    Используется и в главном меню
+        private AudioClip _buttonClick;
         private AudioClip _explosion1;
         private AudioClip _explosion2;
         private AudioClip _laserBeam;
@@ -23,7 +21,6 @@ namespace Asteroids
         private void Awake()
         {
             DontDestroyOnLoad(gameObject);
-            _eventSystem = EventSystem.current;
 
             _audioBackground = gameObject.AddComponent<AudioSource>();
             _audioExplosion = gameObject.AddComponent<AudioSource>();
@@ -35,6 +32,8 @@ namespace Asteroids
             _blast = Resources.Load<AudioClip>("Audio/Blast");
             _laserBeam = Resources.Load<AudioClip>("Audio/LaserBeam");
             _mixerGroup = Resources.Load<AudioMixer>("Audio/Mixer");
+            //_buttonHighlight = Resources.Load<AudioClip>("Audio/ButtonHighlight");
+            _buttonClick = Resources.Load<AudioClip>("Audio/ButtonClick");
 
             _audioBackground.outputAudioMixerGroup = _mixerGroup.FindMatchingGroups("Music")[0];
             _audioBackground.loop = true;
@@ -54,6 +53,11 @@ namespace Asteroids
             _audioSecondGun.clip = _laserBeam;
             _audioSecondGun.volume = 0.7f;                                                              // Magic
             _audioSecondGun.loop = false;
+
+            _audioUI.outputAudioMixerGroup = _mixerGroup.FindMatchingGroups("UI")[0];
+            _audioUI.playOnAwake = false;
+            _audioUI.volume = 0.7f;                                                              // Magic
+            _audioUI.loop = false;
         }
 
         private void Start()
@@ -94,14 +98,14 @@ namespace Asteroids
             _audioExplosion.PlayOneShot(_explosion2);
         }
 
-        public void PlaySoundOnButtonHighlighted()              // Пекределать под UI
-        {
-            _audioExplosion.PlayOneShot(_buttonHighlight);
-        }
+        //public void PlaySoundOnButtonHighlighted()              // Пекределать под UI
+        //{
+        //    _audioExplosion.PlayOneShot(_buttonHighlight);
+        //}
 
         public void PlaySoundOnButtonClick()                    // Переделать под UI
         {
-            _audioExplosion.PlayOneShot(_buttonClick);
+            _audioFirstGun.PlayOneShot(_buttonClick);
         }
 
         private void StartInit()            // Не нужно?

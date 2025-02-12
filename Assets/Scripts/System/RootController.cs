@@ -56,6 +56,6 @@ namespace Asteroids
         private void OnShootingFromFirstGunCancel(InputAction.CallbackContext context) => ShootingFromSecondGunCanceled?.Invoke();
         private void OnShootingFromSecondGunStart(InputAction.CallbackContext context) => ShootingFromFirstGunStarted?.Invoke();
         private void OnShootingFromSecondGunCancel(InputAction.CallbackContext context) => ShootingFromFirstGunCanceled?.Invoke();
-        private void OnPauseMenuPress(InputAction.CallbackContext context) => GameState.IsPaused.Value = !GameState.IsPaused.Value;
+        private void OnPauseMenuPress(InputAction.CallbackContext context) => GameState.IsPaused = !GameState.IsPaused;
     }
 }

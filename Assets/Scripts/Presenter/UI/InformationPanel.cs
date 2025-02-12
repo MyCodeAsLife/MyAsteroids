@@ -6,18 +6,19 @@ namespace Asteroids
 {
     public class InformationPanel : MonoBehaviour
     {
+        [SerializeField] TextMeshProUGUI _playerPositionUI;
+        [SerializeField] TextMeshProUGUI _playerRotationUI;
+        [SerializeField] TextMeshProUGUI _playerSpeedUI;
         [SerializeField] TextMeshProUGUI _laserChargesUI;
         [SerializeField] TextMeshProUGUI _laserCooldownUI;
-        [SerializeField] TextMeshProUGUI _playerScoreUI;
-        [SerializeField] TextMeshProUGUI _playerPositionUI;
 
-        private int _playerScore = 0;
+        public int PlayerScore { get; private set; } = 0;           // Вынести в игрока, ей не место в информационной панели
 
         private void Start()
         {
             _laserChargesUI.text = "Test1";
             _laserCooldownUI.text = "Test2";
-            _playerScoreUI.text = "Очки: " + _playerScore;
+            //_playerScoreUI.text = "Очки: " + PlayerScore;
             _playerPositionUI.text = "Test4";
         }
 
@@ -26,32 +27,42 @@ namespace Asteroids
             switch (obj.ObjectType)
             {
                 case GameObjectType.Asteroid:
-                    _playerScore += Config.AsteroidCost;
+                    PlayerScore += Config.AsteroidCost;
                     break;
                 case GameObjectType.AsteroidPart:
-                    _playerScore += Config.AsteroidParthCost;
+                    PlayerScore += Config.AsteroidParthCost;
                     break;
                 case GameObjectType.Ufo:
-                    _playerScore += Config.UfoCost;
+                    PlayerScore += Config.UfoCost;
                     break;
                 default:
                     throw new ArgumentException(nameof(GameObjectType));
             }
 
-            _playerScoreUI.text = "Очки: " + _playerScore;
+            //_playerScoreUI.text = "Очки: " + PlayerScore;
+        }
+
+        public void OnPlayerSpeedChange(float speed)
+        {
+            _playerSpeedUI.text = "Speed: " + string.Format("{0:0.0}", speed);
         }
 
         public void OnPlayerPositionChanged(Vector2 position)
         {
-            _playerPositionUI.text = "Координаты коробля (X : " + string.Format("{0:0.000}", position.x) + " | Y : " + string.Format("{0:0.000}", position.y) + ")";
+            _playerPositionUI.text = "Position (X : " + string.Format("{0:0.000}", position.x) + " | Y : " + string.Format("{0:0.000}", position.y) + ")";
         }
 
-        internal void OnSecondGunCharge(float cooldown)
+        public void OnPlayerRotationChange(float angle)
+        {
+            _playerRotationUI.text = "Rotation: " + string.Format("{0:0.0}", angle);            // Добавить знак градуса
+        }
+
+        public void OnSecondGunCharge(float cooldown)
         {
             _laserCooldownUI.text = "Перезарядка лазера: " + string.Format("{0:0.0}", cooldown);
         }
 
-        internal void OnSecondGunNumberChargesChange(int amount)
+        public void OnSecondGunNumberChargesChange(int amount)
         {
             _laserChargesUI.text = "Выстрелов лазером: " + amount;
         }

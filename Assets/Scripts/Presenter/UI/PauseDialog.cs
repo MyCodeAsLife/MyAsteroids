@@ -1,11 +1,15 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Asteroids
 {
-    public class PauseMenu : MonoBehaviour
+    public class PauseDialog : MonoBehaviour
     {
         [SerializeField] private Transform _pauseMenu;
+        [SerializeField] private TextMeshProUGUI _pauseMenuText;
+        [SerializeField] private InformationPanel _informationPanel;
+
         private RootAudioSystem _audioSystem;
 
         private void Awake()
@@ -15,13 +19,13 @@ namespace Asteroids
 
         private void OnEnable()
         {
-            GameState.IsPaused.Changed += OnPauseMenuPress;
-            OnPauseMenuPress(GameState.IsPaused.Value);
+            GameState.SwitchPause += OnPauseMenuPress;
+            OnPauseMenuPress(GameState.IsPaused);
         }
 
         private void OnDisable()
         {
-            GameState.IsPaused.Changed -= OnPauseMenuPress;
+            GameState.SwitchPause -= OnPauseMenuPress;
         }
 
         private void OnPauseMenuPress(bool value)
@@ -31,19 +35,22 @@ namespace Asteroids
             else
                 _audioSystem.PlayBackgroundMusic(Config.GameMusic);
 
+            _pauseMenuText.text = "¬аш счет: " + _informationPanel.PlayerScore;
             _pauseMenu.gameObject.SetActive(value);
         }
 
-        public void RestartGame()
+        public void OnClickRestartGame()
         {
-            GameState.IsPaused.Value = false;
+            _audioSystem.PlaySoundOnButtonClick();
+            GameState.StartGame();
             SceneManager.LoadScene("Game");                                                     // Magic
         }
 
-        public void ExitToMainMenu()
+        public void OnClickExitToMainMenu()
         {
-            GameState.IsPaused.Value = false;
+            _audioSystem.PlaySoundOnButtonClick();
             _audioSystem.PlayBackgroundMusic(Config.MainMenuMusic);
+            GameState.IsPaused = false;
             SceneManager.LoadScene("MainMenu");                                                     // Magic
         }
     }

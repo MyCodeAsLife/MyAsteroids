@@ -1,18 +1,23 @@
+using System;
 using UnityEngine;
 
 namespace Asteroids
 {
     public abstract class Transformable
     {
+        private Vector2 _position = new();
         private float _directionOfRotation;             // Используется только в Ship и Asteroid
         private float _degreesPerSecond;                // Используется только в Ship и Ufo
         private float _rotationAngle;                   //Используется только в Ship и Asteroid,
         private float _movementSpeed;
         private float _maxMovementSpeed;
 
-        public SingleReactiveProperty<Vector2> Position = new();
+        public event Action<Vector2> PositionChanged;
+        public event Action<float> RotationChanged;
+        public event Action<float> SpeedChanged;
+
+        //public SingleReactiveProperty<Vector2> Position = new();
         public Vector2 DirectionMovement { get; set; }          // Используется только в Asteroid, вынести в Asteroid?
-        public Vector2 Forward => Quaternion.Euler(0, 0, _rotationAngle) * Vector3.up;
 
         public float MovementSpeed
         {
@@ -23,7 +28,10 @@ namespace Asteroids
             set
             {
                 if (value > 0)
+                {
                     _movementSpeed = value;
+                    SpeedChanged?.Invoke(value);
+                }
             }
         }
 
@@ -40,6 +48,20 @@ namespace Asteroids
             }
         }
 
+        public Vector2 Position
+        {
+            get
+            {
+                return _position;
+            }
+
+            set
+            {
+                _position = value;
+                PositionChanged?.Invoke(value);
+            }
+        }
+
         public float RotationAngle
         {
             get
@@ -49,6 +71,7 @@ namespace Asteroids
             set
             {
                 _rotationAngle = Mathf.Repeat(value, 360);
+                RotationChanged?.Invoke(_rotationAngle);
             }
         }
 
@@ -76,5 +99,7 @@ namespace Asteroids
                 _directionOfRotation = value > 0 ? 1 : -1;
             }
         }
+
+        public Vector2 Forward => Quaternion.Euler(0, 0, _rotationAngle) * Vector3.up;
     }
 }

@@ -33,15 +33,15 @@ namespace Asteroids
         public void SetOverlapLayer(int layer) => _enemyLayer = layer;
         public void SetModel(Transformable model) => _objectModel = model;
         public void SetModelMovement(ModelMovement movement) => ModelMovement = movement;
-        public void SetPosition(Vector2 position) => _objectModel.Position.Value = position;
+        public void SetPosition(Vector2 position) => _objectModel.Position = position;
         public void SetRotationAngle(float angle) => _objectModel.RotationAngle = angle;
         public void SetDirectionMovement(Vector2 direction) => _objectModel.DirectionMovement = direction;
         public void SetMovementSpeed(float movementSpeed) => _objectModel.MovementSpeed = movementSpeed;
         public void SetMaxMovementSpeed(float maxMovementSpeed) => _objectModel.MaxMovementSpeed = maxMovementSpeed;
         public void SetDegreesPerSecond(float degreesPerSecond) => _objectModel.DegreesPerSecond = degreesPerSecond;
         public void SetDirectionOfRotation(float directionOfRotation) => _objectModel.DirectionOfRotation = directionOfRotation;
-        public Vector2 GetPosition() => _objectModel.Position.Value;
-        public void SubscribeOnPositionChanged(Action<Vector2> func) => _objectModel.Position.Changed += func;
+        public Vector2 GetPosition() => _objectModel.Position;
+        public void SubscribeOnPositionChanged(Action<Vector2> func) => _objectModel.PositionChanged += func;
 
         public void TakeDamage()
         {
@@ -64,7 +64,7 @@ namespace Asteroids
 
         private void PositionCheck()
         {
-            var position = _objectModel.Position.Value;
+            var position = _objectModel.Position;
 
             if (position.x > Config.MaxBoundaryExistenceObjects ||
                position.y > Config.MaxBoundaryExistenceObjects ||
@@ -76,7 +76,7 @@ namespace Asteroids
         private void OnUpdate(float deltaTime)
         {
             ModelMovement.Tick(Time.deltaTime);
-            _viewMovement.Move(_objectModel.Position.Value);
+            _viewMovement.Move(_objectModel.Position);
             _viewMovement.Rotate(_objectModel.RotationAngle);
             CollisionCheck();
             PositionCheck();

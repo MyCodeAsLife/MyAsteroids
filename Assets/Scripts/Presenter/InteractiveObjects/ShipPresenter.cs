@@ -83,6 +83,7 @@ namespace Asteroids
             SetOverlapLayer(LayerMask.NameToLayer(Config.EnemyLayerName));
             ((LaserGun)_shipModel.SecondGun).Shot += OnLaserShoot;
             _audioSystem = FindFirstObjectByType<RootAudioSystem>();
+            Destroyed += OnEndGame;
         }
 
         private void OnLaserShoot(bool isActivate)
@@ -91,6 +92,12 @@ namespace Asteroids
                 SetDegreesPerSecond(Config.PlayerRotationSpeed / 3);                // Magic
             else
                 SetDegreesPerSecond(Config.PlayerRotationSpeed);
+        }
+
+        private void OnEndGame(Interactive obj)
+        {
+            gameObject.SetActive(false);
+            GameState.EndGame();                    // EndGame-ом подписатся на destroy игрока
         }
     }
 }

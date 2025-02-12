@@ -22,7 +22,7 @@ namespace Asteroids
             Vector2 nextPosition = Model.DirectionMovement + Model.DirectionMovement * (Model.MovementSpeed * deltaTime);
             nextPosition = Vector2.ClampMagnitude(nextPosition, Model.MovementSpeed);
 
-            nextPosition = Model.Position.Value + SpeedCorrectionRelativeScreenSize(nextPosition);
+            nextPosition = Model.Position + SpeedCorrectionRelativeScreenSize(nextPosition);
             base.Move(nextPosition);
         }
 

@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 namespace Asteroids
@@ -7,30 +6,34 @@ namespace Asteroids
     public class MainMenu : MonoBehaviour
     {
         private RootAudioSystem _audioSystem;
-        private EventSystem _eventSystem;
 
         private void Awake()
         {
             _audioSystem = FindFirstObjectByType<RootAudioSystem>();
             _audioSystem.PlayBackgroundMusic(Config.MainMenuMusic);
-            _eventSystem = FindFirstObjectByType<EventSystem>();
         }
 
-        private void LateUpdate()
+        public void OnClickPlayGame()
         {
-            if (_eventSystem.IsPointerOverGameObject())
-                _audioSystem.PlaySoundOnButtonHighlighted();
-        }
-
-        public void PlayGame()
-        {
+            _audioSystem.PlaySoundOnButtonClick();
             _audioSystem.PlayBackgroundMusic(Config.GameMusic);
             SceneManager.LoadScene("Game");                             // Magic
         }
 
-        public void ExitGame()
+        public void OnClickSettings()
         {
+            _audioSystem.PlaySoundOnButtonClick();
+        }
+
+        public void OnClickExitGame()
+        {
+            _audioSystem.PlaySoundOnButtonClick();
             Application.Quit();         // В среде разработки не работает
+        }
+
+        public void OnClickAbout()
+        {
+            _audioSystem.PlaySoundOnButtonClick();
         }
     }
 }
