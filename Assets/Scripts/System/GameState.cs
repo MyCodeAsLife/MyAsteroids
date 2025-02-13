@@ -7,8 +7,13 @@ namespace Asteroids
         private static bool _isPaused;
         private static bool _isFinished;
 
-        public static event Action<bool> SwitchPause;
+        public static event Action<bool> SwitchIsPause;
+        public static event Action<bool> SwitchIsFinish;
 
+        static GameState()
+        {
+            SwitchIsFinish += OnSwichedIsFinish;
+        }
 
         public static bool IsPaused
         {
@@ -22,7 +27,7 @@ namespace Asteroids
                 if (_isFinished == false)
                 {
                     _isPaused = value;
-                    SwitchPause?.Invoke(value);
+                    SwitchIsPause?.Invoke(value);
                 }
             }
         }
@@ -36,9 +41,7 @@ namespace Asteroids
 
             private set
             {
-                if (value)
-                    IsPaused = value;
-
+                SwitchIsFinish?.Invoke(value);
                 _isFinished = value;
             }
         }
@@ -52,6 +55,12 @@ namespace Asteroids
         {
             IsFinished = false;
             IsPaused = false;
+        }
+
+        private static void OnSwichedIsFinish(bool value)
+        {
+            if (value)
+                IsPaused = value;
         }
     }
 }

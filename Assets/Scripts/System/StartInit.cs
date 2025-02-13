@@ -6,6 +6,7 @@ namespace Asteroids
     {
         private void Awake()
         {
+            Screen.SetResolution(1612, 907, true);
             var audioSystem = FindFirstObjectByType<RootAudioSystem>();
 
             if (audioSystem == null)

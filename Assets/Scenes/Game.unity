@@ -388,7 +388,7 @@ GameObject:
   - component: {fileID: 350107113}
   - component: {fileID: 350107112}
   m_Layer: 5
-  m_Name: PlayerPosition (1) - To Rollback
+  m_Name: ToRollbackText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -410,7 +410,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -652.18005, y: 246.5}
+  m_AnchoredPosition: {x: -652.18005, y: 308}
   m_SizeDelta: {x: 303.64, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &350107112
@@ -460,8 +460,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 15
-  m_fontSizeBase: 15
+  m_fontSize: 18
+  m_fontSizeBase: 18
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1069,11 +1069,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4deba12621f1e9b428a6ed784adb8e75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerPositionUI: {fileID: 1691886147}
-  _playerRotationUI: {fileID: 0}
-  _playerSpeedUI: {fileID: 0}
-  _laserChargesUI: {fileID: 1615786445}
-  _laserCooldownUI: {fileID: 1087818234}
+  _playerPositionUI: {fileID: 1615786445}
+  _playerRotationUI: {fileID: 1087818234}
+  _playerSpeedUI: {fileID: 1334524465}
+  _laserChargesUI: {fileID: 1691886147}
+  _laserCooldownUI: {fileID: 350107112}
 --- !u!1 &1009532650
 GameObject:
   m_ObjectHideFlags: 0
@@ -1222,7 +1222,7 @@ GameObject:
   - component: {fileID: 1087818235}
   - component: {fileID: 1087818234}
   m_Layer: 5
-  m_Name: LaserCooldownText - Rotation
+  m_Name: RotationText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1244,7 +1244,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -652.18005, y: 381.50003}
+  m_AnchoredPosition: {x: -652.18005, y: 404}
   m_SizeDelta: {x: 303.64, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1087818234
@@ -1294,8 +1294,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20
-  m_fontSizeBase: 20
+  m_fontSize: 18
+  m_fontSizeBase: 18
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1491,7 +1491,7 @@ GameObject:
   - component: {fileID: 1334524466}
   - component: {fileID: 1334524465}
   m_Layer: 5
-  m_Name: PlayerScoreText - Speed
+  m_Name: SpeedText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1513,7 +1513,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -652.18005, y: 336.50003}
+  m_AnchoredPosition: {x: -652.18005, y: 372}
   m_SizeDelta: {x: 303.64, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1334524465
@@ -1563,8 +1563,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20
-  m_fontSizeBase: 20
+  m_fontSize: 18
+  m_fontSizeBase: 18
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1811,7 +1811,7 @@ GameObject:
   - component: {fileID: 1615786446}
   - component: {fileID: 1615786445}
   m_Layer: 5
-  m_Name: LaserChargesText - Position
+  m_Name: PositionText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1833,7 +1833,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -653.18005, y: 426.50003}
+  m_AnchoredPosition: {x: -653.18005, y: 436}
   m_SizeDelta: {x: 305.64, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1615786445
@@ -1856,7 +1856,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'New Text New Text '
+  m_text: New Text
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1883,8 +1883,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20
-  m_fontSizeBase: 20
+  m_fontSize: 18
+  m_fontSizeBase: 18
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1947,7 +1947,7 @@ GameObject:
   - component: {fileID: 1691886148}
   - component: {fileID: 1691886147}
   m_Layer: 5
-  m_Name: PlayerPositionText - Lasers
+  m_Name: LasersText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1969,7 +1969,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -652.18005, y: 291.50003}
+  m_AnchoredPosition: {x: -652.18005, y: 340}
   m_SizeDelta: {x: 303.64, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1691886147
@@ -2019,8 +2019,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 15
-  m_fontSizeBase: 15
+  m_fontSize: 18
+  m_fontSizeBase: 18
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

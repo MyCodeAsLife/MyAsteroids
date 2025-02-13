@@ -8,27 +8,27 @@ namespace Asteroids
         private const float Half = 0.5f;
         private const float Offset = 0.05f;
 
-        public ShipPresenter PlayerShip { get; private set; }
-
         private RootAudioSystem _audioSystem;
         private PresentersFactory _factory;
         private InformationPanel _informationPanel;
-        private System.Random _random;
+        private System.Random _random = new();
 
-        private float _timer;
-        private float _spawnInterval;
+        private float _timerForUfoSpawn = Config.UfoSpawnInterval;
+        private float _timerForAsteroidSpawn = Config.AsteroidSpawnInterval;
 
         private event Action Updated;
 
+        public ShipPresenter PlayerShip { get; private set; }
+
         private void OnEnable()
         {
-            GameState.SwitchPause += OnPausePress;
+            GameState.SwitchIsPause += OnPausePress;
             OnPausePress(GameState.IsPaused);
         }
 
         private void OnDisable()
         {
-            GameState.SwitchPause -= OnPausePress;
+            GameState.SwitchIsPause -= OnPausePress;
         }
 
         private void Start()
@@ -36,8 +36,6 @@ namespace Asteroids
             _audioSystem = FindFirstObjectByType<RootAudioSystem>();
             _informationPanel = FindFirstObjectByType<InformationPanel>();
             _factory = GetComponent<PresentersFactory>();
-            _random = new System.Random();
-            _spawnInterval = UnityEngine.Random.Range(1f, Config.AsteroidSpawnInterval);
 
             // Все что ниже, для тестирования или вынести в отдельный инициализатор
             var prefab = Resources.Load<ShipPresenter>("Prefabs/Player");
@@ -53,8 +51,11 @@ namespace Asteroids
             playerShip.SetMovementSpeed(Config.PlayerShipMovementSpeed);
             playerShip.SetMaxMovementSpeed(Config.PlayerShipMaxMovementSpeed);
             playerShip.SubscribeOnPositionChanged(_informationPanel.OnPlayerPositionChanged);
-            playerShip.SubscribeOnSecondGunCharge(_informationPanel.OnSecondGunCharge);
-            playerShip.SubscribeOnSecondGunNumberChargesChange(_informationPanel.OnSecondGunNumberChargesChange);
+            playerShip.SubscribeOnSpeedChanged(_informationPanel.OnPlayerSpeedChanged);
+            playerShip.SubscribeOnRotationChanged(_informationPanel.OnPlayerRotationChanged);
+            playerShip.SubscribeOnSecondGunCharged(_informationPanel.OnSecondGunCharged);
+            playerShip.SubscribeOnSecondGunNumberChargesChanged(_informationPanel.OnSecondGunNumberChargesChanged);
+            playerShip.SubscribeOnSecondGunMaxNumberChargesChanged(_informationPanel.OnSecondGunMaxNumberChargesChanged);
             playerShip.transform.localScale = new Vector3(Config.PlayerShipSize, Config.PlayerShipSize, 1f);
         }
 
@@ -73,12 +74,23 @@ namespace Asteroids
 
         private void SpawnObjects()
         {
-            _timer += Time.deltaTime;
+            _timerForUfoSpawn -= Time.deltaTime;
+            _timerForAsteroidSpawn -= Time.deltaTime;
 
-            if (_timer > _spawnInterval)
+            if (_timerForUfoSpawn < 0)
             {
-                _timer = 0;
-                _spawnInterval = UnityEngine.Random.Range(1f, Config.AsteroidSpawnInterval);
+                _timerForUfoSpawn = UnityEngine.Random.Range(Config.UfoSpawnInterval * Half, Config.UfoSpawnInterval);
+
+                Interactive obj = (Interactive)_factory.GetObject(GameObjectType.Ufo);
+                obj.Deactivated += OnDeactivated;                   // Если подписывать 1 раз, то этот пункт ненужен
+                obj.Destroyed += Explode;                           // Подписывать 1 раз?
+                obj.Destroyed += _informationPanel.OnObjectDestroy; // Подписывать 1 раз?
+                InitInteractiveObject(obj);
+            }
+
+            if (_timerForAsteroidSpawn < 0)
+            {
+                _timerForAsteroidSpawn = UnityEngine.Random.Range(Config.AsteroidSpawnInterval * Half, Config.AsteroidSpawnInterval);
 
                 Interactive obj = (Interactive)_factory.GetObject(GameObjectType.Asteroid);
                 obj.Deactivated += OnDeactivated;                   // Если подписывать 1 раз, то этот пункт ненужен

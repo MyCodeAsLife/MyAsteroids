@@ -13,14 +13,6 @@ namespace Asteroids
             Updated += OnUpdated;
         }
 
-        //public override void Tick(float deltaTime)
-        //{
-        //    _inertiaSimulator.Accelerate(Model.Forward, deltaTime);
-        //    _inertiaSimulator.SlowDown(deltaTime);
-        //    Move();
-        //    Rotate(deltaTime);
-        //}
-
         public void SetTarget(ShipPresenter target) => _target = target;
 
         private void Move()

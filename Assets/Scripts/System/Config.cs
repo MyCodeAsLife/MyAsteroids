@@ -19,11 +19,11 @@ namespace Asteroids
         public const float CooldownDefaultGun = 0.1f;
         public const float BulletSpeed = 0.01f;
         public const float CooldownLaserGun = 2f;
-        public const float LaserGunChargingTime = 10f;
-        public const float LaserGunShotDuration = 10f;
+        public const float LaserGunChargingTime = 5f;
+        public const float LaserGunShotDuration = 2.5f;
         public const int MaxNumberOfLaserCharges = 10;
 
-        public const float UfoSpawnInterval = 2f;               // Реализовать
+        public const float UfoSpawnInterval = 7f;
         public const float AsteroidSpawnInterval = 2f;
         public const float AsteroidPartSpawnInterval = 2f;      // Реализовать
 

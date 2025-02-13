@@ -19,13 +19,13 @@ namespace Asteroids
 
         private void OnEnable()
         {
-            GameState.SwitchPause += OnPauseMenuPress;
+            GameState.SwitchIsPause += OnPauseMenuPress;
             OnPauseMenuPress(GameState.IsPaused);
         }
 
         private void OnDisable()
         {
-            GameState.SwitchPause -= OnPauseMenuPress;
+            GameState.SwitchIsPause -= OnPauseMenuPress;
         }
 
         private void OnPauseMenuPress(bool value)

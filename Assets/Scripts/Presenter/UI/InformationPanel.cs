@@ -12,14 +12,14 @@ namespace Asteroids
         [SerializeField] TextMeshProUGUI _laserChargesUI;
         [SerializeField] TextMeshProUGUI _laserCooldownUI;
 
-        public int PlayerScore { get; private set; } = 0;           // Вынести в игрока, ей не место в информационной панели
+        private int _laserCharges = Config.MaxNumberOfLaserCharges;
+        private int _laserMaxCharges = Config.MaxNumberOfLaserCharges;
+
+        public int PlayerScore { get; private set; } = 0;           // Вынести в игрока, ей не место в информационной панели?
 
         private void Start()
         {
-            _laserChargesUI.text = "Test1";
-            _laserCooldownUI.text = "Test2";
-            //_playerScoreUI.text = "Очки: " + PlayerScore;
-            _playerPositionUI.text = "Test4";
+            Init();
         }
 
         public void OnObjectDestroy(Presenter obj)
@@ -38,33 +38,52 @@ namespace Asteroids
                 default:
                     throw new ArgumentException(nameof(GameObjectType));
             }
-
-            //_playerScoreUI.text = "Очки: " + PlayerScore;
         }
 
-        public void OnPlayerSpeedChange(float speed)
+        public void OnPlayerSpeedChanged(float speed)
         {
-            _playerSpeedUI.text = "Speed: " + string.Format("{0:0.0}", speed);
+            _playerSpeedUI.text = "Speed: " + string.Format("{0:0.00}", speed);
         }
 
         public void OnPlayerPositionChanged(Vector2 position)
         {
-            _playerPositionUI.text = "Position (X : " + string.Format("{0:0.000}", position.x) + " | Y : " + string.Format("{0:0.000}", position.y) + ")";
+            _playerPositionUI.text = "Position (X : " + string.Format("{0:0.00}", position.x) + " | Y : " + string.Format("{0:0.00}", position.y) + ")";
         }
 
-        public void OnPlayerRotationChange(float angle)
+        public void OnPlayerRotationChanged(float angle)
         {
-            _playerRotationUI.text = "Rotation: " + string.Format("{0:0.0}", angle);            // Добавить знак градуса
+            _playerRotationUI.text = "Rotation: " + string.Format("{0:0.0}", angle) + '°';
         }
 
-        public void OnSecondGunCharge(float cooldown)
+        public void OnSecondGunNumberChargesChanged(int amount)       // Нужно получать от корабля текущее кол-во зарядов и максимальное
         {
-            _laserCooldownUI.text = "Перезарядка лазера: " + string.Format("{0:0.0}", cooldown);
+            _laserCharges = amount;
+            ShowNumberOfLaserCharges();
         }
 
-        public void OnSecondGunNumberChargesChange(int amount)
+        public void OnSecondGunMaxNumberChargesChanged(int amount)
         {
-            _laserChargesUI.text = "Выстрелов лазером: " + amount;
+            _laserMaxCharges = amount;
+            ShowNumberOfLaserCharges();
+        }
+
+        public void OnSecondGunCharged(float cooldown)
+        {
+            _laserCooldownUI.text = "Cooldown: " + string.Format("{0:0.0}", cooldown);
+        }
+
+        private void ShowNumberOfLaserCharges()
+        {
+            _laserChargesUI.text = "Lasers: " + _laserCharges + '/' + _laserMaxCharges;
+        }
+
+        private void Init()
+        {
+            OnSecondGunNumberChargesChanged(Config.MaxNumberOfLaserCharges);
+            OnPlayerPositionChanged(Vector2.zero);
+            OnPlayerRotationChanged(0f);
+            OnPlayerSpeedChanged(0f);
+            OnSecondGunCharged(0f);
         }
     }
 }

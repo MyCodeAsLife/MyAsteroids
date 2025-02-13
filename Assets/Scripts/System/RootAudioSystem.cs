@@ -11,10 +11,8 @@ namespace Asteroids
         private AudioSource _audioFirstGun;
         private AudioSource _audioSecondGun;
         private AudioSource _audioUI;
-        //private AudioClip _buttonHighlight;                  // Загрузить    Используется и в главном меню
         private AudioClip _buttonClick;
-        private AudioClip _explosion1;
-        private AudioClip _explosion2;
+        private AudioClip _explosion;
         private AudioClip _laserBeam;
         private AudioClip _blast;
 
@@ -27,13 +25,13 @@ namespace Asteroids
             _audioFirstGun = gameObject.AddComponent<AudioSource>();
             _audioSecondGun = gameObject.AddComponent<AudioSource>();
             _audioUI = gameObject.AddComponent<AudioSource>();
-            _explosion1 = Resources.Load<AudioClip>("Audio/Explosion1");
-            _explosion2 = Resources.Load<AudioClip>("Audio/Explosion2");
+            _explosion = Resources.Load<AudioClip>("Audio/Explosion2");
             _blast = Resources.Load<AudioClip>("Audio/Blast");
             _laserBeam = Resources.Load<AudioClip>("Audio/LaserBeam");
             _mixerGroup = Resources.Load<AudioMixer>("Audio/Mixer");
-            //_buttonHighlight = Resources.Load<AudioClip>("Audio/ButtonHighlight");
             _buttonClick = Resources.Load<AudioClip>("Audio/ButtonClick");
+            GameState.SwitchIsPause += OnPauseGame;
+            GameState.SwitchIsFinish += OnFinishGame;
 
             _audioBackground.outputAudioMixerGroup = _mixerGroup.FindMatchingGroups("Music")[0];
             _audioBackground.loop = true;
@@ -58,16 +56,6 @@ namespace Asteroids
             _audioUI.playOnAwake = false;
             _audioUI.volume = 0.7f;                                                              // Magic
             _audioUI.loop = false;
-        }
-
-        private void Start()
-        {
-            //StartInit();
-        }
-
-        private void Update()
-        {
-            //Debug.Log(_eventSystem.isFocused);                                                  //+++++++++++++++++++++++++++
         }
 
         public void PlayBackgroundMusic(string pathMusic)
@@ -95,27 +83,26 @@ namespace Asteroids
 
         public void PlaySoundExplosion()
         {
-            _audioExplosion.PlayOneShot(_explosion2);
+            _audioExplosion.PlayOneShot(_explosion);
         }
 
-        //public void PlaySoundOnButtonHighlighted()              // Пекределать под UI
-        //{
-        //    _audioExplosion.PlayOneShot(_buttonHighlight);
-        //}
-
-        public void PlaySoundOnButtonClick()                    // Переделать под UI
+        public void PlaySoundOnButtonClick()
         {
             _audioFirstGun.PlayOneShot(_buttonClick);
         }
 
-        private void StartInit()            // Не нужно?
+        private void OnPauseGame(bool pause)
         {
-            PlaySoundBlastShot();
-            _audioFirstGun.Stop();
-            PlaySoundExplosion();
-            _audioSecondGun.Stop();
-            PlaySoundLaserBeamShoting(true);
-            PlaySoundLaserBeamShoting(false);
+            if (pause)
+                _audioSecondGun.Pause();
+            else
+                _audioSecondGun.UnPause();
+        }
+
+        private void OnFinishGame(bool value)
+        {
+            if (value)
+                _audioSecondGun.Stop();
         }
     }
 }

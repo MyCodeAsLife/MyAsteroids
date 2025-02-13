@@ -6,17 +6,18 @@ namespace Asteroids
     {
         public readonly SingleReactiveProperty<float> ChargingTimer = new();
         public readonly SingleReactiveProperty<int> NumberOfLaserCharges = new();
+        public readonly SingleReactiveProperty<int> MaxNumberOfLaserCharges = new();
 
         private readonly LaserPresenter _laserBeam;
         private readonly float _shotDuration;
         private readonly float _chargingTime;
-        private readonly int _maxNumberOfLaserCharges;
 
         private bool _isActiveLaserBeam = false;
         private bool _isReloading = false;
 
         public new event Action<bool> Shot;
         public event Action<float> Reloading;
+
 
         public LaserGun(ShipPresenter ship, LaserPresenter laser, float cooldown = Config.CooldownLaserGun, float laserBeamChargingTime = Config.LaserGunChargingTime,
                         float shotDuration = Config.LaserGunShotDuration, int maxNumberOfLaserCharges = Config.MaxNumberOfLaserCharges) : base(ship, cooldown)
@@ -25,7 +26,7 @@ namespace Asteroids
             _shotDuration = shotDuration;
             NumberOfLaserCharges.Value = maxNumberOfLaserCharges;
             ChargingTimer.Value = laserBeamChargingTime;
-            _maxNumberOfLaserCharges = maxNumberOfLaserCharges;
+            MaxNumberOfLaserCharges.Value = maxNumberOfLaserCharges;
             _chargingTime = laserBeamChargingTime;                       // Под вопросом
             Reloading += OnReloading;
         }
@@ -66,12 +67,12 @@ namespace Asteroids
         {
             ChargingTimer.Value -= deltaTime;
 
-            if (NumberOfLaserCharges.Value < _maxNumberOfLaserCharges && ChargingTimer.Value < 0)
+            if (NumberOfLaserCharges.Value < MaxNumberOfLaserCharges.Value && ChargingTimer.Value < 0)
             {
                 NumberOfLaserCharges.Value++;
                 ChargingTimer.Value = _chargingTime;
             }
-            else if (NumberOfLaserCharges.Value >= _maxNumberOfLaserCharges)
+            else if (NumberOfLaserCharges.Value >= MaxNumberOfLaserCharges.Value)
             {
                 Reloading -= OnReloading;
                 _isReloading = false;

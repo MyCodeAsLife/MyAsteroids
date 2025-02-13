@@ -11,12 +11,6 @@ namespace Asteroids
             Updated += Rotate;
         }
 
-        //public override void Tick(float deltaTime)
-        //{
-        //    Move(deltaTime);
-        //    Rotate(deltaTime);
-        //}
-
         private void Move(float deltaTime)          // Такая-же как у Projectile
         {
             Vector2 nextPosition = Model.DirectionMovement + Model.DirectionMovement * (Model.MovementSpeed * deltaTime);

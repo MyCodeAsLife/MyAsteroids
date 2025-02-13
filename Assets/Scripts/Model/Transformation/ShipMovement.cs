@@ -37,8 +37,16 @@ namespace Asteroids
             Rotation -= Rotate;
         }
 
+        private float CalculateSpeed(Vector2 lastPosition, Vector2 currentPosition, float deltaTime)
+        {
+            float deltaX = Mathf.Pow(currentPosition.x - lastPosition.x, 2f);
+            float deltaY = Mathf.Pow(currentPosition.y - lastPosition.y, 2f);
+            return Mathf.Sqrt(deltaX + deltaY) / deltaTime;
+        }
+
         private void Move()
         {
+            ((ShipModel)Model).LastPosition = Model.Position;
             var nextPosition = Model.Position + SpeedCorrectionRelativeScreenSize(_inertiaSimulator.Acceleration);
             nextPosition.x = Mathf.Repeat(nextPosition.x, Config.ScaleWindowSize);
             nextPosition.y = Mathf.Repeat(nextPosition.y, Config.ScaleWindowSize);
@@ -60,6 +68,7 @@ namespace Asteroids
             Movement?.Invoke(Model.Forward, deltaTime);
             Move();
             _inertiaSimulator.SlowDown(deltaTime);
+            ((ShipModel)Model).Speed = CalculateSpeed(((ShipModel)Model).LastPosition, Model.Position, deltaTime);
         }
     }
 }

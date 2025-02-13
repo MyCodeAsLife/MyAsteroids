@@ -42,6 +42,8 @@ namespace Asteroids
         public void SetDirectionOfRotation(float directionOfRotation) => _objectModel.DirectionOfRotation = directionOfRotation;
         public Vector2 GetPosition() => _objectModel.Position;
         public void SubscribeOnPositionChanged(Action<Vector2> func) => _objectModel.PositionChanged += func;
+        public void SubscribeOnSpeedChanged(Action<float> func) => ((ShipModel)_objectModel).SpeedChanged += func;
+        public void SubscribeOnRotationChanged(Action<float> func) => _objectModel.RotationChanged += func;
 
         public void TakeDamage()
         {

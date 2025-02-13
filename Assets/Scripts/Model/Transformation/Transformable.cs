@@ -14,9 +14,7 @@ namespace Asteroids
 
         public event Action<Vector2> PositionChanged;
         public event Action<float> RotationChanged;
-        public event Action<float> SpeedChanged;
 
-        //public SingleReactiveProperty<Vector2> Position = new();
         public Vector2 DirectionMovement { get; set; }          // Используется только в Asteroid, вынести в Asteroid?
 
         public float MovementSpeed
@@ -30,7 +28,6 @@ namespace Asteroids
                 if (value > 0)
                 {
                     _movementSpeed = value;
-                    SpeedChanged?.Invoke(value);
                 }
             }
         }
